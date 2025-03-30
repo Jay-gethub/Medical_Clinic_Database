@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/Register.css';
 import bgImage from '../../assets/Home.png';
-import logo from '../../assets/clinic-logo.png';
+//import logo from '../../assets/clinic-logo.png';
 import { useNavigate } from 'react-router-dom';
 
 const PatientRegister = () => {

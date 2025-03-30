@@ -1,5 +1,6 @@
 //admin profile page
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+//remove useEffect
 import '../../styles/AdminDashboard.css';
 
 const AdminProfile = () => {
