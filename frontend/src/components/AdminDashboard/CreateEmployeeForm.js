@@ -226,7 +226,7 @@ class CreateEmployeeForm extends React.Component {
       
       const employeeRes = await axios.post(
         'http://localhost:5000/api/admin/create-employee',
-        { ...employeeData, address_id: addressId }
+        { ...employeeData, address_id: address_id }
       );
       
       if (employeeRes.status === 200) {
