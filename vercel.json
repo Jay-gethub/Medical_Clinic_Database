@@ -1,6 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.)", "destination": "/" }
+    {
+      "source": "/(.*)",
+      "destination": "/backend/server.js"
+    }
   ],
   "builds": [
     {
@@ -9,6 +12,10 @@
       "config": {
         "distDir": "frontend/build"
       }
+    },
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
     }
   ]
 }
