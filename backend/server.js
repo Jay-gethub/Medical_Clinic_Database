@@ -7,6 +7,7 @@ const patientRoutes = require("./routes/patientRoutes");
 const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+//appointmentRoutes
 const mysql = require("mysql2");
 
 dotenv.config();
@@ -36,15 +37,16 @@ db.connect((err) => {
 app.set("db", db);
 
 // Test route
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
   res.send("Backend is up and running!");
 });
 
 // Routes
-app.use("/api", authRoutes); // handles login, user & patient registration
+app.use("/api/auth", authRoutes); // handles login, user & patient registration
 app.use("/api/admin", adminRoutes); // admin routes
 app.use("/api/employee", employeeRoutes); // employee routes
 app.use("/api/patient", patientRoutes); // patient routes
+//appointment routes
 
 
 // Start the server
