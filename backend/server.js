@@ -1,6 +1,7 @@
 
 // backend/server.js
 const express = require("express");
+const serverless = require("serverless-http"); //necessary for Vercel
 const cors = require("cors");
 const dotenv = require("dotenv");
 const patientRoutes = require("./routes/patientRoutes");
@@ -48,11 +49,13 @@ app.use("/api/employee", employeeRoutes); // employee routes
 app.use("/api/patient", patientRoutes); // patient routes
 //appointment routes
 
-
+//Vercel is  serverless 
 // Start the server
-const PORT = process.env.PORT || 5000;
+/*const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
-});
+});*/
 
+//For Vercel
 module.exports = app;
+module.exports.handler = serverless(app);
