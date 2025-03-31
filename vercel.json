@@ -17,6 +17,7 @@
       "src": "/api/(.*)",
       "dest": "/backend/server"
     }
-  ]
+  ],
+  "buildCommand": "cd frontend && npm install && npm run build"
 }
 
