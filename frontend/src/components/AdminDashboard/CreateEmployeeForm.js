@@ -772,7 +772,16 @@ class CreateEmployeeForm extends React.Component {
 
         <input name="phone" value={employeeData.phone} onChange={this.handleChange} placeholder="Phone * (10 digits)" className={errors.phone ? 'input-error' : ''} />
 
-        <input name="dob" type="date" value={employeeData.dob} onChange={this.handleChange} className={errors.dob ? 'input-error' : ''} />
+        <label htmlFor="dob"><h4>Date of Birth *</h4></label>
+<input 
+  id="dob"
+  name="dob" 
+  type="date" 
+  value={employeeData.dob} 
+  onChange={this.handleChange} 
+  className={errors.dob ? 'input-error' : ''} 
+/>
+
 
         <input name="education" value={employeeData.education} onChange={this.handleChange} placeholder="Education (e.g. MBBS, BSc in Nursing)" />
 
@@ -828,7 +837,16 @@ class CreateEmployeeForm extends React.Component {
           ))}
         </select>
 
-        <input name="hire_date" type="date" value={employeeData.hire_date} onChange={this.handleChange} className={errors.hire_date ? 'input-error' : ''} />
+        <label htmlFor="hire_date"><h4>Hire Date *</h4></label>
+<input 
+  id="hire_date"
+  name="hire_date" 
+  type="date" 
+  value={employeeData.hire_date} 
+  onChange={this.handleChange} 
+  className={errors.hire_date ? 'input-error' : ''} 
+/>
+
 
         <button type="submit">Add Employee</button>
       </form>

@@ -52,6 +52,7 @@ exports.getEmployeesByClinic = (req, res) => {
 // Add new employee
 exports.createEmployee = (req, res) => {
   const db = req.app.get("db");
+  db.beginTransaction((err) => {
   const {
     first_name, last_name, middle_name, address, email, phone,
     sex, dob, education, role, specialization, clinic_id,
@@ -107,8 +108,8 @@ exports.createEmployee = (req, res) => {
       // Role-based insertion
       if (normalizedRole === "Doctor") {
         const doctorQuery = `
-  INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, degree, license_number)
-  VALUES (?, ?, ?, ?, '', ?)`;
+  INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, license_number)
+  VALUES (?, ?, ?, ?, ?)`;
 db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, license_number], (err) => {
           if (err) {
             console.error("DOCTORS insert error:", err);
@@ -154,6 +155,7 @@ db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, lic
       }
     });
   });
+});
 };
 // View schedule by employee ID
 exports.getSchedulesByEmployeeId = (req, res) => {

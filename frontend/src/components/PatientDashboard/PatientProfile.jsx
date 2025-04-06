@@ -8,8 +8,10 @@ const PatientProfile = ({ patientId }) => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    if (patientId) {
+      fetchProfile();
+    }
+  }, [patientId]);
 
   const fetchProfile = async () => {
     try {

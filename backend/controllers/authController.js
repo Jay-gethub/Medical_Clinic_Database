@@ -81,131 +81,134 @@ exports.loginUser = (req, res) => {
 };
 
 exports.registerPatient = (req, res) => {
-    const {
-      username,
-      password,
-      first_name,
-      last_name,
-      dob,
-      phone_num,
-      email,
-      sex,
-      street_num,
-      street_name,
-      postal_code,
-      city,
-      state,
-      emergency_first_name,
-      emergency_last_name,
-      emergency_relationship,
-      emergency_phone,
-      provider_name,
-      policy_number,
-      coverage_details,
-      effective_from,
-      effective_to,
-    } = req.body;
-  
-    db.beginTransaction((err) => {
-      if (err) return res.status(500).json({ error: "Failed to start transaction" });
-  
-      // 1. Insert into ADDRESS
-      const addressQuery =
-        "INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state) VALUES (?, ?, ?, ?, ?)";
-      db.query(addressQuery, [street_num, street_name, postal_code, city, state], (err, addressResult) => {
-        if (err) return db.rollback(() => res.status(500).json({ error: "Address insert failed", details: err }));
-  
-        const address_id = addressResult.insertId;
-  
-        // 2. Insert into PATIENTS
+  const {
+    username,
+    password,
+    first_name,
+    last_name,
+    dob,
+    phone_num,
+    email,
+    sex,
+    street_num,
+    street_name,
+    postal_code,
+    city,
+    state,
+    emergency_first_name,
+    emergency_last_name,
+    emergency_relationship,
+    emergency_phone,
+    provider_name,
+    policy_number,
+    coverage_details,
+    effective_from,
+    effective_to,
+  } = req.body;
+
+  db.beginTransaction((err) => {
+    if (err) return res.status(500).json({ error: "Failed to start transaction" });
+
+    // 1. Insert into ADDRESS
+    const addressQuery =
+      "INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state) VALUES (?, ?, ?, ?, ?)";
+    db.query(addressQuery, [street_num, street_name, postal_code, city, state], (err, addressResult) => {
+      if (err) return db.rollback(() => res.status(500).json({ error: "Address insert failed", details: err }));
+
+      const address_id = addressResult.insertId;
+
+      // 2. Insert into USER_CREDENTIALS
+      const credentialsQuery = "INSERT INTO USER_CREDENTIALS (username, password, role) VALUES (?, ?, 'Patient')";
+      db.query(credentialsQuery, [username, password], (err, credentialsResult) => {
+        if (err) {
+          if (err.code === 'ER_DUP_ENTRY') {
+            return db.rollback(() =>
+              res.status(400).json({ error: "Username already exists. Please choose another." })
+            );
+          }
+          return db.rollback(() =>
+            res.status(500).json({ error: "Credentials insert failed", details: err })
+          );
+        }
+
+        const user_id = credentialsResult.insertId;
+
+        // 3. Insert into PATIENTS 
         const patientQuery =
-          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex) VALUES (?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         db.query(
           patientQuery,
-          [first_name, last_name, dob, address_id, phone_num, email, sex],
+          [first_name, last_name, dob, address_id, phone_num, email, sex, user_id],
           (err, patientResult) => {
-            if (err) return db.rollback(() => res.status(500).json({ error: "Patient insert failed", details: err }));
-  
+            if (err) {
+              console.error("Patient insert failed:", err);
+              return db.rollback(() =>
+                res.status(500).json({ error: "Patient insert failed", details: err })
+              );
+            }
+
             const patient_id = patientResult.insertId;
-  
-            /// 3. Insert into USER_CREDENTIALS
-const credentialsQuery =
-"INSERT INTO USER_CREDENTIALS (username, password, role) VALUES (?, ?, 'Patient')";
-db.query(credentialsQuery, [username, password], (err) => {
-if (err) {
-  //Catch duplicate username
-  if (err.code === 'ER_DUP_ENTRY') {
-    return db.rollback(() =>
-      res.status(400).json({ error: "Username already exists. Please choose another." })
-    );
-  }
-  //General insert failure
-  return db.rollback(() =>
-    res.status(500).json({ error: "Credentials insert failed", details: err })
-  );
-}
-  
-              // 4. Insert into EMERGENCY_CONTACT
-              const emergencyQuery = `
-                INSERT INTO EMERGENCY_CONTACT 
-                (patient_id, contact_first_name, contact_last_name, relationship, phone) 
-                VALUES (?, ?, ?, ?, ?)`;
-              db.query(
-                emergencyQuery,
-                [patient_id, emergency_first_name, emergency_last_name, emergency_relationship, emergency_phone],
-                (err) => {
-                  if (err)
-                    return db.rollback(() =>
-                      res.status(500).json({ error: "Emergency contact insert failed", details: err })
-                    );
-  
-                  // 5. Optionally insert INSURANCE_PLAN if filled
-                  if (provider_name || policy_number || coverage_details || effective_from || effective_to) {
-                    const insuranceQuery = `
-                      INSERT INTO INSURANCE_PLAN 
-                      (patient_id, provider_name, policy_number, covrage_details, effective_from, effective_to) 
-                      VALUES (?, ?, ?, ?, ?, ?)`;
-                    db.query(
-                      insuranceQuery,
-                      [
-                        patient_id,
-                        provider_name || null,
-                        policy_number || null,
-                        coverage_details || null,
-                        effective_from || null,
-                        effective_to || null,
-                      ],
-                      (err) => {
-                        if (err)
-                          return db.rollback(() =>
-                            res.status(500).json({ error: "Insurance insert failed", details: err })
-                          );
-  
-                        db.commit((err) => {
-                          if (err)
-                            return db.rollback(() =>
-                              res.status(500).json({ error: "Commit failed", details: err })
-                            );
-                          res.status(201).json({ message: "Patient registered successfully!", patient_id });
-                        });
-                      }
-                    );
-                  } else {
-                    // No insurance — commit transaction
-                    db.commit((err) => {
+
+            // 4. Insert into EMERGENCY_CONTACT
+            const emergencyQuery = `
+              INSERT INTO EMERGENCY_CONTACT 
+              (patient_id, contact_first_name, contact_last_name, relationship, phone) 
+              VALUES (?, ?, ?, ?, ?)`;
+            db.query(
+              emergencyQuery,
+              [patient_id, emergency_first_name, emergency_last_name, emergency_relationship, emergency_phone],
+              (err) => {
+                if (err)
+                  return db.rollback(() =>
+                    res.status(500).json({ error: "Emergency contact insert failed", details: err })
+                  );
+
+                // 5. Optionally insert INSURANCE_PLAN
+                if (provider_name || policy_number || coverage_details || effective_from || effective_to) {
+                  const insuranceQuery = `
+                    INSERT INTO INSURANCE_PLAN 
+                    (patient_id, provider_name, policy_number, covrage_details, effective_from, effective_to) 
+                    VALUES (?, ?, ?, ?, ?, ?)`;
+                  db.query(
+                    insuranceQuery,
+                    [
+                      patient_id,
+                      provider_name || null,
+                      policy_number || null,
+                      coverage_details || null,
+                      effective_from || null,
+                      effective_to || null,
+                    ],
+                    (err) => {
                       if (err)
                         return db.rollback(() =>
-                          res.status(500).json({ error: "Commit failed", details: err })
+                          res.status(500).json({ error: "Insurance insert failed", details: err })
                         );
-                      res.status(201).json({ message: "Patient registered successfully!", patient_id });
-                    });
-                  }
+
+                      db.commit((err) => {
+                        if (err)
+                          return db.rollback(() =>
+                            res.status(500).json({ error: "Commit failed", details: err })
+                          );
+                        res.status(201).json({ message: "Patient registered successfully!", patient_id });
+                      });
+                    }
+                  );
+                } else {
+                  // No insurance — commit transaction
+                  db.commit((err) => {
+                    if (err)
+                      return db.rollback(() =>
+                        res.status(500).json({ error: "Commit failed", details: err })
+                      );
+                    res.status(201).json({ message: "Patient registered successfully!", patient_id });
+                  });
                 }
-              );
-            });
+              }
+            );
           }
         );
       });
     });
-  };
-  
+  });
+};

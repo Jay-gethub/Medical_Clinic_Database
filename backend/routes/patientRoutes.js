@@ -8,6 +8,10 @@ router.get("/profile/:id", patientController.getProfile);
 
 // Update patient profile
 router.put("/profile/:id", patientController.updateProfile);
+// patientRoutes.js
+router.get("/resolve-by-username/:username", patientController.getPatientByUsername);
+
+
 
 // Get insurance info
 router.get("/insurance/:id", patientController.getInsurance);
@@ -36,5 +40,6 @@ router.get("/prescriptions/:id", patientController.getPrescriptions);
 
 // Get medical records
 router.get("/medical-records/:id", patientController.getMedicalRecords);
+
 
 module.exports = router;

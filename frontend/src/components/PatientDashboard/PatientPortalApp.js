@@ -130,14 +130,14 @@ import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
 
 const PatientPortalApp = () => {
   const [selectedTab, setSelectedTab] = useState('home');
-  const patient = JSON.parse(localStorage.getItem('user'));
+  const patientId = localStorage.getItem('patientId');
 
   const renderContent = () => {
     switch (selectedTab) {
       case 'profile':
-        return <PatientProfile patientId={patient.patient_id || patient.id} />;
-        case 'insurance':
-          return <InsuranceDetails patientId={patient.patient_id || patient.id} />;
+        return <PatientProfile patientId={patientId} />;
+      case 'insurance':
+        return <InsuranceDetails patientId={patientId} />;
       default:
         return <h2>Welcome to your Patient Portal</h2>;
     }

@@ -4,6 +4,8 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const patientRoutes = require("./routes/patientRoutes");
+
+
 const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const adminRoutes = require("./routes/adminRoutes");

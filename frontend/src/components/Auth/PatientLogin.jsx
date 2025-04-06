@@ -28,9 +28,20 @@ const PatientLogin = () => {
       localStorage.setItem('user', JSON.stringify(user));
 
       // Redirect based on role
-      if (user.role === 'Patient') navigate('/patient/dashboard');
+      if (user.role === 'Patient') {
+        // Resolve patient_id using username
+        const resolveRes = await axios.get(`http://localhost:5000/api/patient/resolve-by-username/${username}`);
 
-    } catch (err) {
+        const patientId = resolveRes.data.patient_id;
+  
+        // Store patient_id for later use (e.g., in dashboard)
+        localStorage.setItem('patientId', patientId);
+  
+        // Navigate
+        navigate('/patient/dashboard');
+      }
+  
+    }  catch (err) {
       setErrorMsg(err.response?.data?.error || 'Login failed');
     }
   };

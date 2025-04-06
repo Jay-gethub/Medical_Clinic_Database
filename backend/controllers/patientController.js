@@ -43,7 +43,20 @@ exports.getProfile = (req, res) => {
     res.json(result[0]);
   });
 };
-
+exports.getPatientByUsername = (req, res) => {
+  const { username } = req.params;
+  const sql = `
+    SELECT p.patient_id
+    FROM PATIENTS p
+    JOIN USER_CREDENTIALS u ON p.user_id = u.user_id
+    WHERE u.username = ?
+  `;
+  db.query(sql, [username], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (result.length === 0) return res.status(404).json({ error: "Patient not found" });
+    res.json({ patient_id: result[0].patient_id });
+  });
+};
 
 // 2. Update patient profile
 exports.updateProfile = (req, res) => {
