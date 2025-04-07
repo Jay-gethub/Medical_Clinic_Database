@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const patientRoutes = require("./routes/patientRoutes");
-
+const appointmentRoutes = require("./routes/appointmentRoutes");
 
 const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
@@ -47,7 +47,7 @@ app.use("/api", authRoutes); // handles login, user & patient registration
 app.use("/api/admin", adminRoutes); // admin routes
 app.use("/api/employee", employeeRoutes); // employee routes
 app.use("/api/patient", patientRoutes); // patient routes
-
+app.use("/api/appointments", appointmentRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

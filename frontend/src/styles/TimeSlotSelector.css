@@ -1,0 +1,25 @@
+.slot-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .slot-item {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .slot-item:hover {
+    background-color: #e6f2ff;
+  }
+  
+  .slot-item.selected {
+    background-color: #cce5ff;
+    border-color: #007bff;
+    font-weight: bold;
+  }
+  

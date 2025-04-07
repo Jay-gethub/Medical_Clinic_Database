@@ -127,7 +127,7 @@ import '../../styles/PatientPortal.css';
 import logo from '../../assets/clinic-logo.png';
 import PatientProfile from '../PatientDashboard/PatientProfile';
 import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
-
+import Appointments from '../PatientDashboard/Appointments';
 const PatientPortalApp = () => {
   const [selectedTab, setSelectedTab] = useState('home');
   const patientId = localStorage.getItem('patientId');
@@ -140,6 +140,8 @@ const PatientPortalApp = () => {
         return <InsuranceDetails patientId={patientId} />;
       default:
         return <h2>Welcome to your Patient Portal</h2>;
+        case 'appointments':
+          return <Appointments patientId={patientId} />;
     }
   };
 

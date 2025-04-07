@@ -27,6 +27,15 @@ const authorizeReceptionist = (req, res, next) => {
   }
   next();
 };
+const authorizeRole = (roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Access denied. Insufficient role." });
+    }
+    next();
+  };
+};
 
-module.exports = { authenticateUser, authorizeReceptionist };
+
+module.exports = { authenticateUser, authorizeRole,authorizeReceptionist };
 
