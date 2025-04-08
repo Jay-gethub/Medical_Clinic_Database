@@ -6,6 +6,7 @@ import PatientRegister from './components/Auth/PatientRegister';
 import EmployeeLogin from './components/Auth/EmployeeLogin';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import PatientPortalApp from './components/PatientDashboard/PatientPortalApp';
+import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
           <Route path="/register" element={<PatientRegister />} />
           <Route path="/login/employee" element={<EmployeeLogin />} />
           <Route path="/patient/dashboard" element={<PatientPortalApp />} />
-      
+          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
         </Routes>
