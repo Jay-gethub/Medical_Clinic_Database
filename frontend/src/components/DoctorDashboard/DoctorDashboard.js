@@ -4,7 +4,7 @@ import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 //import { FaSignOutAlt } from 'react-icons/faSignOutAlt';
 // import CreateEmployeeForm from './CreateEmployeeForm';
-// import AdminProfile from './AdminProfile';
+import DoctorProfile from './DoctorProfile';
 // import EmployeeTable from './EmployeeTable';
 import ManageDocSchedules from './ManageDocSchedules';
 const DoctorDashboard = () => {
@@ -48,10 +48,8 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="admin-tab-content">
-          {/* { {activeTab === 'profile' } && <AdminProfile />}
-          {activeTab === 'create' && <CreateEmployeeForm />}
-          {activeTab === 'view' && <EmployeeTable />} */ }
-          {activeTab === 'schedules' && <ManageDocSchedules />} }
+          {activeTab === 'schedules' && <ManageDocSchedules />}
+          {activeTab === 'profile' && <DoctorProfile />}
 
         </div>
       </div>

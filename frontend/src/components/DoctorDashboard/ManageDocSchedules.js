@@ -1,5 +1,5 @@
 //      This file contains the code for the ManageDocSchedules component which is a child component of the AdminDashboard component.
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/AdminDashboard.css';
 
@@ -33,8 +33,17 @@ const ManageDocSchedules = () => {
     fetchClinics();
   }, []);
 
+  //fetch employee
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData) {
+      setSelectedEmployee(userData.employee_id);
+      fetchSchedules(userData.employee_id);
+    }
+  }, []);
 
-  const fetchEmployeesByClinic = async (clinicId) => {
+
+/*   const fetchEmployeesByClinic = async (clinicId) => {
     if (!clinicId) return;
     
     try {
@@ -53,7 +62,7 @@ const ManageDocSchedules = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }; */
 
   const fetchSchedules = async (employeeId) => {
     if (!employeeId) return;
@@ -79,7 +88,7 @@ const ManageDocSchedules = () => {
     setEmployees([]);
     setSchedules([]);
     if (clinicId) {
-      fetchEmployeesByClinic(clinicId);
+      fetchSchedules(clinicId);
     }
   };
 
@@ -162,60 +171,29 @@ const ManageDocSchedules = () => {
           </div>
   
           <div className="dropdown-field">
-            <label htmlFor="employee-select">Employee</label>
-            <select
-              id="employee-select"
-              value={selectedEmployee}
-              onChange={(e) => {
-                setSelectedEmployee(e.target.value);
-                if (e.target.value) {
-                  fetchSchedules(e.target.value);
-                } else {
-                  setSchedules([]);
-                }
-              }}
-              disabled={!selectedClinic || loading}
-            >
-              <option value="">Select Employee</option>
-              {employees.map(emp => (
-                <option key={emp.employee_id} value={emp.employee_id}>
-                  {emp.first_name} {emp.last_name} (ID: {emp.employee_id})
-                </option>
-              ))}
-            </select>
+            <label>Employee</label>
+            <p style ={{ color: 'white'}}>
+              ID: {selectedEmployee}, {JSON.parse(localStorage.getItem('user'))?.username}
+            </p>
           </div>
         </div>
   
         {/* Schedule Form */}
         <form className="schedule-form" onSubmit={handleSubmit}>
+          <label style={{color: 'white'}}>Day</label>
           <select
             name="day_of_week"
             value={form.day_of_week}
             onChange={(e) => setForm({ ...form, day_of_week: e.target.value })}
             required
-            disabled={loading}
-          >
+            disabled={loading}>
             <option value="">Select Day</option>
             {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map(day => (
               <option key={day} value={day}>{day}</option>
             ))}
           </select>
-          <input
-            type="time"
-            value={form.start_time}
-            onChange={(e) => setForm({ ...form, start_time: e.target.value })}
-            required
-            disabled={loading}
-          />
-          <input
-            type="time"
-            value={form.end_time}
-            onChange={(e) => setForm({ ...form, end_time: e.target.value })}
-            required
-            disabled={loading}
-          />
           <button type="submit" disabled={!selectedEmployee || loading}>
-            Create Schedule
+            Load Schedule
           </button>
         </form>
   
@@ -229,7 +207,7 @@ const ManageDocSchedules = () => {
                   <th>Day</th>
                   <th>Start</th>
                   <th>End</th>
-                  <th>Actions</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -238,11 +216,7 @@ const ManageDocSchedules = () => {
                     <td>{sch.day_of_week}</td>
                     <td>{sch.start_time}</td>
                     <td>{sch.end_time}</td>
-                    <td>
-                      <button onClick={() => handleEdit(sch)} disabled={loading}>
-                        Edit
-                      </button>
-                    </td>
+                  
                   </tr>
                 ))}
               </tbody>
