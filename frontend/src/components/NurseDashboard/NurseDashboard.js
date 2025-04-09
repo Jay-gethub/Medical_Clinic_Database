@@ -4,9 +4,12 @@ import '../../styles/NurseDashboard.css';
 import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import NurseProfile from './NurseProfile';
-import PatientCheckInList from './PatientCheckInList';
-import RecordVitalsForm from './RecordVitalsForm';
-import AppointmentsToday from './AppointmentsToday';
+import DiagnosticView from './DiagnosticView';
+import ReferralView from './ReferralView';
+import ImmunizationView from './ImmunizationView';
+import AppointmentView from './AppointmentView';
+import MedicalRecordsView from './MedicalRecordsView';
+
 
 const NurseDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -42,19 +45,23 @@ const NurseDashboard = () => {
       <div className="nurse-dashboard-content">
         <div className="tab-buttons">
         <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
-        <button onClick={() => setActiveTab('checkins')} className={activeTab === 'checkins' ? 'active' : ''}>Patient Check-Ins</button>
-        <button onClick={() => setActiveTab('vitals')} className={activeTab === 'vitals' ? 'active' : ''}>Record Vitals</button>
-        <button onClick={() => setActiveTab('appointments')} className={activeTab === 'appointments' ? 'active' : ''}>Appointments</button>
+        <button onClick={() => setActiveTab('diagnostics')} className={activeTab === 'diagnostics' ? 'active' : ''}>Diagnostics</button>
+        <button onClick={() => setActiveTab('referrals')} className={activeTab === 'referrals' ? 'active' : ''}>Referrals</button>
+        <button onClick={() => setActiveTab('immunizations')}className={activeTab === 'immunizations' ? 'active' : ''}>Immunizations</button>
+        <button onClick={() => setActiveTab('appointments')}className={activeTab === 'appointments' ? 'active' : ''}>Appointments</button>
+        <button onClick={() => setActiveTab('records')}className={activeTab === 'records' ? 'active' : ''}>Medical Records</button>
   
   Manage Schedules
 
         </div>
 
-        <div className="admin-tab-content">
+        <div className="nurse-tab-content">
     {activeTab === 'profile' && <NurseProfile />}
-    {activeTab === 'checkins' && <PatientCheckInList />}
-    {activeTab === 'vitals' && <RecordVitalsForm />}
-    {activeTab === 'appointments' && <AppointmentsToday />}
+    {activeTab === 'diagnostics' && <DiagnosticView />}
+    {activeTab === 'referrals' && <ReferralView />}
+    {activeTab === 'immunizations' && <ImmunizationView />}
+    {activeTab === 'appointments' && <AppointmentView />}
+    {activeTab === 'records' && <MedicalRecordsView />}
 
 
         </div>
