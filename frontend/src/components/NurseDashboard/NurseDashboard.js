@@ -1,6 +1,6 @@
 //NurseDashboard.js
 import React, { useState } from 'react';
-import '../../styles/NurseDashboard.css';
+import '../../styles/AdminDashboard.css';
 import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import NurseProfile from './NurseProfile';
@@ -22,7 +22,7 @@ const NurseDashboard = () => {
 
   return (
     <div
-      className="nurse-dashboard-page"
+      className="admin-dashboard-page"
       style={{
         backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
@@ -42,7 +42,7 @@ const NurseDashboard = () => {
         </ul>
       </nav>
 
-      <div className="nurse-dashboard-content">
+      <div className="admin-dashboard-content">
         <div className="tab-buttons">
         <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
         <button onClick={() => setActiveTab('diagnostics')} className={activeTab === 'diagnostics' ? 'active' : ''}>Diagnostics</button>
@@ -53,7 +53,7 @@ const NurseDashboard = () => {
 
         </div>
 
-        <div className="nurse-tab-content">
+        <div className="admin-tab-content">
     {activeTab === 'profile' && <NurseProfile />}
     {activeTab === 'diagnostics' && <DiagnosticView />}
     {activeTab === 'referrals' && <ReferralView />}
