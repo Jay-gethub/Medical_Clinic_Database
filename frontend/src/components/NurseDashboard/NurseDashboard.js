@@ -50,8 +50,6 @@ const NurseDashboard = () => {
         <button onClick={() => setActiveTab('immunizations')}className={activeTab === 'immunizations' ? 'active' : ''}>Immunizations</button>
         <button onClick={() => setActiveTab('appointments')}className={activeTab === 'appointments' ? 'active' : ''}>Appointments</button>
         <button onClick={() => setActiveTab('records')}className={activeTab === 'records' ? 'active' : ''}>Medical Records</button>
-  
-  Manage Schedules
 
         </div>
 
