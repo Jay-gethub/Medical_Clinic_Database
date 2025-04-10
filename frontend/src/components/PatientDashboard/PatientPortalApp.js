@@ -126,6 +126,7 @@ import React, { useState } from 'react';
 import '../../styles/PatientPortal.css';
 import logo from '../../assets/clinic-logo.png';
 import PatientProfile from '../PatientDashboard/PatientProfile';
+import ReferralPage from '../PatientDashboard/Referrals/ReferralPage';
 import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
 import Appointments from '../PatientDashboard/Appointments';
 const PatientPortalApp = () => {
@@ -138,6 +139,8 @@ const PatientPortalApp = () => {
         return <PatientProfile patientId={patientId} />;
       case 'insurance':
         return <InsuranceDetails patientId={patientId} />;
+      case 'referrals':
+        return <ReferralPage patientId={patientId} />;
       default:
         return <h2>Welcome to your Patient Portal</h2>;
         case 'appointments':

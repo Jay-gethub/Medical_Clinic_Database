@@ -41,5 +41,8 @@ router.get("/prescriptions/:id", patientController.getPrescriptions);
 // Get medical records
 router.get("/medical-records/:id", patientController.getMedicalRecords);
 
+// Get referrals
+router.get("/referrals/:id", patientController.getReferrals);
+
 
 module.exports = router;

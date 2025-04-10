@@ -273,3 +273,35 @@ exports.getMedicalRecords = (req, res) => {
   );
 };
 
+// 11. Get referrals
+exports.getReferrals = (req, res) => {
+  const { id } = req.params;
+  //console.log(`SELECT * FROM REFERRALS WHERE patient_id = ${id}`);
+  db.query(
+    `SELECT 
+       r.referral_id,
+       r.patient_id,
+       r.specialist_id,
+       r.department_id,
+       r.employee_id,
+       r.appointment_id,
+       r.referring_doctor_id,
+       CONCAT(e.first_name, ' ', e.last_name) AS referring_doctor_name,
+       r.referral_reason,
+       r.referral_date,
+       r.referral_status,
+       r.referral_notes,
+       r.expiration_date
+     FROM REFERRALS r
+     JOIN EMPLOYEES e ON r.referring_doctor_id = e.employee_id
+     WHERE r.patient_id = ?`,
+    [req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      console.log('✅ Query result:', result);
+      res.json(result);
+    }
+  );
+
+};
+
