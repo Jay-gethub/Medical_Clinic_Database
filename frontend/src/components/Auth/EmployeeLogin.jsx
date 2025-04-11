@@ -24,8 +24,15 @@ const EmployeeLogin = () => {
       const res = await axios.post('http://localhost:5000/api/login', { username, password });
 
       const { token, user } = res.data;
+
+      //console.log("Login response:", res.data);
+
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
+      // const employee_id = res.data.employee_id;
+      
+      //   // Store employee_id for later use
+      // localStorage.setItem('employeeId', employee_id);
 
       //Redirect based on role
       if (user.role === 'Admin') navigate('/admin/dashboard');

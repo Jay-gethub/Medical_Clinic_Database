@@ -7,6 +7,7 @@ import bgImage from '../../assets/Home.png';
 import DoctorProfile from './DoctorProfile';
 // import EmployeeTable from './EmployeeTable';
 import ManageDocSchedules from './ManageDocSchedules';
+import DoctorPatients from './DoctorPatients';
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
@@ -41,6 +42,7 @@ const DoctorDashboard = () => {
       <div className="admin-dashboard-content">
         <div className="tab-buttons">
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
+          <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Patients</button>
           <button onClick={() => setActiveTab('create')} className={activeTab === 'create' ? 'active' : ''}>Create Employee</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
@@ -49,6 +51,7 @@ const DoctorDashboard = () => {
 
         <div className="admin-tab-content">
           {activeTab === 'schedules' && <ManageDocSchedules />}
+          {activeTab === 'patients' && <DoctorPatients />}
           {activeTab === 'profile' && <DoctorProfile />}
 
         </div>
