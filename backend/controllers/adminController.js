@@ -195,7 +195,7 @@ exports.createEmployee = (req, res) => {
         };
 
         // Start username check and credentials insert
-        checkUsername();
+        return checkUsername();
       });
     });
   });
