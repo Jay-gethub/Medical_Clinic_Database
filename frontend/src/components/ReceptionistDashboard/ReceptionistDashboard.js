@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import '../../styles/AdminDashboard.css';
 import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
-//import { FaSignOutAlt } from 'react-icons/faSignOutAlt';
-// import CreateEmployeeForm from './CreateEmployeeForm';
-import DoctorProfile from './DoctorProfile';
-// import EmployeeTable from './EmployeeTable';
-import ManageDocSchedules from './ManageDocSchedules';
-import DoctorPatients from './DoctorPatients';
-const DoctorDashboard = () => {
+import ReceptionistProfile from './ReceptionistProfile';
+import ManageRecSchedules from './ManageRecSchedules';
+
+const ReceptionistDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
   const handleLogout = () => {
@@ -49,9 +46,8 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="admin-tab-content">
-          {activeTab === 'schedules' && <ManageDocSchedules />}
-          {activeTab === 'patients' && <DoctorPatients />}
-          {activeTab === 'profile' && <DoctorProfile />}
+          {activeTab === 'schedules' && <ManageRecSchedules />}
+          {activeTab === 'profile' && <ReceptionistProfile />}
 
         </div>
       </div>
@@ -59,4 +55,4 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard;
+export default ReceptionistDashboard;
