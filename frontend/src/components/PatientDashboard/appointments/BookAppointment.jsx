@@ -8,7 +8,7 @@ const BookAppointment = ({ patientId }) => {
   const [selectedClinic, setSelectedClinic] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   return (
     <div className="appointments-container">
       <h2>Book an Appointment</h2>
@@ -17,12 +17,18 @@ const BookAppointment = ({ patientId }) => {
         setSelectedClinic(id);
         setSelectedDoctor(null);
         setSelectedTime(null);
+        setBookingSuccess(false);
       }} />
+  
       {selectedClinic && (
         <DoctorSelector
-          clinicId={selectedClinic}
-          onDoctorSelect={setSelectedDoctor}
-        />
+        clinicId={selectedClinic}
+        onDoctorSelect={(id) => {
+          setSelectedDoctor(id);
+          setSelectedTime(null);
+          setBookingSuccess(false); //
+        }}
+      />
       )}
 
 {selectedDoctor && (
@@ -31,6 +37,7 @@ const BookAppointment = ({ patientId }) => {
     onTimeSelect={(slot) => {
       console.log(" Selected time:", slot); //Check
       setSelectedTime(slot);
+      setBookingSuccess(false); 
     }}
   />
 )}
@@ -38,17 +45,24 @@ const BookAppointment = ({ patientId }) => {
       
 
       {selectedDoctor && selectedTime && (
-      <ReferralCheck
-      patientId={patientId}
-      doctorId={selectedDoctor}
-      clinicId={selectedClinic}
-      time={selectedTime}
-    />
+        <ReferralCheck
+        patientId={patientId}
+        doctorId={selectedDoctor}
+        clinicId={selectedClinic}
+        time={selectedTime}
+        onBookingSuccess={() => setBookingSuccess(true)}  //
+      />
     
       
       )}
+      {bookingSuccess && (
+  <div className="booking-success-msg">
+   {/* ✅ Appointment booked successfully! */}
+  </div>
+)}
+
     </div>
   );
 };
 
-export default BookAppointment;
+export default BookAppointment

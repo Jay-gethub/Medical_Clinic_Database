@@ -72,22 +72,44 @@ const ViewAppointments = ({ patientId }) => {
       appt.appointment_status !== 'Scheduled' ||
       new Date(appt.start_time) <= new Date()
   );
-
-  const formatDateTime = (dateStr) => {
-    const date = new Date(dateStr);
+  const formatDateTime = (startStr, endStr) => {
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+  
     return {
-      date: date.toLocaleDateString('en-US', {
+      date: start.toLocaleDateString('en-US', {
         weekday: 'short',
         month: 'short',
         day: 'numeric',
         year: 'numeric',
       }),
-      time: date.toLocaleTimeString('en-US', {
+      timeRange: `${start.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-      }),
+      })} - ${end.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })}`,
     };
   };
+  
+  
+
+  // const formatDateTime = (dateStr) => {
+  //   const date = new Date(dateStr);
+  //   return {
+  //     date: date.toLocaleDateString('en-US', {
+  //       weekday: 'short',
+  //       month: 'short',
+  //       day: 'numeric',
+  //       year: 'numeric',
+  //     }),
+  //     time: date.toLocaleTimeString('en-US', {
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //     }),
+  //   };
+  // };
 
   return (
     <div className="view-appointments">
@@ -110,7 +132,7 @@ const ViewAppointments = ({ patientId }) => {
           <p className="no-appointments">You don't have any upcoming appointments.</p>
         ) : (
           upcomingAppointments.map((appt) => {
-            const { date, time } = formatDateTime(appt.start_time);
+            const { date, timeRange } = formatDateTime(appt.start_time, appt.end_time);
             return (
               <div key={appt.appointment_id} className="appointment-card">
                 <div className="appointment-header">
@@ -123,7 +145,7 @@ const ViewAppointments = ({ patientId }) => {
                   </div>
                   <div className="appointment-time">
                     <div>📅 {date}</div>
-                    <div>🕒 {time}</div>
+                    <div>🕒 {timeRange}</div>
                   </div>
                 </div>
                 <div className="appointment-footer">
@@ -147,7 +169,8 @@ const ViewAppointments = ({ patientId }) => {
           <p className="no-appointments">You don't have any past appointments.</p>
         ) : (
           pastAppointments.map((appt) => {
-            const { date, time } = formatDateTime(appt.start_time);
+            const { date, timeRange } = formatDateTime(appt.start_time, appt.end_time);
+
             return (
               <div key={appt.appointment_id} className="appointment-card">
                 <div className="appointment-header">
@@ -160,7 +183,7 @@ const ViewAppointments = ({ patientId }) => {
                   </div>
                   <div className="appointment-time">
                     <div>📅 {date}</div>
-                    <div>🕒 {time}</div>
+                    <div>🕒 {timeRange}</div>
                   </div>
                 </div>
               </div>

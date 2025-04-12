@@ -1,83 +1,11 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-
-// const DoctorSelector = ({ clinicId, onDoctorSelect }) => {
-//   const [doctors, setDoctors] = useState([]);
-//   const [filtered, setFiltered] = useState([]);
-//   const [gender, setGender] = useState('');
-//   const [department, setDepartment] = useState('');
-
-//   useEffect(() => {
-//     const fetchDoctors = async () => {
-//         try {
-//             const res = await axios.get(`http://localhost:5000/api/appointments/doctors/by-clinic/${clinicId}`, {
-//                 headers: {
-//                   Authorization: `Bearer ${localStorage.getItem("token")}`,
-//                 }
-//               });
-//           console.log("Fetched doctors:", res.data);  
-//           setDoctors(res.data);
-//           setFiltered(res.data);
-//         } catch (err) {
-//           console.error('Failed to fetch doctors:', err);
-//         }
-//       };
-      
-   
-
-//     if (clinicId) fetchDoctors();
-//   }, [clinicId]);
-
-//   const handleFilter = () => {
-//     let result = [...doctors];
-//     if (gender) result = result.filter(doc => doc.sex === gender);
-//     if (department) result = result.filter(doc => doc.department_name === department);
-//     setFiltered(result);
-//   };
-
-//   useEffect(() => {
-//     handleFilter();
-//   }, [gender, department]);
-
-//   return (
-//     <div className="doctor-selector">
-//       <h4>Choose a Doctor</h4>
-
-//       <div className="filters">
-//         <select value={gender} onChange={(e) => setGender(e.target.value)}>
-//           <option value="">All Genders</option>
-//           <option value="male">Male</option>
-//           <option value="female">Female</option>
-//         </select>
-
-//         <select value={department} onChange={(e) => setDepartment(e.target.value)}>
-//           <option value="">All Departments</option>
-//           {[...new Set(doctors.map(d => d.department_name))].map(dep => (
-//             <option key={dep} value={dep}>{dep}</option>
-//           ))}
-//         </select>
-//       </div>
-
-//       <ul className="doctor-list">
-//         {filtered.map(doc => (
-//           <li key={doc.employee_id} onClick={() => onDoctorSelect(doc.employee_id)}
-//         >
-//             <strong>{doc.first_name} {doc.last_name}</strong> — {doc.specialization || 'General'} ({doc.department_name})
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default DoctorSelector;
+// DoctorSelector.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const DoctorSelector = ({ clinicId, onDoctorSelect }) => {
   const [doctors, setDoctors] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [selectedDoctorId, setSelectedDoctorId] = useState(null); // ✅ Track selected doctor
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null); // Track selected doctor
   const [gender, setGender] = useState('');
   const [department, setDepartment] = useState('');
 
@@ -95,7 +23,7 @@ const DoctorSelector = ({ clinicId, onDoctorSelect }) => {
         console.log('Fetched doctors:', res.data);
         setDoctors(res.data);
         setFiltered(res.data);
-        setSelectedDoctorId(null); // ✅ Reset selected doctor on clinic change
+        setSelectedDoctorId(null);   
       } catch (err) {
         console.error('Failed to fetch doctors:', err);
       }
