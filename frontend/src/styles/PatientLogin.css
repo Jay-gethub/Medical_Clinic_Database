@@ -1,12 +1,4 @@
-/* .login-container {
-    background: url('../../assets/healthcare-bg.jpg') no-repeat center center fixed;
-    background-size: cover;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-   */
+
    .login-container {
     background: linear-gradient(rgba(56, 132, 209, 0.301), rgba(11, 91, 172, 0.8));
     background-size: cover;
@@ -74,5 +66,54 @@
   .error-msg {
     color: red;
     font-size: 0.9rem;
+  }
+  /* Apply the same consistent input style to both inputs */
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* space for the icon */
+    box-sizing: border-box;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
+  }
+  
+
+  
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px; /* space for the icon */
+    box-sizing: border-box;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 18px;
   }
   

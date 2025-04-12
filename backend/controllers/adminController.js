@@ -1,5 +1,13 @@
 const db = require("../config/db");
-
+function generatePassword(length = 8) {
+  const charset = "abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ23456789";
+  let password = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset.charAt(randomIndex);
+  }
+  return password;
+}
 // Get all clinics
 exports.getClinics = (req, res) => {
   const db = req.app.get("db");
@@ -50,112 +58,357 @@ exports.getEmployeesByClinic = (req, res) => {
   );
 };
 // Add new employee
+// exports.createEmployee = (req, res) => {
+//   const db = req.app.get("db");
+//   db.beginTransaction((err) => {
+//   const {
+//     first_name, last_name, middle_name, address, email, phone,
+//     sex, dob, education, role, specialization, clinic_id,
+//     department_id, hire_date, license_number 
+//   } = req.body;
+  
+
+//   const normalizedRole = role === "1" ? "Doctor"
+//                       : role === "2" ? "Nurse"
+//                       : role === "3" ? "Receptionist"
+//                       : role === "4" ? "Database Admin"
+//                       : role;
+
+//   const insertAddressQuery = `
+//     INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state)
+//     VALUES (?, ?, ?, ?, ?)
+//   `;
+
+//   db.query(insertAddressQuery, [
+//     address.street_num,
+//     address.street_name,
+//     address.postal_code,
+//     address.city,
+//     address.state
+//   ], (addressErr, addressResult) => {
+//     if (addressErr) {
+//       console.error("Address insert error:", addressErr);
+//       return res.status(500).json({ error: "Failed to insert address" });
+//     }
+
+//     const addressId = addressResult.insertId;
+
+//     const insertEmployeeQuery = `
+//       INSERT INTO EMPLOYEES 
+//       (first_name, last_name, middle_name, address_id, email, phone, sex,
+//       date_of_birth, education, role, specialization, clinic_id, department_id, date_hired)
+//       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+//     db.query(insertEmployeeQuery, [
+//       first_name, last_name, middle_name || null,
+//       addressId, email, phone, sex, dob,
+//       education || null, normalizedRole,
+//       specialization || null, clinic_id,
+//       department_id || null, hire_date
+//     ], (employeeErr, employeeResult) => {
+//       if (employeeErr) {
+//         console.error("Employee insert error:", employeeErr);
+//         return res.status(500).json({ error: "Failed to create employee" });
+//       }
+
+//       const employeeId = employeeResult.insertId;
+      
+
+//       // Role-based insertion
+//       if (normalizedRole === "Doctor") {
+//         const doctorQuery = `
+//   INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, license_number)
+//   VALUES (?, ?, ?, ?, ?)`;
+// db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, license_number], (err) => {
+//           if (err) {
+//             console.error("DOCTORS insert error:", err);
+//             return res.status(500).json({ error: "Failed to insert into DOCTORS" });
+//           }
+//           return res.status(200).json({ message: "Doctor added successfully!" });
+//         });
+//       } else if (normalizedRole === "Nurse") {
+//         const nurseQuery = `
+//         INSERT INTO NURSES (employee_id, clinic_id, department_id, license_number)
+//         VALUES (?, ?, ?, ?)`;
+//       db.query(nurseQuery, [employeeId, clinic_id, department_id, normalizedRole, license_number], (err) => {
+//           if (err) {
+//             console.error("NURSES insert error:", err);
+//             return res.status(500).json({ error: "Failed to insert into NURSES" });
+//           }
+//           return res.status(200).json({ message: "Nurse added successfully!" });
+//         });
+//       } else if (normalizedRole === "Receptionist") {
+//         const recQuery = `
+//           INSERT INTO RECEPTIONIST (employee_id, clinic_id, phone, email)
+//           VALUES (?, ?, ?, ?)`;
+//         db.query(recQuery, [employeeId, clinic_id, phone, email], (err) => {
+//           if (err) {
+//             console.error("RECEPTIONIST insert error:", err);
+//             return res.status(500).json({ error: "Failed to insert into RECEPTIONIST" });
+//           }
+//           return res.status(200).json({ message: "Receptionist added successfully!" });
+//         });
+//       } else if (normalizedRole === "Database Admin") {
+//         const dbAdminQuery = `
+//           INSERT INTO DATABASE_MANAGER (employee_id, last_login)
+//           VALUES (?, NOW())`;
+//         db.query(dbAdminQuery, [employeeId], (err) => {
+//           if (err) {
+//             console.error("DATABASE_MANAGER insert error:", err);
+//             return res.status(500).json({ error: "Failed to insert into DATABASE_MANAGER" });
+//           }
+//           return res.status(200).json({ message: "Database Admin added successfully!" });
+//         });
+//       } else {
+//         return res.status(200).json({ message: "Employee created successfully!" });
+//       }
+//     });
+// });
+// });
+// };
 exports.createEmployee = (req, res) => {
   const db = req.app.get("db");
   db.beginTransaction((err) => {
-  const {
-    first_name, last_name, middle_name, address, email, phone,
-    sex, dob, education, role, specialization, clinic_id,
-    department_id, hire_date, license_number 
-  } = req.body;
-  
-
-  const normalizedRole = role === "1" ? "Doctor"
-                      : role === "2" ? "Nurse"
-                      : role === "3" ? "Receptionist"
-                      : role === "4" ? "Database Admin"
-                      : role;
-
-  const insertAddressQuery = `
-    INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state)
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
-  db.query(insertAddressQuery, [
-    address.street_num,
-    address.street_name,
-    address.postal_code,
-    address.city,
-    address.state
-  ], (addressErr, addressResult) => {
-    if (addressErr) {
-      console.error("Address insert error:", addressErr);
-      return res.status(500).json({ error: "Failed to insert address" });
+    if (err) {
+      console.error("Transaction begin error:", err);
+      return res.status(500).json({ error: "Failed to start transaction" });
     }
 
-    const addressId = addressResult.insertId;
+    const {
+      first_name, last_name, middle_name, address, email, phone,
+      sex, dob, education, role, specialization, clinic_id,
+      department_id, hire_date, license_number 
+    } = req.body;
+    
+    const normalizedRole = role === "1" ? "Doctor"
+                        : role === "2" ? "Nurse"
+                        : role === "3" ? "Receptionist"
+                        : role === "4" ? "Database Admin"
+                        : role;
 
-    const insertEmployeeQuery = `
-      INSERT INTO EMPLOYEES 
-      (first_name, last_name, middle_name, address_id, email, phone, sex,
-      date_of_birth, education, role, specialization, clinic_id, department_id, date_hired)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const insertAddressQuery = `
+      INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state)
+      VALUES (?, ?, ?, ?, ?)
+    `;
 
-    db.query(insertEmployeeQuery, [
-      first_name, last_name, middle_name || null,
-      addressId, email, phone, sex, dob,
-      education || null, normalizedRole,
-      specialization || null, clinic_id,
-      department_id || null, hire_date
-    ], (employeeErr, employeeResult) => {
-      if (employeeErr) {
-        console.error("Employee insert error:", employeeErr);
-        return res.status(500).json({ error: "Failed to create employee" });
+    db.query(insertAddressQuery, [
+      address.street_num,
+      address.street_name,
+      address.postal_code,
+      address.city,
+      address.state
+    ], (addressErr, addressResult) => {
+      if (addressErr) {
+        console.error("Address insert error:", addressErr);
+        db.rollback((rollbackErr) => {
+          if (rollbackErr) {
+            console.error("Rollback error:", rollbackErr);
+          }
+          return res.status(500).json({ error: "Failed to insert address" });
+        });
+        return;
       }
 
-      const employeeId = employeeResult.insertId;
+      const addressId = addressResult.insertId;
 
-      // Role-based insertion
-      if (normalizedRole === "Doctor") {
-        const doctorQuery = `
-  INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, license_number)
-  VALUES (?, ?, ?, ?, ?)`;
-db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, license_number], (err) => {
-          if (err) {
-            console.error("DOCTORS insert error:", err);
-            return res.status(500).json({ error: "Failed to insert into DOCTORS" });
+      const insertEmployeeQuery = `
+        INSERT INTO EMPLOYEES 
+        (first_name, last_name, middle_name, address_id, email, phone, sex,
+        date_of_birth, education, role, specialization, clinic_id, department_id, date_hired)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+      db.query(insertEmployeeQuery, [
+        first_name, last_name, middle_name || null,
+        addressId, email, phone, sex, dob,
+        education || null, normalizedRole,
+        specialization || null, clinic_id,
+        department_id || null, hire_date
+      ], (employeeErr, employeeResult) => {
+        if (employeeErr) {
+          console.error("Employee insert error:", employeeErr);
+          db.rollback((rollbackErr) => {
+            if (rollbackErr) {
+              console.error("Rollback error:", rollbackErr);
+            }
+            return res.status(500).json({ error: "Failed to create employee" });
+          });
+          return;
+        }
+
+        const employeeId = employeeResult.insertId;
+        const generatedUsername = `${first_name.toLowerCase()}.${last_name.toLowerCase()}${employeeId}`;
+        const generatedPassword = generatePassword(8);
+        const userRole = normalizedRole;
+
+        const insertCredentialQuery = `
+          INSERT INTO USER_CREDENTIALS (employee_id, username, password, role, is_active)
+          VALUES (?, ?, ?, ?, 1)
+        `;
+
+        db.query(insertCredentialQuery, [employeeId, generatedUsername, generatedPassword, userRole], (credErr) => {
+          if (credErr) {
+            console.error("USER_CREDENTIALS insert error:", credErr);
+            db.rollback((rollbackErr) => {
+              if (rollbackErr) {
+                console.error("Rollback error:", rollbackErr);
+              }
+              return res.status(500).json({ error: "Failed to create login credentials" });
+            });
+            return;
           }
-          return res.status(200).json({ message: "Doctor added successfully!" });
-        });
-      } else if (normalizedRole === "Nurse") {
-        const nurseQuery = `
-        INSERT INTO NURSES (employee_id, clinic_id, department_id, license_number)
-        VALUES (?, ?, ?, ?)`;
-      db.query(nurseQuery, [employeeId, clinic_id, department_id, normalizedRole, license_number], (err) => {
-          if (err) {
-            console.error("NURSES insert error:", err);
-            return res.status(500).json({ error: "Failed to insert into NURSES" });
+
+          const responsePayload = {
+            message: `${userRole} added successfully!`,
+            credentials: {
+              username: generatedUsername,
+              password: generatedPassword
+            }
+          };
+
+          if (normalizedRole === "Doctor") {
+            const doctorQuery = `
+              INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, license_number)
+              VALUES (?, ?, ?, ?, ?)
+            `;
+            db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, license_number], (err) => {
+              if (err) {
+                console.error("DOCTORS insert error:", err);
+                db.rollback((rollbackErr) => {
+                  if (rollbackErr) {
+                    console.error("Rollback error:", rollbackErr);
+                  }
+                  return res.status(500).json({ error: "Failed to insert into DOCTORS" });
+                });
+                return;
+              }
+              
+              db.commit((commitErr) => {
+                if (commitErr) {
+                  console.error("Commit error:", commitErr);
+                  db.rollback((rollbackErr) => {
+                    if (rollbackErr) {
+                      console.error("Rollback error:", rollbackErr);
+                    }
+                    return res.status(500).json({ error: "Failed to commit transaction" });
+                  });
+                  return;
+                }
+                return res.status(200).json(responsePayload);
+              });
+            });
+          } else if (normalizedRole === "Nurse") {
+            const nurseQuery = `
+              INSERT INTO NURSES (employee_id, clinic_id, department_id, license_number)
+              VALUES (?, ?, ?, ?)
+            `;
+            db.query(nurseQuery, [employeeId, clinic_id, department_id, license_number], (err) => {
+              if (err) {
+                console.error("NURSES insert error:", err);
+                db.rollback((rollbackErr) => {
+                  if (rollbackErr) {
+                    console.error("Rollback error:", rollbackErr);
+                  }
+                  return res.status(500).json({ error: "Failed to insert into NURSES" });
+                });
+                return;
+              }
+              
+              db.commit((commitErr) => {
+                if (commitErr) {
+                  console.error("Commit error:", commitErr);
+                  db.rollback((rollbackErr) => {
+                    if (rollbackErr) {
+                      console.error("Rollback error:", rollbackErr);
+                    }
+                    return res.status(500).json({ error: "Failed to commit transaction" });
+                  });
+                  return;
+                }
+                return res.status(200).json(responsePayload);
+              });
+            });
+          } else if (normalizedRole === "Receptionist") {
+            const recQuery = `
+              INSERT INTO RECEPTIONIST (employee_id, clinic_id, phone, email)
+              VALUES (?, ?, ?, ?)
+            `;
+            db.query(recQuery, [employeeId, clinic_id, phone, email], (err) => {
+              if (err) {
+                console.error("RECEPTIONIST insert error:", err);
+                db.rollback((rollbackErr) => {
+                  if (rollbackErr) {
+                    console.error("Rollback error:", rollbackErr);
+                  }
+                  return res.status(500).json({ error: "Failed to insert into RECEPTIONIST" });
+                });
+                return;
+              }
+              
+              db.commit((commitErr) => {
+                if (commitErr) {
+                  console.error("Commit error:", commitErr);
+                  db.rollback((rollbackErr) => {
+                    if (rollbackErr) {
+                      console.error("Rollback error:", rollbackErr);
+                    }
+                    return res.status(500).json({ error: "Failed to commit transaction" });
+                  });
+                  return;
+                }
+                return res.status(200).json(responsePayload);
+              });
+            });
+          } else if (normalizedRole === "Database Admin") {
+            const dbAdminQuery = `
+              INSERT INTO DATABASE_MANAGER (employee_id, last_login)
+              VALUES (?, NOW())
+            `;
+            db.query(dbAdminQuery, [employeeId], (err) => {
+              if (err) {
+                console.error("DATABASE_MANAGER insert error:", err);
+                db.rollback((rollbackErr) => {
+                  if (rollbackErr) {
+                    console.error("Rollback error:", rollbackErr);
+                  }
+                  return res.status(500).json({ error: "Failed to insert into DATABASE_MANAGER" });
+                });
+                return;
+              }
+              
+              db.commit((commitErr) => {
+                if (commitErr) {
+                  console.error("Commit error:", commitErr);
+                  db.rollback((rollbackErr) => {
+                    if (rollbackErr) {
+                      console.error("Rollback error:", rollbackErr);
+                    }
+                    return res.status(500).json({ error: "Failed to commit transaction" });
+                  });
+                  return;
+                }
+                return res.status(200).json(responsePayload);
+              });
+            });
+          } else {
+            // For any other role that doesn't need specific table insertion
+            db.commit((commitErr) => {
+              if (commitErr) {
+                console.error("Commit error:", commitErr);
+                db.rollback((rollbackErr) => {
+                  if (rollbackErr) {
+                    console.error("Rollback error:", rollbackErr);
+                  }
+                  return res.status(500).json({ error: "Failed to commit transaction" });
+                });
+                return;
+              }
+              return res.status(200).json(responsePayload);
+            });
           }
-          return res.status(200).json({ message: "Nurse added successfully!" });
         });
-      } else if (normalizedRole === "Receptionist") {
-        const recQuery = `
-          INSERT INTO RECEPTIONIST (employee_id, clinic_id, phone, email)
-          VALUES (?, ?, ?, ?)`;
-        db.query(recQuery, [employeeId, clinic_id, phone, email], (err) => {
-          if (err) {
-            console.error("RECEPTIONIST insert error:", err);
-            return res.status(500).json({ error: "Failed to insert into RECEPTIONIST" });
-          }
-          return res.status(200).json({ message: "Receptionist added successfully!" });
-        });
-      } else if (normalizedRole === "Database Admin") {
-        const dbAdminQuery = `
-          INSERT INTO DATABASE_MANAGER (employee_id, last_login)
-          VALUES (?, NOW())`;
-        db.query(dbAdminQuery, [employeeId], (err) => {
-          if (err) {
-            console.error("DATABASE_MANAGER insert error:", err);
-            return res.status(500).json({ error: "Failed to insert into DATABASE_MANAGER" });
-          }
-          return res.status(200).json({ message: "Database Admin added successfully!" });
-        });
-      } else {
-        return res.status(200).json({ message: "Employee created successfully!" });
-      }
+      });
     });
   });
-});
 };
 // View schedule by employee ID
 exports.getSchedulesByEmployeeId = (req, res) => {

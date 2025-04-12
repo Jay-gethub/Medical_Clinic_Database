@@ -4,12 +4,17 @@ import '../../styles/PatientLogin.css';
 import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const EmployeeLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,18 +75,46 @@ const EmployeeLogin = () => {
           <img src={logo} alt="Clinic Logo" className="login-logo" />
           <h2>Employee Login</h2>
           <form onSubmit={handleSubmit}>
-            <input
+            {/* <input
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
+            /> */}
+            {/* <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />
+            /> */}
+           
+<input
+  type="text"
+  placeholder="Username"
+  value={username}
+  onChange={(e) => setUsername(e.target.value)}
+  className="input-field"
+/>
+
+<div className="password-wrapper">
+  <input
+    type={showPassword ? 'text' : 'password'}
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="input-field"
+  />
+ 
+  <span
+  className="eye-icon"
+  onClick={() => setShowPassword(!showPassword)}
+>
+  {showPassword ? <FaEye /> : <FaEyeSlash />}
+</span>
+
+   
+</div>
+
             {errorMsg && <p className="error-msg">{errorMsg}</p>}
             <button type="submit">Login</button>
           </form>
