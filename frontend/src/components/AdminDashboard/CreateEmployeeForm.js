@@ -184,6 +184,7 @@ class CreateEmployeeForm extends React.Component {
       this.setState({ errorMsg: 'Error creating employee.', successMsg: '' });
     }
   };
+  
 
   render() {
     const { employeeData, errors, clinics, departments, states, successMsg, errorMsg } = this.state;
@@ -295,7 +296,7 @@ class CreateEmployeeForm extends React.Component {
   </>
 )}
 
-{errors.license_number && <div className="error-message">{errors.license_number}</div>}
+{/* {errors.license_number && <div className="error-message">{errors.license_number}</div>} */}
 
 
         <select name="clinic_id" value={employeeData.clinic_id} onChange={this.handleChange} className={errors.clinic_id ? 'input-error' : ''}>

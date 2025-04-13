@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Receipt</title>
+  <style>
+    body { font-family: Arial; padding: 40px; color: #333; }
+    .header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 2px solid #0077b6; padding-bottom: 10px; }
+    .header h1 { color: #0077b6; font-size: 24px; }
+    .info p, .summary p { margin: 4px 0; font-size: 16px; }
+    .summary { margin-top: 30px; }
+    .thank-you { margin-top: 40px; font-size: 14px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Payment Receipt</h1>
+    <div>
+      <p><strong>Date:</strong> {{payment_date}}</p>
+      <p><strong>Receipt #:</strong> {{payment_id}}</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <p><strong>Patient:</strong> {{patient_name}}</p>
+    <p><strong>Doctor:</strong> {{doctor_name}}</p>
+    <p><strong>Department:</strong> {{department_name}}</p>
+    <p><strong>Billing ID:</strong> {{billing_id}}</p>
+  </div>
+
+  <div class="summary">
+    <p><strong>Amount Paid:</strong> ${{amount_paid}}</p>
+    <p><strong>Payment Method:</strong> {{payment_method}}</p>
+    <p><strong>Remaining Balance:</strong> ${{balance}}</p>
+  </div>
+
+  <div class="thank-you">
+    Thank you for your payment. If you have any questions, please contact our billing department.
+  </div>
+</body>
+</html>

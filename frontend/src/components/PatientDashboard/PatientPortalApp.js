@@ -129,6 +129,9 @@ import PatientProfile from '../PatientDashboard/PatientProfile';
 import ReferralPage from '../PatientDashboard/Referrals/ReferralPage';
 import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
 import Appointments from '../PatientDashboard/Appointments';
+import BillingPage from '../PatientDashboard/Billing/BillingPage';
+
+
 const PatientPortalApp = () => {
   const [selectedTab, setSelectedTab] = useState('home');
   const patientId = localStorage.getItem('patientId');
@@ -145,6 +148,9 @@ const PatientPortalApp = () => {
         return <h2>Welcome to your Patient Portal</h2>;
         case 'appointments':
           return <Appointments patientId={patientId} />;
+          case 'billing':
+            return <BillingPage patientId={patientId} />;
+          
     }
   };
 
@@ -163,6 +169,9 @@ const PatientPortalApp = () => {
           <li className={selectedTab === 'appointments' ? 'active' : ''} onClick={() => setSelectedTab('appointments')}>Appointments</li>
           <li className={selectedTab === 'referrals' ? 'active' : ''} onClick={() => setSelectedTab('referrals')}>Referrals</li>
           <li className={selectedTab === 'insurance' ? 'active' : ''} onClick={() => setSelectedTab('insurance')}>Insurance Details</li>
+          <li className={selectedTab === 'billing' ? 'active' : ''} onClick={() => setSelectedTab('billing')}>
+  Billing
+</li>
         </ul>
       </aside>
 

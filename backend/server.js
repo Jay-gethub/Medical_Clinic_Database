@@ -10,6 +10,9 @@ const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const mysql = require("mysql2");
+const billingRoutes = require('./routes/billingRoutes');
+
+const paymentRoutes = require('./routes/paymentRoutes');
 
 dotenv.config();
 const app = express();
@@ -48,6 +51,13 @@ app.use("/api/admin", adminRoutes); // admin routes
 app.use("/api/employee", employeeRoutes); // employee routes
 app.use("/api/patient", patientRoutes); // patient routes
 app.use("/api/appointments", appointmentRoutes);
+
+
+app.use('/api/billing', billingRoutes);   // api/billing/
+app.use('/api/payments', paymentRoutes);  // api/payments
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 5000;
