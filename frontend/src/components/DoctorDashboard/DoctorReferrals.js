@@ -53,7 +53,6 @@ const DoctorReferralForm = () => {
       await axios.post('http://localhost:5000/api/employee/create-referrals', {
         patient_id: formData.patient_id,
         referring_doctor_id: doctorId,
-        employee_id: doctorId,
         referral_reason: formData.referralReason,
         referral_date: formData.referralDate,
         referral_notes: formData.extraNotes,
