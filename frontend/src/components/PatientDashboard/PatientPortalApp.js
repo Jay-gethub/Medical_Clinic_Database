@@ -6,6 +6,7 @@ import ReferralPage from '../PatientDashboard/Referrals/ReferralPage';
 import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
 import Appointments from '../PatientDashboard/Appointments';
 import Immunizations from '../PatientDashboard/Immunizations';
+import MedicalRecords from '../PatientDashboard/MedicalRecords';
 
 const PatientPortalApp = () => {
   const [selectedTab, setSelectedTab] = useState('home');
@@ -33,12 +34,7 @@ const PatientPortalApp = () => {
           </div>
         );
       case 'medical-records':
-        return (
-          <div>
-            <h2>Medical Records</h2>
-            <p>Medical Records functionality is coming soon!</p>
-          </div>
-        );
+        return <MedicalRecords patientId={patientId} />;
       default:
         return <h2>Welcome to your Patient Portal</h2>;
     }
