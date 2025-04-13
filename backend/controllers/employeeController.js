@@ -22,7 +22,8 @@ exports.getProfile = (req, res) => {
     }
   );}; */
 
-  // 3.get assigned patients
+  // 3.
+  // controller/doctorController.js
 exports.getAssignedPatients = (req, res) => {
   const doctorId = req.params.id;
 
@@ -60,95 +61,3 @@ exports.getAssignedPatients = (req, res) => {
   });
 };
  
-//4. create a referral
-exports.createReferral = (req, res) => {
-  const {
-    patient_id,
-    referring_doctor_id,
-    employee_id,
-    appointment_id,// ******need to add later, appointment must either be made at the same time or before referral **********
-    referral_reason,
-    referral_date,
-    referral_notes,
-    expiration_date,
-    specialist_id
-  } = req.body;
-
-  // Step 1: Get department_id from EMPLOYEES table
-  db.query(
-    'SELECT department_id FROM EMPLOYEES WHERE employee_id = ?',
-    [referring_doctor_id],
-    (err, deptResult) => {
-      if (err) {
-        console.error('Error fetching department_id:', err);
-        return res.status(500).json({ error: 'Database error.' });
-      }
-
-      if (!deptResult.length) {
-        return res.status(400).json({ error: 'Doctor not found or has no department.' });
-      }
-
-      const department_id = deptResult[0].department_id;
-
-      // Step 2: Insert into REFERRALS table
-      db.query(
-        `INSERT INTO REFERRALS (
-          patient_id,
-          referring_doctor_id,
-          employee_id,
-          appointment_id,
-          referral_reason,
-          referral_date,
-          referral_notes,
-          expiration_date,
-          specialist_id,
-          department_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          patient_id,
-          referring_doctor_id,
-          employee_id,
-          referral_reason,
-          referral_date,
-          referral_notes,
-          expiration_date,
-          specialist_id,
-          department_id
-        ],
-        (err, result) => {
-          if (err) {
-            console.error('Error inserting referral:', err);
-            return res.status(500).json({ error: 'Failed to create referral.' });
-          }
-
-          res.status(201).json({ message: 'Referral created successfully.' });
-        }
-      );
-    }
-  );
-};
-
-//5. get all doctors
-exports.getAllDoctors = (req, res) => {
-  db.query(
-    `SELECT employee_id, first_name, last_name FROM EMPLOYEES WHERE role = 'Doctor'`,
-    (err, results) => {
-      if (err) {
-        console.error('Database error:', err); // helpful log
-        return res.status(500).json({ error: 'Failed to fetch doctors.' });
-      }
-      res.json(results);
-    }
-  );
-};
-
-//6. get all patients
-exports.getAllPatients = (req, res) => {
-  db.query(
-    'SELECT patient_id, first_name, last_name FROM PATIENTS',
-    (err, results) => {
-      if (err) return res.status(500).json({ error: 'Failed to fetch patients.' });
-      res.json(results);
-    }
-  );
-};
