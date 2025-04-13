@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const ReferralCheck = ({ patientId, doctorId, time, clinicId,onBookingSuccess}) => {
+const ReferralCheck = ({ patientId, doctorId, time, clinicId }) => {
   const [requiresReferral, setRequiresReferral] = useState(false);
   const [hasReferral, setHasReferral] = useState(null);
   const [appointmentType, setAppointmentType] = useState('General');
@@ -87,8 +87,7 @@ const ReferralCheck = ({ patientId, doctorId, time, clinicId,onBookingSuccess}) 
         }
       );
 
-      setBookingMessage('✅Appointment booked successfully!');
-      onBookingSuccess?.(); 
+      setBookingMessage('✅ Appointment booked successfully!');
     } catch (err) {
       console.error('Booking failed:', err);
       setBookingMessage(err.response?.data?.error || '❌ Booking failed.');
