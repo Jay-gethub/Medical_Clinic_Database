@@ -70,7 +70,7 @@ const ReferralPage = ({ patientId }) => {
       backgroundColor: '#f9f9f9'
     }}
   >
-    <h3>Referral #{referral.referral_id}</h3>
+    <h3>Referral #{index + 1}</h3>
     <p><strong>Referred Doctor Name:</strong> {referral.referring_doctor_name}</p>
     <p><strong>Reason:</strong> {referral.referral_reason}</p>
     <p><strong>Referral Date:</strong> {formatDate(referral.referral_date)}</p>
