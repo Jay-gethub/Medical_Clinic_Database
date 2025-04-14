@@ -140,7 +140,7 @@ const DoctorReferralForm = () => {
             name="referralDate"
             value={formData.referralDate}
             onChange={handleChange}
-            required
+            
           />
         </div>
 

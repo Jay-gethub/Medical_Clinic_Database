@@ -77,7 +77,7 @@ exports.createReferral = (req, res) => {
   // Step 1: Get department_id of referring doctor
   db.query(
     'SELECT department_id FROM EMPLOYEES WHERE employee_id = ?',
-    [referring_doctor_id],
+    [specialist_id],
     (err, deptResult) => {
       if (err || !deptResult.length) {
         console.error('Error fetching department_id:', err);
