@@ -10,4 +10,8 @@ router.post("/create-referrals/", employeeController.createReferral);
 //get all doctors
 router.get("/all-doctors", employeeController.getAllDoctors);
 
+//get all patients
+router.get('/all-patients', employeeController.getAllPatients);
+
+
 module.exports = router;

@@ -157,3 +157,14 @@ exports.getAllDoctors = (req, res) => {
     }
   );
 }
+
+//6. get all patients
+exports.getAllPatients = (req, res) => {
+  db.query(
+    'SELECT patient_id, first_name, last_name FROM PATIENTS',
+    (err, results) => {
+      if (err) return res.status(500).json({ error: 'Failed to fetch patients.' });
+      res.json(results);
+    }
+  );
+};

@@ -7,6 +7,7 @@ import EmployeeLogin from './components/Auth/EmployeeLogin';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import PatientPortalApp from './components/PatientDashboard/PatientPortalApp';
 import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
+import NurseDashboard from './components/NurseDashboard/NurseDashboard';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/patient/dashboard" element={<PatientPortalApp />} />
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/nurse/dashboard" element={<NurseDashboard />} />
 
         </Routes>
       </div>
