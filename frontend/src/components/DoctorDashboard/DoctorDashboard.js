@@ -8,6 +8,7 @@ import DoctorProfile from './DoctorProfile';
 // import EmployeeTable from './EmployeeTable';
 import ManageDocSchedules from './ManageDocSchedules';
 import DoctorPatients from './DoctorPatients';
+import DoctorReferralForm from './DoctorReferrals';
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
@@ -43,7 +44,9 @@ const DoctorDashboard = () => {
         <div className="tab-buttons">
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
           <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Patients</button>
-          <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Staff</button>
+          <button onClick={() => setActiveTab('referral')} className={activeTab === 'referral' ? 'active' : ''}>Create Referral</button>
+          <button onClick={() => setActiveTab('create')} className={activeTab === 'create' ? 'active' : ''}>Create Employee</button>
+          <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
 
         </div>
@@ -52,6 +55,7 @@ const DoctorDashboard = () => {
           {activeTab === 'schedules' && <ManageDocSchedules />}
           {activeTab === 'patients' && <DoctorPatients />}
           {activeTab === 'profile' && <DoctorProfile />}
+          {activeTab === 'referral' && <DoctorReferralForm />}
 
         </div>
       </div>

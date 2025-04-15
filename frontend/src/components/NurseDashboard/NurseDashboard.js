@@ -5,7 +5,7 @@ import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import NurseProfile from './NurseProfile';
 import DiagnosticView from './DiagnosticView';
-import PatientReferralViewer from './NurseReferrals';
+import NurseReferrals from './NurseReferrals';
 //import ImmunizationView from './ImmunizationView';
 //import AppointmentView from './AppointmentView';
 //import MedicalRecordsView from './MedicalRecordsView';
@@ -54,9 +54,9 @@ const NurseDashboard = () => {
         </div>
 
         <div className="admin-tab-content">
-          {activeTab === 'profile' && <NurseProfile />}
-          {activeTab === 'diagnostics' && <DiagnosticView />}
-          {activeTab === 'referrals' && <PatientReferralViewer />}        
+    {activeTab === 'profile' && <NurseProfile />}
+    {activeTab === 'diagnostics' && <DiagnosticView />}
+    {activeTab === 'referrals' && <NurseReferrals />}
 
         </div>
       </div>

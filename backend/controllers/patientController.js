@@ -1,30 +1,3 @@
-// const db = require("../config/db");
-// const registerPatient = (req, res) => {
-//   const { first_name, last_name, dob, address_id, phone_num, email, sex, password, insurance } = req.body;
-//   const patientSQL = `INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, date_registered, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), 1)`;
-//   db.query(patientSQL, [first_name, last_name, dob, address_id, phone_num, email, sex], (err, result) => {
-//     if (err) return res.status(500).json({ error: err });
-//     const patient_id = result.insertId;
-
-//     const loginSQL = `INSERT INTO USER_CREDENTIALS (username, password, role, is_active) VALUES (?, ?, 'Patient', 1)`;
-//     db.query(loginSQL, [email, password], (err2) => {
-//       if (err2) return res.status(500).json({ error: err2 });
-
-//       if (insurance) {
-//         const insuranceSQL = `INSERT INTO INSURANCE_PLAN (patient_id, provider_name, policy_number, covrage_details, effective_from, effective_to) VALUES (?, ?, ?, ?, ?, ?)`;
-//         db.query(insuranceSQL, [patient_id, ...insurance], (err3) => {
-//           if (err3) return res.status(500).json({ error: err3 });
-//           return res.json({ message: "Patient and insurance info registered" });
-//         });
-//       } else {
-//         res.json({ message: "Patient registered successfully" });
-//       }
-//     });
-//   });
-// };
-// module.exports = { registerPatient };
-
-//backend/controllers/patientController.js
 const db = require("../config/db");
 
 
@@ -298,7 +271,7 @@ exports.getReferrals = (req, res) => {
     [req.params.id],
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
-      console.log('✅ Query result:', result);
+      console.log('Query result:', result);
       res.json(result);
     }
   );

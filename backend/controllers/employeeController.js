@@ -60,77 +60,89 @@ exports.getAssignedPatients = (req, res) => {
     res.json(result);
   });
 };
-<<<<<<< HEAD
- 
-=======
- 
+
 //4. create a referral
 exports.createReferral = (req, res) => {
   const {
     patient_id,
     referring_doctor_id,
-    employee_id,
-    appointment_id,// ******need to add later, appointment must either be made at the same time or before referral **********
+    employee_id, // same as specialist
     referral_reason,
     referral_date,
     referral_notes,
     expiration_date,
     specialist_id
   } = req.body;
-
-  // Step 1: Get department_id from EMPLOYEES table
+  console.log(referring_doctor_id);
+  // Step 1: Get department_id of referring doctor
   db.query(
     'SELECT department_id FROM EMPLOYEES WHERE employee_id = ?',
-    [referring_doctor_id],
+    [specialist_id],
     (err, deptResult) => {
-      if (err) {
+      if (err || !deptResult.length) {
         console.error('Error fetching department_id:', err);
-        return res.status(500).json({ error: 'Database error.' });
-      }
-
-      if (!deptResult.length) {
-        return res.status(400).json({ error: 'Doctor not found or has no department.' });
+        return res.status(500).json({ error: 'Error: Failed to create referral.' });
       }
 
       const department_id = deptResult[0].department_id;
 
-      // Step 2: Insert into REFERRALS table
+      // Step 2: Get most recent finished appointment between patient and specialist
       db.query(
-        `INSERT INTO REFERRALS (
-          patient_id,
-          referring_doctor_id,
-          employee_id,
-          appointment_id,
-          referral_reason,
-          referral_date,
-          referral_notes,
-          expiration_date,
-          specialist_id,
-          department_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          patient_id,
-          referring_doctor_id,
-          employee_id,
-          referral_reason,
-          referral_date,
-          referral_notes,
-          expiration_date,
-          specialist_id,
-          department_id
-        ],
-        (err, result) => {
-          if (err) {
-            console.error('Error inserting referral:', err);
-            return res.status(500).json({ error: 'Failed to create referral.' });
+        `SELECT appointment_id
+         FROM APPOINTMENTS
+         WHERE patient_id = ? AND doctor_id = ? AND appointment_status = 'Finished'
+         ORDER BY end_time DESC
+         LIMIT 1`,
+        [patient_id, referring_doctor_id],
+        (err, appointmentResult) => {
+          if (err || !appointmentResult.length) {
+            console.error('Error fetching appointment:', err);
+            return res.status(500).json({ error: 'Error looking up appointments' });
           }
 
-          res.status(201).json({ message: 'Referral created successfully.' });
+          const appointment_id = appointmentResult[0].appointment_id;
+
+          // Step 3: Insert into REFERRALS table
+          db.query(
+            `INSERT INTO REFERRALS (
+              patient_id,
+              referring_doctor_id,
+              employee_id,
+              appointment_id,
+              referral_reason,
+              referral_date,
+              referral_notes,
+              expiration_date,
+              specialist_id,
+              department_id
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+              patient_id,
+              referring_doctor_id,
+              referring_doctor_id,
+              appointment_id,
+              referral_reason,
+              referral_date,
+              referral_notes,
+              expiration_date,
+              specialist_id,
+              department_id
+            ],
+            (err, result) => {
+              if (err) {
+                console.error('Error inserting referral:', err);
+                return res.status(500).json({ error: 'Error: Failed to create referral.' });
+              }
+
+              res.status(201).json({ message: 'Referral created successfully.' });
+            }
+          );
         }
       );
     }
   );
 };
+
 
 //5. get all doctors
 exports.getAllDoctors = (req, res) => {
@@ -144,7 +156,7 @@ exports.getAllDoctors = (req, res) => {
       res.json(results);
     }
   );
-};
+}
 
 //6. get all patients
 exports.getAllPatients = (req, res) => {

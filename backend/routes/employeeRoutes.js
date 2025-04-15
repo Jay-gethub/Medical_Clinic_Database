@@ -15,5 +15,5 @@ router.get("/all-doctors", employeeController.getAllDoctors);
 //get all patients
 router.get('/all-patients', employeeController.getAllPatients);
 
->>>>>>> a419df2290abfc5ea3f7893f1f2c13ab3557064a
+
 module.exports = router;
