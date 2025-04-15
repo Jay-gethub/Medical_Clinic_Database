@@ -1,10 +1,11 @@
 const db = require("../config/db");
 
 // 1. Get employee profile
-exports.getProfile = (req, res) => {
+exports.getProfileById = (req, res) => {
   const { id } = req.params;
   db.query("SELECT * FROM EMPLOYEES WHERE employee_id = ?", [id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
+    if (result.length === 0) return res.status(404).json({ error: "Employee not found" });
     res.json(result[0]);
   });
 };
@@ -168,4 +169,35 @@ exports.getAllPatients = (req, res) => {
     }
   );
 };
->>>>>>> a419df2290abfc5ea3f7893f1f2c13ab3557064a
+
+// 7. get patient info for receptionist
+exports.getPatientInfo = (req, res) => {
+  const query = `
+  SELECT 
+    P.first_name AS patient_first_name,
+    P.last_name AS patient_last_name,
+    P.email,
+    P.phone_num,
+    A.start_time,
+    A.appointment_status,
+    E.first_name AS doctor_first_name,
+    E.last_name AS doctor_last_name
+  FROM 
+      APPOINTMENTS A
+  JOIN 
+      PATIENTS P ON A.patient_id = P.patient_id
+  JOIN 
+      DOCTORS D ON A.doctor_id = D.employee_id
+  JOIN 
+      EMPLOYEES E ON D.employee_id = E.employee_id
+  ORDER BY
+    A.start_time;
+    `;
+  db.query(query,(err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (result.length === 0) return res.status(404).json({ error: "Patient not found" });
+      res.json(result);
+    }
+  );
+};
+

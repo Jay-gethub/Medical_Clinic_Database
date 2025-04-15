@@ -7,11 +7,8 @@ import EmployeeLogin from './components/Auth/EmployeeLogin';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import PatientPortalApp from './components/PatientDashboard/PatientPortalApp';
 import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
-<<<<<<< HEAD
-import ReceptionistDashboard from './components/ReceptionistDashboard/ReceptionistDashboard';
-=======
 import NurseDashboard from './components/NurseDashboard/NurseDashboard';
->>>>>>> a419df2290abfc5ea3f7893f1f2c13ab3557064a
+import ReceptionistDashboard from './components/ReceptionistDashboard/ReceptionistDashboard';
 
 
 function App() {
@@ -27,6 +24,7 @@ function App() {
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/nurse/dashboard" element={<NurseDashboard />} />
+          <Route path="/receptionist/dashboard" element={<ReceptionistDashboard />} />
 
         </Routes>
       </div>

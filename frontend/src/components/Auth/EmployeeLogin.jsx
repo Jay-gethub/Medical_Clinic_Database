@@ -39,6 +39,7 @@ const EmployeeLogin = () => {
       else if (user.role === 'Doctor') navigate('/doctor/dashboard');
       else if (user.role === 'Nurse') navigate('/nurse/dashboard');
       else if (user.role === 'Staff') navigate('/staff/dashboard');
+      else if (user.role === 'Receptionist') navigate('/receptionist/dashboard');
       else navigate('/'); // fallback
 
     } catch (err) {

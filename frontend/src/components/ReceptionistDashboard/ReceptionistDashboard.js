@@ -4,6 +4,7 @@ import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import ReceptionistProfile from './ReceptionistProfile';
 import ManageRecSchedules from './ManageRecSchedules';
+import PatientTable from './PatientTable';
 
 const ReceptionistDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -39,7 +40,7 @@ const ReceptionistDashboard = () => {
       <div className="admin-dashboard-content">
         <div className="tab-buttons">
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
-          <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Patients</button>
+          <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Appointments</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Staff</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
 
@@ -48,6 +49,7 @@ const ReceptionistDashboard = () => {
         <div className="admin-tab-content">
           {activeTab === 'schedules' && <ManageRecSchedules />}
           {activeTab === 'profile' && <ReceptionistProfile />}
+          {activeTab === 'patients' && <PatientTable />}
 
         </div>
       </div>
