@@ -219,3 +219,48 @@ exports.getSpecialists = (req, res) => {
     res.json(results);
   });
 };
+
+// 8. get pending referrals
+exports.getPendingReferrals = (req, res) => {
+  const specialistId = req.params.id;
+  const query = `
+    SELECT r.referral_id, r.referral_reason, r.referral_date, r.referral_notes, 
+           r.expiration_date, p.first_name, p.last_name
+    FROM REFERRALS r
+    JOIN PATIENTS p ON r.patient_id = p.patient_id
+    WHERE r.specialist_id = ? AND r.referral_status = 'Pending'
+  `;
+
+  db.query(query, [specialistId], (err, results) => {
+    if (err) {
+      console.error('Error fetching referrals:', err);
+      return res.status(500).json({ error: 'Failed to fetch referrals.' });
+    }
+    //console.log(specialistId);
+    //console.log(results);
+
+    res.json(results);
+  });
+};
+
+//9. update referral_status
+exports.updateReferralStatus = (req, res) => {
+  const referralId = req.params.referralId;
+  const { status } = req.body;
+
+  if (!['Approved', 'Declined'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status value.' });
+  }
+
+  const query = `UPDATE REFERRALS SET referral_status = ? WHERE referral_id = ?`;
+
+  db.query(query, [status, referralId], (err, result) => {
+    if (err) {
+      console.error('Error updating referral:', err);
+      return res.status(500).json({ error: 'Failed to update referral status.' });
+    }
+
+    res.json({ message: 'Referral status updated successfully.' });
+  });
+};
+

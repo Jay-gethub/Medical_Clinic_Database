@@ -19,7 +19,14 @@ router.get('/patient-table', employeeController.getPatientInfo);
 //get all specialist
 router.get('/all-specialists', employeeController.getSpecialists);
 
+//get all specialist
+router.get('/pending-referrals/:id', employeeController.getPendingReferrals);
+
 //get employee by id
 router.get('/:id', employeeController.getProfileById);
+
+//update referral_status
+router.put('/update-referral-status/:referralId', employeeController.updateReferralStatus);
+
 
 module.exports = router;
