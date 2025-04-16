@@ -77,4 +77,8 @@ router.put("/cancel/:appointment_id", appointmentController.cancelAppointment);
 router.get("/status", authenticateUser, appointmentController.getAppointmentsByStatus);
 // Referral check (inline)
 router.get("/referrals/check", appointmentController.checkReferralValidity);
+
+// appointmetnts by doctor id
+router.get("/doctor-appointments/:id", appointmentController.getAppointmentByDoctor);
+
 module.exports = router;

@@ -451,19 +451,18 @@ exports.getAllAppointments = (req, res) => {
 
 
 exports.getAppointmentById = (req, res) => {
-  db.query("SELECT * FROM APPOINTMENTS WHERE appointment_id = ?", [req.params.id], (error, appointment) => {
-    if (error) {
-      return res.status(500).json({ error: "Unable to fetch appointment." });
-    }
-    
-    if (appointment.length === 0) {
-      return res.status(404).json({ message: "Appointment not found." });
-    }
-    
-    res.json(appointment[0]);
-  });
+  db.query("SELECT * FROM APPOINTMENTS WHERE doctor_id = ?", [req.params.id], (error, appointment) => {
+  if (error) {
+    return res.status(500).json({ error: "Unable to fetch appointment." });
+  }
+  
+  if (appointment.length === 0) {
+    return res.status(404).json({ message: "Appointment not found." });
+  }
+  
+  res.json(appointment[0]);
+});
 };
-
 
 exports.createAppointment = (req, res) => {
   const { doctor_id, clinic_id, start_time, end_time, appointment_type, appointment_status } = req.body;
@@ -1042,5 +1041,27 @@ exports.checkReferralValidity = (req, res) => {
     }
 
     res.json({ valid: results.length > 0 });
+  });
+};
+
+//get appointment by doctor_id 
+exports.getAppointmentByDoctor = (req, res) => {
+  const doctorId = req.params.doctorId;
+
+  const query = `
+    SELECT a.appointment_id, a.start_time, p.first_name, p.last_name
+    FROM APPOINTMENTS a
+    JOIN PATIENTS p ON a.patient_id = p.patient_id
+    JOIN REFERRALS r ON r.patient_id = a.patient_id AND r.specialist_id = a.doctor_id
+    WHERE a.doctor_id = ? AND r.referral_status = 'Pending'
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) {
+      console.error('Error fetching referred appointments:', err);
+      return res.status(500).json({ error: 'Failed to fetch referred appointments.' });
+    }
+
+    res.json(results);
   });
 };

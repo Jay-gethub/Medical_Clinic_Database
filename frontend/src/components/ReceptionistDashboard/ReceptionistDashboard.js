@@ -5,6 +5,7 @@ import bgImage from '../../assets/Home.png';
 import ReceptionistProfile from './ReceptionistProfile';
 import ManageRecSchedules from './ManageRecSchedules';
 import PatientTable from './PatientTable';
+import PatientReferralViewer from './ReceptionistReferrals';
 
 const ReceptionistDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -42,6 +43,7 @@ const ReceptionistDashboard = () => {
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
           <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Appointments</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Staff</button>
+          <button onClick={() => setActiveTab('referrals')} className={activeTab === 'referrals' ? 'active' : ''}>View Referrals</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
 
         </div>
@@ -50,6 +52,7 @@ const ReceptionistDashboard = () => {
           {activeTab === 'schedules' && <ManageRecSchedules />}
           {activeTab === 'profile' && <ReceptionistProfile />}
           {activeTab === 'patients' && <PatientTable />}
+          {activeTab === 'referrals' && <PatientReferralViewer />}
 
         </div>
       </div>

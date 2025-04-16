@@ -201,3 +201,21 @@ exports.getPatientInfo = (req, res) => {
   );
 };
 
+// 8. get all specialist
+exports.getSpecialists = (req, res) => {
+  const query = `
+  SELECT d.employee_id, e.first_name, e.last_name, d.specialization
+  FROM DOCTORS d
+  JOIN EMPLOYEES e ON d.employee_id = e.employee_id
+  WHERE d.specialization IS NOT NULL AND d.specialization != 'Primary Care'
+  `;
+
+  db.query(query, (err, results) => {
+  if (err) {
+    console.error('Error fetching specialists:', err);
+    return res.status(500).json({ error: 'Failed to fetch specialists.' });
+    }
+
+    res.json(results);
+  });
+};

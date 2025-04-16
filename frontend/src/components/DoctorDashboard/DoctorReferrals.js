@@ -8,11 +8,13 @@ const DoctorReferralForm = () => {
     referralDate: '',
     extraNotes: '',
     expirationDate: '',
-    specialist_id: '', // added field
+    specialist_id: '',
   });
 
   const [assignedPatients, setAssignedPatients] = useState([]);
   const [availableDoctors, setAvailableDoctors] = useState([]);
+  const [pendingReferrals, setPendingReferrals] = useState([]);
+  const [isSpecialist, setIsSpecialist] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState('');
 
@@ -21,23 +23,32 @@ const DoctorReferralForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [patientsRes, doctorsRes] = await Promise.all([
+        const [patientsRes, specialistsRes] = await Promise.all([
           axios.get(`http://localhost:5000/api/employee/assigned-patients/${doctorId}`),
-          axios.get(`http://localhost:5000/api/employee/all-doctors`)
+          axios.get(`http://localhost:5000/api/employee/all-specialists`)
         ]);
-
-        setAssignedPatients(patientsRes.data);
-        // Filter out the current doctor from the doctor list
-        const filteredDoctors = doctorsRes.data.filter(doc => doc.employee_id !== doctorId);
-        setAvailableDoctors(filteredDoctors);
+  
+        const specialists = specialistsRes.data;
+        const isCurrentDoctorSpecialist = specialists.some(doc => doc.employee_id === doctorId);
+  
+        if (isCurrentDoctorSpecialist) {
+          setIsSpecialist(true);
+          const referralsRes = await axios.get(`http://localhost:5000/api/appointments/doctor-appointments/${doctorId}`);
+          setPendingReferrals(referralsRes.data);
+        } else {
+          setIsSpecialist(false);
+          setAssignedPatients(patientsRes.data);
+          setAvailableDoctors(specialists); // use the full list of specialists as options
+        }
       } catch (err) {
         console.error(err);
         setError('Failed to fetch data.');
       }
     };
-
+  
     if (doctorId) fetchData();
   }, [doctorId]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,6 +85,26 @@ const DoctorReferralForm = () => {
       setError(err.response?.data?.error || 'Failed to create referral.');
     }
   };
+
+  if (isSpecialist) {
+    return (
+      <div className="specialist-view">
+        <h2>Pending Referred Appointments</h2>
+        {pendingReferrals.length === 0 ? (
+          <p>No pending appointments from referrals.</p>
+        ) : (
+          <ul>
+            {pendingReferrals.map((appt) => (
+              <li key={appt.appointment_id}>
+                <strong>Patient:</strong> {appt.first_name} {appt.last_name} | 
+                <strong> Date:</strong> {new Date(appt.start_time).toLocaleString()}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="referral-page">
@@ -140,7 +171,6 @@ const DoctorReferralForm = () => {
             name="referralDate"
             value={formData.referralDate}
             onChange={handleChange}
-            
           />
         </div>
 

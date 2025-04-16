@@ -13,10 +13,13 @@ router.get("/all-doctors", employeeController.getAllDoctors);
 //get all patients
 router.get('/all-patients', employeeController.getAllPatients);
 
-//get employee by id
-router.get('/:id', employeeController.getProfileById);
-
 //get patient info for receptionist
 router.get('/patient-table', employeeController.getPatientInfo);
+
+//get all specialist
+router.get('/all-specialists', employeeController.getSpecialists);
+
+//get employee by id
+router.get('/:id', employeeController.getProfileById);
 
 module.exports = router;
