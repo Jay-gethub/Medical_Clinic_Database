@@ -28,5 +28,8 @@ router.get('/:id', employeeController.getProfileById);
 //update referral_status
 router.put('/update-referral-status/:referralId', employeeController.updateReferralStatus);
 
+//update employee profile
+router.put('/update-profile/:id', employeeController.updateProfile);
+
 
 module.exports = router;

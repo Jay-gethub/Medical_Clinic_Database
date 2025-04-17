@@ -41,9 +41,30 @@ const ReceptionistProfile = () => {
     setProfile({ ...profile, [name]: value });
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    alert('Profile updated successfully! (simulated)');
+  
+    try {
+      const res = await fetch(`http://localhost:5000/api/employee/update-profile/${employeeId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profile),
+      });
+  
+      const result = await res.json();
+  
+      if (res.ok) {
+        alert('Profile updated successfully!');
+      } else {
+        console.error('Update failed:', result.error);
+        alert('Failed to update profile.');
+      }
+    } catch (error) {
+      console.error('Error during update:', error);
+      alert('An error occurred while updating profile.');
+    }
   };
 
   if (loading) return <p>Loading profile...</p>;

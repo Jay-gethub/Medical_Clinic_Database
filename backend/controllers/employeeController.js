@@ -10,21 +10,33 @@ exports.getProfileById = (req, res) => {
   });
 };
 
-// 2. Update employee profile (NOT complete)
-/* exports.updateProfile = (req, res) => {
+// 2. Update employee profile (complete but only for first/last name, email, phone)
+exports.updateProfile = (req, res) => {
   const { id } = req.params;
-  const { first_name, last_name, middle_name, dob, address_id, phone_num} = req.body;
+  const { first_name, last_name, email, phone} = req.body;
   db.query(
-    `UPDATE EMPLOYEES SET first_name = ?, last_name = ?, middle_name = ?, dob = ?, address_id = ?, phone_num = ? WHERE employee_id = ?`,
-    [first_name, last_name, middle_name, dob, address_id, phone_num, id],
-    (err, result) => {
+    `UPDATE EMPLOYEES SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE employee_id = ?`,
+    [first_name, last_name, email, phone, id],
+    (err,result) => {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ message: "Profile updated successfully" });
-    }
-  );}; */
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Employee not found or no changes detected." });
+      }
 
-  // 3.
-  // controller/doctorController.js
+      if (result.changedRows === 0) {
+        return res.status(200).json({ message: "No changes were made (data was the same)." });
+      }
+      const message =
+      result.changedRows === 0
+        ? "No changes detected — profile was already up to date."
+        : "Profile updated successfully.";
+    
+      res.status(200).json({ message, result });
+    });
+};
+
+// 3.
+// controller/doctorController.js
 exports.getAssignedPatients = (req, res) => {
   const doctorId = req.params.id;
 
