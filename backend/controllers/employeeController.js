@@ -180,6 +180,7 @@ exports.getPatientInfo = (req, res) => {
     P.phone_num,
     A.start_time,
     A.appointment_status,
+    C.clinic_name,
     E.first_name AS doctor_first_name,
     E.last_name AS doctor_last_name
   FROM 
@@ -190,6 +191,8 @@ exports.getPatientInfo = (req, res) => {
       DOCTORS D ON A.doctor_id = D.employee_id
   JOIN 
       EMPLOYEES E ON D.employee_id = E.employee_id
+  JOIN
+      CLINIC C ON A.clinic_id = C.clinic_id
   ORDER BY
     A.start_time;
     `;

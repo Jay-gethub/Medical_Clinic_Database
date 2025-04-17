@@ -173,7 +173,7 @@ const ManageRecSchedules = () => {
           <div className="dropdown-field">
             <label>Employee</label>
             <p style ={{ color: 'white'}}>
-              ID: {selectedEmployee}, {JSON.parse(localStorage.getItem('user'))?.username}
+              ID: {JSON.parse(localStorage.getItem('user'))?.user_id}, {JSON.parse(localStorage.getItem('user'))?.username}
             </p>
           </div>
         </div>
