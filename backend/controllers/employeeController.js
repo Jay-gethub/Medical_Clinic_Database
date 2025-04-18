@@ -279,3 +279,61 @@ exports.updateReferralStatus = (req, res) => {
   });
 };
 
+//get patient mediacal record
+exports.getPatientMedicalRecord = (req, res) => {
+  const patientId = req.params.id;
+
+  const queries = {
+    basicInfo: `
+      SELECT first_name, last_name, sex, dob
+      FROM PATIENTS
+      WHERE patient_id = ?
+    `,
+    allergies: `
+      SELECT a.allergy_name, pa.severity, pa.date_recorded
+      FROM Patient_Allergies pa
+      JOIN ALLERGIES a ON pa.allergy_id = a.allergy_id
+      WHERE pa.patient_id = ?
+    `,
+    immunizations: `
+      SELECT i.immunization_name, pi.immunization_date, e.first_name AS administered_by_first_name, e.last_name AS administered_by_last_name
+      FROM Patient_Immunizations pi
+      JOIN IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+      LEFT JOIN EMPLOYEES e ON pi.administered_by = e.employee_id
+      WHERE pi.patient_id = ? AND pi.shot_status = 'Completed'
+    `,
+    prescriptions: `
+      SELECT prescription_name, dosage
+      FROM PRESCRIPTIONS
+      WHERE patient_id = ?
+    `,
+    diagnostics: `
+      SELECT dt.test_type, dt.test_date, dt.results, dt.result_date, e.first_name AS doctor_first_name, e.last_name AS doctor_last_name
+      FROM DIAGNOSTIC_TESTS dt
+      LEFT JOIN EMPLOYEES e ON dt.doctor_id = e.employee_id
+      WHERE dt.patient_id = ? AND dt.test_status = 'Completed'
+    `
+  };
+
+  // Execute all queries in parallel
+  Promise.all([
+    new Promise((resolve, reject) => db.query(queries.basicInfo, [patientId], (err, result) => err ? reject(err) : resolve(result[0]))),
+    new Promise((resolve, reject) => db.query(queries.allergies, [patientId], (err, result) => err ? reject(err) : resolve(result))),
+    new Promise((resolve, reject) => db.query(queries.immunizations, [patientId], (err, result) => err ? reject(err) : resolve(result))),
+    new Promise((resolve, reject) => db.query(queries.prescriptions, [patientId], (err, result) => err ? reject(err) : resolve(result))),
+    new Promise((resolve, reject) => db.query(queries.diagnostics, [patientId], (err, result) => err ? reject(err) : resolve(result))),
+  ])
+    .then(([basicInfo, allergies, immunizations, prescriptions, diagnostics]) => {
+      res.json({
+        basicInfo,
+        allergies,
+        immunizations,
+        prescriptions,
+        diagnostics
+      });
+    })
+    .catch((err) => {
+      console.error('Error fetching medical record:', err);
+      res.status(500).json({ error: 'Failed to fetch medical record.' });
+    });
+};
