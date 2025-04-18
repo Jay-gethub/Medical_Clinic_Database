@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/AdminDashboard.css';
 
-const PatientTable = () => {
+const AppointmentTable = () => {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
@@ -12,6 +12,8 @@ const PatientTable = () => {
   const [searchText, setSearchText] = useState('');
   const [searchMode, setSearchMode] = useState('patient'); // 'patient' or 'doctor'
   const [appointmentStatus, setAppointmentStatus] = useState('');
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [newStatus, setNewStatus] = useState('');
 
   // Formatted date
   const formatDateTime = (datetimeString) => {
@@ -30,7 +32,7 @@ const PatientTable = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/employee/patient-table');
+        const res = await axios.get('http://localhost:5000/api/employee/appointment-table');
         setPatients(res.data);
         setFilteredPatients(res.data);
 
@@ -106,8 +108,9 @@ const PatientTable = () => {
         <select value={appointmentStatus} onChange={e => setAppointmentStatus(e.target.value)}>
           <option value="">All Statuses</option>
           <option value="Scheduled">Scheduled</option>
+          <option value="InProgress">In Progress</option>
           <option value="Completed">Completed</option>
-          <option value="Canceled">Cancelled</option>
+          <option value="Canceled">Canceled</option>
         </select>
       </div>
 
@@ -125,7 +128,10 @@ const PatientTable = () => {
         </thead>
         <tbody>
           {filteredPatients.map((pat, index) => (
-            <tr key={index}>
+            <tr key={index} onClick={() => {
+              setSelectedAppointment(pat);
+              setNewStatus(pat.appointment_status); // Pre-fill current status
+            }} style={{ cursor: 'pointer' }}>
               <td>{pat.patient_last_name}, {pat.patient_first_name}</td>
               <td>{pat.phone_num}, {pat.email}</td>
               <td>{pat.doctor_last_name}, {pat.doctor_first_name}</td>
@@ -136,8 +142,55 @@ const PatientTable = () => {
           ))}
         </tbody>
       </table>
+
+    {/* Modal for Appointment details and status update */}
+    {selectedAppointment && (
+        <div className="modal">
+          <div className="modal-content">
+            <h4>Appointment Details</h4>
+            <p><strong>Patient:</strong> {selectedAppointment.patient_first_name} {selectedAppointment.patient_last_name}</p>
+            <p><strong>Doctor:</strong> {selectedAppointment.doctor_first_name} {selectedAppointment.doctor_last_name}</p>
+            <p><strong>Clinic:</strong> {selectedAppointment.clinic_name}</p>
+            <p><strong>Time:</strong> {formatDateTime(selectedAppointment.start_time)}</p>
+            <p><strong>Contact:</strong> {selectedAppointment.phone_num} | {selectedAppointment.email}</p>
+
+            <label>
+              <strong>Status:</strong>{' '}
+              <select value={newStatus} onChange={e => setNewStatus(e.target.value)}>
+                <option value="Scheduled">Scheduled</option>
+                <option value="InProgress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Canceled">Canceled</option>
+              </select>
+            </label>
+
+            <div className="modal-actions">
+              <button onClick={() => setSelectedAppointment(null)}>Close</button>
+              <button
+                onClick={async () => {
+                  try {
+                    await axios.put('http://localhost:5000/api/employee/update-appointment', {
+                      appointment_id: selectedAppointment.appointment_id,
+                      appointment_status: newStatus,
+                    });
+
+                    // Refresh appointments
+                    const res = await axios.get('http://localhost:5000/api/employee/appointment-table');
+                    setPatients(res.data);
+                    setSelectedAppointment(null);
+                  } catch (err) {
+                    console.error('Failed to update:', err);
+                  }
+                }}
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default PatientTable;
+export default AppointmentTable;

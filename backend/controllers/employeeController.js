@@ -182,41 +182,57 @@ exports.getAllPatients = (req, res) => {
   );
 };
 
-// 7. get patient info for receptionist
+// 7. get appointment info for receptionist appoinment table
 exports.getPatientInfo = (req, res) => {
   const query = `
-  SELECT 
-    P.first_name AS patient_first_name,
-    P.last_name AS patient_last_name,
-    P.email,
-    P.phone_num,
-    A.start_time,
-    A.appointment_status,
-    C.clinic_name,
-    E.first_name AS doctor_first_name,
-    E.last_name AS doctor_last_name
-  FROM 
-      APPOINTMENTS A
-  JOIN 
-      PATIENTS P ON A.patient_id = P.patient_id
-  JOIN 
-      DOCTORS D ON A.doctor_id = D.employee_id
-  JOIN 
-      EMPLOYEES E ON D.employee_id = E.employee_id
-  JOIN
-      CLINIC C ON A.clinic_id = C.clinic_id
-  ORDER BY
-    A.start_time;
-    `;
-  db.query(query,(err, result) => {
+    SELECT 
+      P.first_name AS patient_first_name,
+      P.last_name AS patient_last_name,
+      P.email,
+      P.phone_num,
+      A.start_time,
+      A.appointment_status,
+      A.appointment_id,
+      C.clinic_name,
+      E.first_name AS doctor_first_name,
+      E.last_name AS doctor_last_name
+    FROM 
+        APPOINTMENTS A
+    JOIN 
+        PATIENTS P ON A.patient_id = P.patient_id
+    JOIN 
+        DOCTORS D ON A.doctor_id = D.employee_id
+    JOIN 
+        EMPLOYEES E ON D.employee_id = E.employee_id
+    JOIN
+        CLINIC C ON A.clinic_id = C.clinic_id
+    ORDER BY
+      A.start_time;
+  `;
+
+  db.query(query, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (result.length === 0) return res.status(404).json({ error: "Patient not found" });
+    res.json(result);
+  });
+};
+
+// 8. update appointment status
+exports.updateAppointmentStatus = (req, res) => {
+  const { appointment_id, appointment_status } = req.body;
+
+  db.query(
+    `UPDATE APPOINTMENTS SET appointment_status = ? WHERE appointment_id = ?`,
+    [appointment_status, appointment_id],
+    (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
-      if (result.length === 0) return res.status(404).json({ error: "Patient not found" });
-      res.json(result);
+      if (result.affectedRows === 0) return res.status(404).json({ error: "Appointment not found" });
+      res.json({ message: "Appointment status updated successfully." });
     }
   );
 };
 
-// 8. get all specialist
+// 9. get all specialist
 exports.getSpecialists = (req, res) => {
   const query = `
   SELECT d.employee_id, e.first_name, e.last_name, d.specialization
@@ -235,7 +251,7 @@ exports.getSpecialists = (req, res) => {
   });
 };
 
-// 8. get pending referrals
+// 10. get pending referrals
 exports.getPendingReferrals = (req, res) => {
   const specialistId = req.params.id;
   const query = `
@@ -258,7 +274,7 @@ exports.getPendingReferrals = (req, res) => {
   });
 };
 
-//9. update referral_status
+//11. update referral_status
 exports.updateReferralStatus = (req, res) => {
   const referralId = req.params.referralId;
   const { status } = req.body;
