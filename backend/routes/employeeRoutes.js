@@ -13,8 +13,11 @@ router.get("/all-doctors", employeeController.getAllDoctors);
 //get all patients
 router.get('/all-patients', employeeController.getAllPatients);
 
-//get patient info for receptionist
-router.get('/patient-table', employeeController.getPatientInfo);
+//get appointment info for receptionist appointment table
+router.get('/appointment-table', employeeController.getPatientInfo);
+
+//update appointment status
+router.put('/update-appointment', employeeController.updateAppointmentStatus);
 
 //get all specialist
 router.get('/all-specialists', employeeController.getSpecialists);

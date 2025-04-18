@@ -4,7 +4,7 @@ import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import ReceptionistProfile from './ReceptionistProfile';
 import ManageRecSchedules from './ManageRecSchedules';
-import PatientTable from './PatientTable';
+import AppointmentTable from './AppointmentTable';
 import PatientReferralViewer from './ReceptionistReferrals';
 
 const ReceptionistDashboard = () => {
@@ -51,7 +51,7 @@ const ReceptionistDashboard = () => {
         <div className="admin-tab-content">
           {activeTab === 'schedules' && <ManageRecSchedules />}
           {activeTab === 'profile' && <ReceptionistProfile />}
-          {activeTab === 'patients' && <PatientTable />}
+          {activeTab === 'patients' && <AppointmentTable />}
           {activeTab === 'referrals' && <PatientReferralViewer />}
 
         </div>
