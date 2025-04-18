@@ -109,8 +109,8 @@ const AppointmentTable = () => {
           <option value="">All Statuses</option>
           <option value="Scheduled">Scheduled</option>
           <option value="InProgress">In Progress</option>
-          <option value="Completed">Completed</option>
-          <option value="Canceled">Canceled</option>
+          <option value="Finished">Finished</option>
+          <option value="Canceled">Cancelled</option>
         </select>
       </div>
 
@@ -152,6 +152,17 @@ const AppointmentTable = () => {
             <p><strong>Doctor:</strong> {selectedAppointment.doctor_first_name} {selectedAppointment.doctor_last_name}</p>
             <p><strong>Clinic:</strong> {selectedAppointment.clinic_name}</p>
             <p><strong>Time:</strong> {formatDateTime(selectedAppointment.start_time)}</p>
+            {/* Conditionally show check-in/check-out times */}
+            {selectedAppointment.appointment_status === "InProgress" || selectedAppointment.appointment_status === "Finished" ? (
+              <>
+                {selectedAppointment.patient_check_in_time && (
+                  <p><strong>Check-In Time:</strong> {formatDateTime(selectedAppointment.patient_check_in_time)}</p>
+                )}
+                {selectedAppointment.patient_check_out_time && (
+                  <p><strong>Check-Out Time:</strong> {formatDateTime(selectedAppointment.patient_check_out_time)}</p>
+                )}
+              </>) : null
+            }
             <p><strong>Contact:</strong> {selectedAppointment.phone_num} | {selectedAppointment.email}</p>
 
             <label>
@@ -159,8 +170,8 @@ const AppointmentTable = () => {
               <select value={newStatus} onChange={e => setNewStatus(e.target.value)}>
                 <option value="Scheduled">Scheduled</option>
                 <option value="InProgress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Canceled">Canceled</option>
+                <option value="Finished">Finished</option>
+                <option value="Canceled">Cancelled</option>
               </select>
             </label>
 
@@ -180,6 +191,7 @@ const AppointmentTable = () => {
                     setSelectedAppointment(null);
                   } catch (err) {
                     console.error('Failed to update:', err);
+                    alert(err.response.data.error);
                   }
                 }}
               >

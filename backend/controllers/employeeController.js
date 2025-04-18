@@ -35,8 +35,7 @@ exports.updateProfile = (req, res) => {
     });
 };
 
-// 3.
-// controller/doctorController.js
+// 3. controller/doctorController.js
 exports.getAssignedPatients = (req, res) => {
   const doctorId = req.params.id;
 
@@ -193,6 +192,8 @@ exports.getPatientInfo = (req, res) => {
       A.start_time,
       A.appointment_status,
       A.appointment_id,
+      A.patient_check_in_time,
+      A.patient_check_out_time,
       C.clinic_name,
       E.first_name AS doctor_first_name,
       E.last_name AS doctor_last_name
@@ -221,13 +222,41 @@ exports.getPatientInfo = (req, res) => {
 exports.updateAppointmentStatus = (req, res) => {
   const { appointment_id, appointment_status } = req.body;
 
+  const now = new Date(); // current time
+
+  // get current appointment ststus, then update it
   db.query(
-    `UPDATE APPOINTMENTS SET appointment_status = ? WHERE appointment_id = ?`,
-    [appointment_status, appointment_id],
-    (err, result) => {
+    `SELECT patient_check_in_time FROM APPOINTMENTS WHERE appointment_id = ?`,
+    [appointment_id],
+    (err, results) => {
       if (err) return res.status(500).json({ error: err.message });
-      if (result.affectedRows === 0) return res.status(404).json({ error: "Appointment not found" });
-      res.json({ message: "Appointment status updated successfully." });
+      if (results.length === 0) return res.status(404).json({ error: "Appointment not found" });
+
+      const checkInTime = results[0].patient_check_in_time;
+
+      let query = `UPDATE APPOINTMENTS SET appointment_status = ?`;
+      const params = [appointment_status];
+
+      if (appointment_status === "InProgress") {
+        query += `, patient_check_in_time = ?`;
+        params.push(now);
+      } else if (appointment_status === "Finished") {
+        if (!checkInTime) {
+          return res.status(400).json({ error: "Failed to update status: patient was never checked in." });
+        }
+        query += `, patient_check_out_time = ?`;
+        params.push(now);
+      }
+
+      query += ` WHERE appointment_id = ?`;
+      params.push(appointment_id);
+
+      db.query(query, params, (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (result.affectedRows === 0) return res.status(404).json({ error: "Appointment not found" });
+
+        res.json({ message: "Appointment updated successfully." });
+      });
     }
   );
 };
