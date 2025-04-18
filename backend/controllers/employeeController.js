@@ -169,7 +169,7 @@ exports.getAllDoctors = (req, res) => {
       res.json(results);
     }
   );
-}
+};
 
 //6. get all patients
 exports.getAllPatients = (req, res) => {
@@ -336,4 +336,234 @@ exports.getPatientMedicalRecord = (req, res) => {
       console.error('Error fetching medical record:', err);
       res.status(500).json({ error: 'Failed to fetch medical record.' });
     });
+};
+
+//get all allergy names
+exports.getAllergiesNames = (req, res) => {
+  db.query(
+    `SELECT allergy_name FROM ALLERGIES `,
+    (err, results) => {
+      if (err) {
+        console.error('Database error:', err); // helpful log
+        return res.status(500).json({ error: 'Failed to fetch Allergies.' });
+      }
+      res.json(results);
+    }
+  );
+};
+
+//get all immunization names
+exports.getImmunizationsNames = (req, res) => {
+  db.query(
+    `SELECT immunization_name FROM IMMUNIZATIONS `,
+    (err, results) => {
+      if (err) {
+        console.error('Database error:', err); // helpful log
+        return res.status(500).json({ error: 'Failed to fetch Immunizations.' });
+      }
+      res.json(results);
+    }
+  );
+};
+
+//add to patients known allergy
+exports.createPatientAllergy = (req, res) => {
+  const patientId = req.params.id;
+  const { allergy_name, severity } = req.body;
+
+  // Step 1: Get allergy_id from allergy_name
+  db.query(
+    'SELECT allergy_id FROM ALLERGIES WHERE allergy_name = ?',
+    [allergy_name],
+    (err, results) => {
+      if (err) {
+        console.error('Error querying allergy_id:', err);
+        return res.status(500).json({ error: 'Failed to retrieve allergy_id' });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Allergy not found' });
+      }
+
+      const allergyId = results[0].allergy_id;
+
+      // Step 2: Insert into Patient_Allergies
+      db.query(
+        'INSERT INTO Patient_Allergies (patient_id, allergy_id, severity) VALUES (?, ?, ?)',
+        [patientId, allergyId, severity],
+        (err, insertResult) => {
+          if (err) {
+            console.error('Error inserting allergy:', err);
+            return res.status(500).json({ error: 'Failed to insert allergy' });
+          }
+
+          return res.status(201).json({ message: 'Allergy successfully added to patient' });
+        }
+      );
+    }
+  );
+};
+
+//add to patient immunizations
+exports.createPatientImmunization = (req, res) => {
+  const patientId = req.params.id;
+  const { immunization_name, immunization_date, doctor_id } = req.body;
+
+  if (!immunization_name || !immunization_date || !doctor_id) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  // Step 1: Look up the immunization_id by name
+  const immunizationQuery = 'SELECT immunization_id FROM IMMUNIZATIONS WHERE immunization_name = ?';
+
+  db.query(immunizationQuery, [immunization_name], (err, immunizationResults) => {
+    if (err) {
+      console.error('Error fetching immunization ID:', err);
+      return res.status(500).json({ error: 'Internal server error.' });
+    }
+
+    if (immunizationResults.length === 0) {
+      return res.status(404).json({ error: 'Immunization not found.' });
+    }
+
+    const immunizationId = immunizationResults[0].immunization_id;
+
+    // Step 2: Insert into Patient_Immunizations
+    const insertQuery = `
+      INSERT INTO Patient_Immunizations (patient_id, immunization_id, immunization_date, administered_by)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(insertQuery, [patientId, immunizationId, immunization_date, doctor_id], (insertErr, result) => {
+      if (insertErr) {
+        console.error('Error inserting patient immunization:', insertErr);
+        return res.status(500).json({ error: 'Failed to schedule immunization.' });
+      }
+
+      res.status(201).json({ message: 'Immunization scheduled successfully.' });
+    });
+  });
+};
+
+//add Prescription
+exports.createPrescription = (req, res) => {
+  const patientId = req.params.id;
+  const { prescription_name, instructions, patient_id, doctor_id, dosage, frequency, refills } = req.body;
+
+  if (!prescription_name || !instructions || !patient_id || !doctor_id || !dosage || !frequency || refills === undefined) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  const query = `
+    INSERT INTO PRESCRIPTIONS (prescription_name, instructions, patient_id, doctor_id, dosage, frequency, refills)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(
+    query,
+    [prescription_name, instructions, patientId, doctor_id, dosage, frequency, refills],
+    (err, result) => {
+      if (err) {
+        console.error('Error inserting prescription:', err);
+        return res.status(500).json({ error: 'Failed to insert prescription.' });
+      }
+
+      res.status(201).json({ message: 'Prescription created successfully.' });
+    }
+  );
+};
+
+// get a patient's prescriptions
+exports.getPatientPresriptions = (req, res) => {
+  const patientId = req.params.id;
+
+  const query = `
+    SELECT prescription_name, date_issued, instructions, dosage, frequency, refills
+    FROM PRESCRIPTIONS
+    WHERE patient_id = ?
+    ORDER BY date_issued DESC
+  `;
+
+  db.query(query, [patientId], (err, result) => {
+    if (err) {
+      console.error('Error fetching prescriptions:', err);
+      return res.status(500).json({ error: 'Failed to retrieve patient prescriptions' });
+    }
+    //console.log(result);
+    res.status(200).json(result);
+  });
+};
+
+//get pending immunizations
+exports.getPendingImmunizations = (req, res) => {
+  const patientId = req.params.id;
+
+  const query = `
+    SELECT 
+      i.immunization_id,
+      i.immunization_name,
+      pi.immunization_date,
+      pi.shot_status
+    FROM 
+      Patient_Immunizations pi
+    JOIN 
+      IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+    WHERE 
+      pi.patient_id = ? AND pi.shot_status = 'Pending'
+    ORDER BY 
+      pi.immunization_date DESC
+  `;
+
+  db.query(query, [patientId], (err, results) => {
+    if (err) {
+      console.error('Error fetching pending immunizations:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    res.json(results);
+  });
+};
+
+// order diagnostics
+exports.OrderDiagnostic = (req, res) => {
+  const patientId = req.params.id;
+  const { test_type, test_date, doctor_id } = req.body;
+
+  if (!test_type || !test_date || !doctor_id) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO DIAGNOSTIC_TESTS (patient_id, test_type, test_date, doctor_id)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(query, [patientId, test_type, test_date, doctor_id]);
+
+    res.status(200).json({ message: 'Diagnostic test ordered successfully.' });
+  } catch (err) {
+    console.error('Error ordering diagnostic test:', err);
+    res.status(500).json({ error: 'Failed to order diagnostic test.' });
+  }
+};
+
+//get pending diagnostics
+exports.getPendingDiagnostics = (req, res) => {
+  const patientId = req.params.id;
+
+  const query = `
+    SELECT test_type, test_date 
+    FROM medical_clinic.DIAGNOSTIC_TESTS 
+    WHERE patient_id = ?;
+  `;
+
+  db.query(query, [patientId], (err, results) => {
+    if (err) {
+      console.error('Error fetching pending diagnostics:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    res.json(results);
+  });
 };

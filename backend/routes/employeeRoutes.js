@@ -32,13 +32,31 @@ router.put('/update-profile/:id', employeeController.updateProfile);
 router.get('/patient-medical-record/:id', employeeController.getPatientMedicalRecord);
 
 //get all allergies
-//router.get('/allergies-names', employeeController.getAllergiesNames);
+router.get('/allergy-names', employeeController.getAllergiesNames);
 
-//get all allergies
-//router.get('/immunizations-names', employeeController.getImmunizationsNames);
+//get all immunizations
+router.get('/immunization-names', employeeController.getImmunizationsNames);
 
-//get all allergies
-//router.get('/allergiesdiagnostics-names', employeeController.getAllergiesNames);
+//update patient's known allergies
+router.post('/add-patient-allergy/:id', employeeController.createPatientAllergy);
+
+//add patient immunization
+router.post('/add-patient-immunization/:id', employeeController.createPatientImmunization);
+
+//add patient immunization
+router.post('/add-prescription/:id', employeeController.createPrescription);
+
+//get a patient's prescriptions
+router.get('/patient-prescriptions/:id', employeeController.getPatientPresriptions);
+
+//get patient's pending immunizations
+router.get('/pending-immunizations/:id', employeeController.getPendingImmunizations);
+
+//order diagnostic
+router.post('/order-diagnostic/:id', employeeController.OrderDiagnostic);
+
+//get patient's pending immunizations
+router.get('/pending-diagnostics/:id', employeeController.getPendingDiagnostics);
 
 //get employee by id
 router.get('/:id', employeeController.getProfileById);

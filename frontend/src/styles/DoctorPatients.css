@@ -14,21 +14,35 @@
 .patients-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  text-align: left;
 }
 
 .patient-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  width: 350px;
-  transition: transform 0.2s ease;
+  width: 300px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  text-align: left;
+  overflow: hidden;
 }
 
 .patient-card:hover {
   transform: translateY(-5px);
+}
+
+/* Default: left-aligned content */
+.patient-card h3,
+.patient-card p,
+.patient-details-row div {
+  text-align: left;
 }
 
 .patient-card h3 {
@@ -44,8 +58,319 @@
 
 .loading-text,
 .error-text {
-  text-align: center;
+  text-align: left;
   margin-top: 2rem;
   font-size: 1.2rem;
   color: #c0392b;
+}
+
+.back-button {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #464646;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #d8d8d8;
+  color: black;
+}
+
+/* Expanded patient card */
+.patient-card.expanded {
+  width: 100%;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.patient-card.expanded .patient-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.patient-card.expanded .patient-details-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: left;
+  font-size: 1.05rem;
+  text-align: left;
+  overflow-x: auto;
+}
+
+.patient-card.expanded .patient-details-row div {
+  min-width: 150px;
+  text-align: left;
+}
+
+/* Collapsed card layout (vertical) */
+.patient-card:not(.expanded) .patient-details-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+/* Patient details row shared base styles */
+.patient-details-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  font-size: 1.1rem;
+}
+
+/* Default: left-aligned text in rows */
+.patient-details-row div {
+  min-width: 150px;
+  text-align: left;
+}
+
+/* Fade-in effect for expanded content */
+.patient-card.expanded .patient-details-row,
+.patient-card.expanded .patient-name {
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Container fade transition */
+.patients-container {
+  opacity: 1;
+  transition: opacity 1s ease-in-out, transform 3s ease;
+}
+
+/* When showing all patients */
+.fade-all {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* When only one patient is shown */
+.fade-single {
+  opacity: 1;
+  transform: scale(1.02);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* Smooth fade on back */
+.fade-all,
+.fade-single {
+  will-change: opacity, transform;
+}
+.patient-action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #000000;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.action-btn:hover {
+  background-color: #3f8241;
+  color: white;
+}
+.modal {
+  background: white;
+  padding: 2rem;
+  width: 500px;
+  max-width: 95%;
+  border-radius: 8px;
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.modal input[type="text"]:focus,
+.modal input[type="number"]:focus,
+.modal textarea:focus,
+.modal select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.modal textarea {
+  resize: vertical;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.modal-buttons button {
+  padding: 0.6rem 1.2rem;
+  margin-left: 0.5rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.modal-buttons button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #0056b3;
+}
+
+.modal-buttons button:last-child {
+  background-color: #ccc;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #999;
+}
+
+
+.overlay2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.patient-details-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.prescription-table-container {
+  margin-top: 1rem;
+}
+
+.prescription-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.prescription-table td {
+  border: 1px solid #828282;
+  background-color: #dcdea6;
+  padding: 8px;
+}
+.prescription-table th {
+  border: 1px solid #828282;
+  padding: 8px;
+}
+
+.prescription-table th {
+  background-color: #000000;
+  font-weight: bold;
+}
+.pending-immunizations .immunization-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pending-immunizations .immunization-table th, .pending-immunizations .immunization-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid #ababab;
+}
+
+.pending-immunizations .immunization-table th {
+  background-color: #000000;
+  font-weight: bold;
+}
+
+.pending-immunizations .immunization-table td {
+  background-color: #dcdea6;
+}
+
+.pending-immunizations .immunization-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.pending-immunizations .immunization-table tr:hover {
+  background-color: #f1f1f1;
+}
+.pending-diagnostics {
+  margin-top: 20px;
+}
+
+.diagnostic-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.diagnostic-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+  background-color: #dcdea6;
+}
+
+.diagnostic-table th {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
 }
