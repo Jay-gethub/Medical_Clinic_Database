@@ -92,7 +92,7 @@ const MedicalRecords = ({patientId}) => {
           </div>
 
           {/* Self-Reported Medications */}
-          {medicalHistory && (
+          {/* {medicalHistory && (
             <div className="section">
               <button onClick={() => toggleSection('selfMedications')}>
                 Self-Reported Medications
@@ -115,10 +115,10 @@ const MedicalRecords = ({patientId}) => {
                 ) : <p>No self-reported medications.</p>
               )}
             </div>
-          )}
+          )} */}
 
           {/* Family History */}
-          {medicalHistory && (
+          {/* {medicalHistory && (
             <div className="section">
               <button onClick={() => toggleSection('familyHistory')}>
                 Family History
@@ -142,7 +142,7 @@ const MedicalRecords = ({patientId}) => {
                 ) : <p>No family history reported.</p>
               )}
             </div>
-          )}
+          )} */}
 
           {/* Immunizations */}
           <div className="section">
