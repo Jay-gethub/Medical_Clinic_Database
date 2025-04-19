@@ -300,22 +300,56 @@ exports.getSchedulesByEmployeeId = (req, res) => {
   );
 };
 
-// Add schedule for an employee
+// // Add schedule for an employee
+// exports.createSchedule = (req, res) => {
+//   const db = req.app.get("db");
+//   const { employee_id, clinic_id, day_of_week, start_time, end_time } = req.body;
+
+//   const insertScheduleQuery = `
+//     INSERT INTO SCHEDULES (employee_id, clinic_id, day_of_week, start_time, end_time)
+//     VALUES (?, ?, ?, ?, ?)
+//   `;
+
+//   db.query(insertScheduleQuery, [employee_id, clinic_id, day_of_week, start_time, end_time], (err, result) => {
+//     if (err) {
+//       console.error("Schedule insert error:", err);
+//       return res.status(500).json({ error: "Failed to create schedule" });
+//     }
+//     res.status(200).json({ message: "Schedule added successfully!" });
+//   });
+// };
 exports.createSchedule = (req, res) => {
   const db = req.app.get("db");
   const { employee_id, clinic_id, day_of_week, start_time, end_time } = req.body;
 
-  const insertScheduleQuery = `
-    INSERT INTO SCHEDULES (employee_id, clinic_id, day_of_week, start_time, end_time)
-    VALUES (?, ?, ?, ?, ?)
+  // Check if a schedule already exists for the same day and employee
+  const checkQuery = `
+    SELECT * FROM SCHEDULES
+    WHERE employee_id = ? AND day_of_week = ?
   `;
 
-  db.query(insertScheduleQuery, [employee_id, clinic_id, day_of_week, start_time, end_time], (err, result) => {
-    if (err) {
-      console.error("Schedule insert error:", err);
-      return res.status(500).json({ error: "Failed to create schedule" });
+  db.query(checkQuery, [employee_id, day_of_week], (checkErr, existing) => {
+    if (checkErr) {
+      console.error("Schedule check error:", checkErr);
+      return res.status(500).json({ error: "Failed to validate schedule" });
     }
-    res.status(200).json({ message: "Schedule added successfully!" });
+
+    if (existing.length > 0) {
+      return res.status(400).json({ error: "Schedule already exists for this employee on this day" });
+    }
+
+    const insertQuery = `
+      INSERT INTO SCHEDULES (employee_id, clinic_id, day_of_week, start_time, end_time)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    db.query(insertQuery, [employee_id, clinic_id, day_of_week, start_time, end_time], (err, result) => {
+      if (err) {
+        console.error("Schedule insert error:", err);
+        return res.status(500).json({ error: "Failed to create schedule" });
+      }
+      res.status(200).json({ message: "Schedule added successfully!" });
+    });
   });
 };
 
@@ -347,5 +381,26 @@ exports.updateSchedule = (req, res) => {
       return res.status(404).json({ message: "Schedule not found" });
     }
     res.status(200).json({ message: "Schedule updated successfully!" });
+  });
+};
+// delete schedule
+exports.deleteSchedule = (req, res) => {
+  const db = req.app.get("db");
+  const scheduleId = req.params.schedule_id;
+
+  const deleteQuery = `
+    DELETE FROM SCHEDULES
+    WHERE schedule_id = ?
+  `;
+
+  db.query(deleteQuery, [scheduleId], (err, result) => {
+    if (err) {
+      console.error("Schedule delete error:", err);
+      return res.status(500).json({ error: "Failed to delete schedule" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Schedule not found" });
+    }
+    res.status(200).json({ message: "Schedule deleted successfully!" });
   });
 };

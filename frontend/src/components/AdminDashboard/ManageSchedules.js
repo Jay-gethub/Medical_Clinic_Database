@@ -85,29 +85,59 @@ const ManageSchedules = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
+    const dayExists = schedules.some(
+      (s) => s.day_of_week.toLowerCase() === form.day_of_week.toLowerCase()
+    );
+  
+    if (dayExists) {
+      setError("Schedule for this day already exists. Please edit or delete it first.");
+      return;
+    }
+  
     try {
       setLoading(true);
       setError('');
       setMessage('');
-      
+  
       await axios.post('http://localhost:5000/api/admin/schedules', {
         employee_id: selectedEmployee,
         clinic_id: selectedClinic,
         ...form
       });
-      
+  
       setMessage('Schedule created successfully!');
-      setForm({ day_of_week: '', start_time: '', end_time: '' }); // Reset form
-      fetchSchedules(selectedEmployee); // Refresh schedules
+      setForm({ day_of_week: '', start_time: '', end_time: '' });
+      fetchSchedules(selectedEmployee);
     } catch (err) {
       console.error('Error creating schedule:', err);
-      setError('Failed to create schedule. Please try again.');
+      setError(err.response?.data?.error || 'Failed to create schedule. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-
+  
+  const handleDelete = async (scheduleId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this schedule?");
+    if (!confirmDelete) return;
+  
+    try {
+      setLoading(true);
+      setError('');
+      setMessage('');
+  
+      await axios.delete(`http://localhost:5000/api/admin/schedules/${scheduleId}`);
+  
+      setMessage('Schedule deleted successfully!');
+      fetchSchedules(selectedEmployee); // Refresh list
+    } catch (err) {
+      console.error('Error deleting schedule:', err);
+      setError('Failed to delete schedule. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   const handleEdit = async (schedule) => {
     const newStart = prompt('New Start Time (HH:MM:SS):', schedule.start_time);
     const newEnd = prompt('New End Time (HH:MM:SS):', schedule.end_time);
@@ -239,10 +269,21 @@ const ManageSchedules = () => {
                     <td>{sch.start_time}</td>
                     <td>{sch.end_time}</td>
                     <td>
-                      <button onClick={() => handleEdit(sch)} disabled={loading}>
-                        Edit
-                      </button>
-                    </td>
+  <button 
+    className="action-button edit-button" 
+    onClick={() => handleEdit(sch)} 
+    disabled={loading}
+  >
+    Edit
+  </button>
+  <button 
+    className="action-button delete-button" 
+    onClick={() => handleDelete(sch.schedule_id)} 
+    disabled={loading}
+  >
+    Delete
+  </button>
+</td>
                   </tr>
                 ))}
               </tbody>
