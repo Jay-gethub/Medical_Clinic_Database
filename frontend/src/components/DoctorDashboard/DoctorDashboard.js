@@ -63,6 +63,7 @@ const DoctorDashboard = () => {
           {activeTab === 'referral' && <DoctorReferralForm />}
           {activeTab === 'medical_records' && <MedicalRecords />}
           {activeTab === 'appointments' && <DoctorAppointments />}
+          {activeTab === 'schedules' && <ManageDocSchedules />}
 
 
         </div>
