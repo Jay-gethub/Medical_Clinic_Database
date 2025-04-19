@@ -451,19 +451,18 @@ exports.getAllAppointments = (req, res) => {
 
 
 exports.getAppointmentById = (req, res) => {
-  db.query("SELECT * FROM APPOINTMENTS WHERE appointment_id = ?", [req.params.id], (error, appointment) => {
-    if (error) {
-      return res.status(500).json({ error: "Unable to fetch appointment." });
-    }
-    
-    if (appointment.length === 0) {
-      return res.status(404).json({ message: "Appointment not found." });
-    }
-    
-    res.json(appointment[0]);
-  });
+  db.query("SELECT * FROM APPOINTMENTS WHERE doctor_id = ?", [req.params.id], (error, appointment) => {
+  if (error) {
+    return res.status(500).json({ error: "Unable to fetch appointment." });
+  }
+  
+  if (appointment.length === 0) {
+    return res.status(404).json({ message: "Appointment not found." });
+  }
+  
+  res.json(appointment[0]);
+});
 };
-
 
 exports.createAppointment = (req, res) => {
   const { doctor_id, clinic_id, start_time, end_time, appointment_type, appointment_status } = req.body;
@@ -523,7 +522,7 @@ exports.createAppointment = (req, res) => {
             // Referral check if specialist
             if (appointment_type === "Specialist") {
               db.query(
-                `SELECT * FROM REFERRALS WHERE patient_id = ? AND doctor_id = ? AND referral_status != 'Declined'`,
+                `SELECT * FROM REFERRALS WHERE patient_id = ? AND specialist_id = ? AND referral_status != 'Declined'`,
                 [patient_id, doctor_id],
                 (error, referral) => {
                   if (error) return res.status(500).json({ error: "Referral check failed." });
@@ -571,7 +570,11 @@ exports.createAppointment = (req, res) => {
                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)`,
                 [patient_id, doctor_id, clinic_id, start_time, end_time, appointment_type, appointment_status, created_by],
                 (error, result) => {
-                  if (error) return res.status(500).json({ error: "Unable to create an appointment." });
+                  
+                  if (error) {
+                    console.error('Insert Error:', error);
+                    return res.status(500).json({ error: "Unable to create an appointment." });
+                  }
 
                   res.status(201).json({
                     id: result.insertId,
@@ -1028,7 +1031,7 @@ exports.checkReferralValidity = (req, res) => {
 
   const query = `
     SELECT * FROM REFERRALS
-    WHERE patient_id = ? AND doctor_id = ? AND referral_status != 'Declined'
+    WHERE patient_id = ? AND specialist_id = ? AND referral_status != 'Declined'
   `;
 
   db.query(query, [patientId, doctorId], (err, results) => {
@@ -1038,5 +1041,27 @@ exports.checkReferralValidity = (req, res) => {
     }
 
     res.json({ valid: results.length > 0 });
+  });
+};
+
+//get appointment by doctor_id 
+exports.getAppointmentByDoctor = (req, res) => {
+  const doctorId = req.params.doctorId;
+
+  const query = `
+    SELECT a.appointment_id, a.start_time, p.first_name, p.last_name
+    FROM APPOINTMENTS a
+    JOIN PATIENTS p ON a.patient_id = p.patient_id
+    JOIN REFERRALS r ON r.patient_id = a.patient_id AND r.specialist_id = a.doctor_id
+    WHERE a.doctor_id = ? AND r.referral_status = 'Pending'
+  `;
+
+  db.query(query, [doctorId], (err, results) => {
+    if (err) {
+      console.error('Error fetching referred appointments:', err);
+      return res.status(500).json({ error: 'Failed to fetch referred appointments.' });
+    }
+
+    res.json(results);
   });
 };

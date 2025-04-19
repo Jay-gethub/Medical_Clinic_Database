@@ -1,0 +1,130 @@
+.medical-records-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+select {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.section {
+  margin: 2rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+}
+
+.section button {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.section button:hover {
+  background-color: #005fa3;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #000000;
+  color: white;
+}
+
+input, select {
+  margin: 0.25rem 0.5rem 0.5rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.form-inline input,
+.form-inline select {
+  flex: 1;
+  min-width: 120px;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #218838;
+}
+/* Style for the submit and cancel buttons */
+/* Style for the submit and cancel buttons */
+button {
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #d3d3d3; /* Initial gray background */
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Style for the submit button (gray initially) */
+button.submit-btn {
+  background-color: #868282; /* Gray background */
+}
+
+/* Hover effect for the submit button */
+button.submit-btn:hover {
+  background-color: #4CAF50; /* Green when hovered */
+}
+
+/* Style for the cancel button (gray initially) */
+button.cancel-btn {
+  background-color: #868282; /* Gray background */
+}
+
+/* Hover effect for the cancel button */
+button.cancel-btn:hover {
+  background-color: #f44336; /* Red when hovered */
+}
+
+/* Space between the buttons */
+button + button {
+  margin-left: 15px;
+}
+

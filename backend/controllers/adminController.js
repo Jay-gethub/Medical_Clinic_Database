@@ -52,6 +52,7 @@ exports.getEmployeesByClinic = (req, res) => {
 // Add new employee
 exports.createEmployee = (req, res) => {
   const db = req.app.get("db");
+
   db.beginTransaction((err) => {
   const {
     first_name, last_name, middle_name, address, email, phone,

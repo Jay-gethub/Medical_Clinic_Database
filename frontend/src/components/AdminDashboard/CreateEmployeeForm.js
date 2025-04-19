@@ -589,6 +589,14 @@ class CreateEmployeeForm extends React.Component {
         license_number: '',
         hire_date: ''
       },
+      showPopup: false,
+      loginInfo: {
+        username:'', 
+        password:'',
+        role:'',
+        first_name:'',
+        last_name:'',
+      },
       errors: {}
     };
   }
@@ -701,6 +709,16 @@ class CreateEmployeeForm extends React.Component {
     return isValid;
   };
 
+  getRoleName = (role) => {
+    switch (role) {
+      case '1': return 'Doctor';
+      case '2': return 'Nurse';
+      case '3': return 'Receptionist';
+      case '4': return 'Database Administrator';
+      default: return 'Employee';
+    }
+  };
+
   handleSubmit = async (e) => {
     e.preventDefault();
     if (!this.validateForm()) {
@@ -711,31 +729,53 @@ class CreateEmployeeForm extends React.Component {
     try {
       const { employeeData } = this.state;
       const res = await axios.post("http://localhost:5000/api/admin/create-employee", employeeData);
+    
       if (res.status === 200) {
+        const { username, password } = res.data;
+        const roleText = this.getRoleName(employeeData.role);
+    
         this.setState({
-          successMsg: "Employee created successfully!",
+          successMsg: `${roleText} ${employeeData.first_name} ${employeeData.last_name} has been added.`,
+          loginInfo: {
+            username, password, 
+            role: employeeData.role,
+            first_name: employeeData.first_name, last_name: employeeData.last_name},
+          showPopup: true,
           errorMsg: '',
           employeeData: {
             first_name: '', last_name: '', middle_name: '',
             address: { street_num: '', street_name: '', postal_code: '', city: '', state: '' },
             email: '', phone: '', sex: '', dob: '', education: '', role: '',
-            specialization: '', clinic_id: '', department_id: '', hire_date: ''
+            specialization: '', clinic_id: '', department_id: '', license_number: '', hire_date: ''
           },
           errors: {}
         });
       }
     } catch (err) {
       console.error(err);
-      this.setState({ errorMsg: 'Error creating employee.', successMsg: '' });
+      this.setState({ errorMsg: 'Error creating employee.', successMsg: '', loginInfo: null });
     }
   };
   
 
   render() {
-    const { employeeData, errors, clinics, departments, states, successMsg, errorMsg } = this.state;
+    const { employeeData, errors, clinics, departments, states, successMsg, errorMsg, showPopup, loginInfo } = this.state;
 
+    
     return (
-      <form onSubmit={this.handleSubmit} className="admin-box">
+      <div>
+      {showPopup && loginInfo && (
+        <div className="popup-overlay">
+          <div className="popup-box">
+            <h3>{this.getRoleName(loginInfo.role)} {loginInfo.first_name} {loginInfo.last_name} has been added!</h3>
+            <p><strong>Login Info:</strong></p>
+            <p>Username: <code>{loginInfo.username}</code></p>
+            <p>Password: <code>{loginInfo.password}</code></p>
+            <button onClick={() => this.setState({ showPopup: false, loginInfo: null })}>Close</button>
+          </div>
+        </div>)}
+
+        <form onSubmit={this.handleSubmit} className="admin-box">
         <h3>Create New Employee</h3>
 
         {successMsg && <div className="success-message">{successMsg}</div>}
@@ -855,9 +895,68 @@ class CreateEmployeeForm extends React.Component {
 
 
         <button type="submit">Add Employee</button>
-      </form>
+        </form>
+      </div>
     );
   }
 }
 
 export default CreateEmployeeForm;
+
+
+// const handleRoleInsert = (role) => {
+//   if (role === "Doctor") {
+//     const doctorQuery = `
+//       INSERT INTO DOCTORS (employee_id, clinic_id, department_id, specialization, license_number)
+//       VALUES (?, ?, ?, ?, ?)`;
+//     db.query(doctorQuery, [employeeId, clinic_id, department_id, specialization, license_number], (err) => {
+//       if (err) {
+//         console.error("DOCTORS insert error:", err);
+//         return res.status(500).json({ error: "Failed to insert into DOCTORS" });
+//       }
+//       return res.status(200).json({ message: "Doctor added successfully!", username, password });
+//     });
+//   } else if (role === "Nurse") {
+//     const nurseQuery = `
+//       INSERT INTO NURSES (employee_id, clinic_id, department_id, license_number)
+//       VALUES (?, ?, ?, ?)`;
+//     db.query(nurseQuery, [employeeId, clinic_id, department_id, license_number], (err) => {
+//       if (err) {
+//         console.error("NURSES insert error:", err);
+//         return res.status(500).json({ error: "Failed to insert into NURSES" });
+//       }
+//       return res.status(200).json({ message: "Nurse added successfully!", username, password });
+//     });
+//   } else if (role === "Receptionist") {
+//     const recQuery = `
+//       INSERT INTO RECEPTIONIST (employee_id, clinic_id, phone, email)
+//       VALUES (?, ?, ?, ?)`;
+//     db.query(recQuery, [employeeId, clinic_id, phone, email], (err) => {
+//       if (err) {
+//         console.error("RECEPTIONIST insert error:", err);
+//         return res.status(500).json({ error: "Failed to insert into RECEPTIONIST" });
+//       }
+//       return res.status(200).json({ message: "Receptionist added successfully!", username, password });
+//     });
+//   } else if (role === "Database Admin") {
+//     const dbAdminQuery = `
+//       INSERT INTO DATABASE_MANAGER (employee_id, last_login)
+//       VALUES (?, NOW())`;
+//     db.query(dbAdminQuery, [employeeId], (err) => {
+//       if (err) {
+//         console.error("DATABASE_MANAGER insert error:", err);
+//         return res.status(500).json({ error: "Failed to insert into DATABASE_MANAGER" });
+//       }
+//       return res.status(200).json({ message: "Database Admin added successfully!", username, password });
+//     });
+//   } else {
+//     return res.status(200).json({ message: "Employee created successfully!", username, password });
+//   }
+// };
+
+// // Start username check and credentials insert
+// checkUsername();
+// });
+// });
+// });
+// };

@@ -5,10 +5,10 @@ import logo from '../../assets/clinic-logo.png';
 import bgImage from '../../assets/Home.png';
 import NurseProfile from './NurseProfile';
 import DiagnosticView from './DiagnosticView';
-import ReferralView from './ReferralView';
-import ImmunizationView from './ImmunizationView';
-import AppointmentView from './AppointmentView';
-import MedicalRecordsView from './MedicalRecordsView';
+import NurseReferrals from './NurseReferrals';
+//import ImmunizationView from './ImmunizationView';
+//import AppointmentView from './AppointmentView';
+//import MedicalRecordsView from './MedicalRecordsView';
 
 
 const NurseDashboard = () => {
@@ -56,11 +56,7 @@ const NurseDashboard = () => {
         <div className="admin-tab-content">
     {activeTab === 'profile' && <NurseProfile />}
     {activeTab === 'diagnostics' && <DiagnosticView />}
-    {activeTab === 'referrals' && <ReferralView />}
-    {activeTab === 'immunizations' && <ImmunizationView />}
-    {activeTab === 'appointments' && <AppointmentView />}
-    {activeTab === 'records' && <MedicalRecordsView />}
-
+    {activeTab === 'referrals' && <NurseReferrals />}
 
         </div>
       </div>

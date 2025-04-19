@@ -1,10 +1,11 @@
-//NurseProfile.js
-//nurse profile page
+//Receptionist profile page
 import React, { useState, useEffect } from 'react';
-import '../../styles/AdminDashboard.css'; // can rename this later if needed
+import '../../styles/AdminDashboard.css';
 
-const NurseProfile = () => {
-const [profile, setProfile] = useState(null);
+
+
+const ReceptionistProfile = () => {
+  const [profile, setProfile] = useState(null);
 
   //fetch employee ID from localStorage then fetch employee data from DB
   const userData = JSON.parse(localStorage.getItem('user'));
@@ -81,4 +82,4 @@ const [profile, setProfile] = useState(null);
   );
 };
 
-export default NurseProfile;
+export default ReceptionistProfile;

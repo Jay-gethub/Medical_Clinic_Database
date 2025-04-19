@@ -40,7 +40,7 @@ const ReferralCheck = ({ patientId, doctorId, time, clinicId }) => {
 
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/referrals/check?patientId=${patientId}&doctorId=${doctorId}`
+          `http://localhost:5000/api/appointments/referrals/check?patientId=${patientId}&doctorId=${doctorId}`
         );
         setHasReferral(res.data.valid);
       } catch (err) {
