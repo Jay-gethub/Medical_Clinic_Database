@@ -43,7 +43,9 @@ const AdminDashboard = () => {
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
           <button onClick={() => setActiveTab('create')} className={activeTab === 'create' ? 'active' : ''}>Create Employee</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
+          <button onClick={() => setActiveTab('')} className={activeTab === '' ? 'active' : ''}>Reports</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>
+         
   Manage Schedules
 </button>
 

@@ -90,6 +90,7 @@ exports.registerPatient = (req, res) => {
     phone_num,
     email,
     sex,
+    race,
     street_num,
     street_name,
     postal_code,
@@ -135,10 +136,10 @@ exports.registerPatient = (req, res) => {
 
         // 3. Insert into PATIENTS 
         const patientQuery =
-          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, race, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         db.query(
           patientQuery,
-          [first_name, last_name, dob, address_id, phone_num, email, sex, user_id],
+          [first_name, last_name, dob, address_id, phone_num, email, sex, race, user_id],
           (err, patientResult) => {
             if (err) {
               console.error("Patient insert failed:", err);

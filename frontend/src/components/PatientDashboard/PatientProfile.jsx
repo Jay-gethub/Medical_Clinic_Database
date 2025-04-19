@@ -95,6 +95,11 @@ const PatientProfile = ({ patientId }) => {
         <input type="text" name="sex" value={formData.sex || ''} disabled />
       </div>
 
+      <div className="form-group">
+        <label>Race</label>
+        <input type="text" name="sex" value={formData.race || ''} disabled />
+      </div>
+
       {/* Address */}
       <h4>Address</h4>
       {['street_num', 'street_name', 'city', 'state', 'postal_code'].map((field) => (

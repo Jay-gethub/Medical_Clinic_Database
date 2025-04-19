@@ -64,6 +64,10 @@ router.get('/pending-diagnostics/:id', employeeController.getPendingDiagnostics)
 //mark immunization complete
 router.post('/mark-immunization-complete', employeeController.MarkImmunizationComplete);
 
+//mark diagnostics complete
+router.post('/mark-diagnostic-complete', employeeController.MarkDiagnosticComplete);
+
+
 //get employee by id
 router.get('/:id', employeeController.getProfileById);
 

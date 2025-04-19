@@ -605,7 +605,7 @@ exports.getPendingDiagnostics = (req, res) => {
   const patientId = req.params.id;
 
   const query = `
-    SELECT test_type, test_date 
+    SELECT test_type, test_date, test_id 
     FROM medical_clinic.DIAGNOSTIC_TESTS 
     WHERE patient_id = ?;
   `;
@@ -710,5 +710,26 @@ exports.getMedicalHistory = (req, res) => {
         family_history: famResults
       });
     });
+  });
+};
+
+// diagnostics complete
+exports.MarkDiagnosticComplete = (req, res) => {
+  const {patient_id, test_type, test_date, test_id, results_} = req.body;
+
+  const query = `
+    UPDATE DIAGNOSTIC_TESTS
+  SET test_status = 'Completed', results = ?
+  WHERE test_id = ?;
+
+  `;
+
+  db.query(query, [results_, test_id], (err, results) => {
+    if (err) {
+      console.error('Error completing diagnostics diagnostics:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    res.json(results);
   });
 };

@@ -1,0 +1,123 @@
+.diagnostics-view-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+}
+
+/* Search Section */
+.search-section input {
+  padding: 8px;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.search-section button {
+  padding: 8px 12px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-section button:hover {
+  background-color: #444;
+}
+
+/* Results List */
+.results-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.results-list li button {
+  margin: 5px 0;
+  padding: 6px 12px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.results-list li button:hover {
+  background-color: #cfd1f0;
+  color: #000;
+}
+
+/* Tables */
+.diagnostics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.diagnostics-table th,
+.diagnostics-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  background-color: #d0e4f7;
+  text-align: left;
+}
+
+.diagnostics-table th {
+  background-color: #b0c4de;
+}
+
+/* Back Button */
+.back-btn {
+  margin-bottom: 1rem;
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.back-btn:hover {
+  background-color: #444;
+}
+
+/* Error Text */
+.error-text {
+  color: red;
+  margin-top: 1rem;
+}
+
+/* Modal Overlay */
+.modal-overlay-for-shots {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal Content */
+.modal-content-for-shots {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.modal-actions-for-shots button {
+  margin: 0.5rem;
+  padding: 8px 12px;
+  background-color: rgb(80, 80, 80);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modal-actions-for-shots button:hover {
+  background-color: rgb(50, 50, 50);
+}
