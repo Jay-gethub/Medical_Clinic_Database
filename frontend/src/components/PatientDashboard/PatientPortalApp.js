@@ -78,18 +78,21 @@ const PatientPortalApp = () => {
       </aside>
 
       <main className="dashboard-content">
-        <div className="top-bar">
-          <span>You last logged in: 29/03/2025 19:07</span>
-          <button
-            className="logout-btn"
-            onClick={() => {
-              localStorage.clear();
-              window.location.href = '/login';
-            }}
-          >
-            Log Out
-          </button>
-        </div>
+      <div className="top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+  <span>You last logged in: 29/03/2025 19:07</span>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+    <span style={{ fontWeight: 'bold', color: '#333', fontSize: '1.1rem' }}>Patient ID: {patientId}</span>
+    <button
+      className="logout-btn"
+      onClick={() => {
+        localStorage.clear();
+        window.location.href = '/login';
+      }}
+    >
+      Log Out
+    </button>
+  </div>
+</div>
         <div className="content-area">{renderContent()}</div>
       </main>
     </div>

@@ -10,6 +10,9 @@ import ManageDocSchedules from './ManageDocSchedules';
 import DoctorPatients from './DoctorPatients';
 import DoctorReferralForm from './DoctorReferrals';
 import MedicalRecords from './DoctorMedicalRecords';
+import DoctorAppointments from './DoctorAppointments';
+import '../../styles/DoctorAppointments.css';
+
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
@@ -47,9 +50,10 @@ const DoctorDashboard = () => {
           <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Patients</button>
           <button onClick={() => setActiveTab('referral')} className={activeTab === 'referral' ? 'active' : ''}>Referrals</button>
           <button onClick={() => setActiveTab('medical_records')} className={activeTab === 'medical_records' ? 'active' : ''}>Medical Records</button>
-          <button onClick={() => setActiveTab('')} className={activeTab === '' ? 'active' : ''}>Perscriptions</button>
-          <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
+          <button onClick={() => setActiveTab('')} className={activeTab === '' ? 'active' : ''}>Prescriptions</button>
+          {/* <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button> */}
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
+          <button onClick={() => setActiveTab('appointments')} className={activeTab === 'appointments' ? 'active' : ''}>View Appointments</button>
 
         </div>
 
@@ -59,6 +63,8 @@ const DoctorDashboard = () => {
           {activeTab === 'profile' && <DoctorProfile />}
           {activeTab === 'referral' && <DoctorReferralForm />}
           {activeTab === 'medical_records' && <MedicalRecords />}
+          {activeTab === 'appointments' && <DoctorAppointments />}
+
 
         </div>
       </div>

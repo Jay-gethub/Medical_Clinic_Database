@@ -80,5 +80,5 @@ router.get("/referrals/check", appointmentController.checkReferralValidity);
 
 // appointmetnts by doctor id
 router.get("/doctor-appointments/:id", appointmentController.getAppointmentByDoctor);
-
+router.get('/doctor/:doctorId', appointmentController.getDoctorAppointments);
 module.exports = router;

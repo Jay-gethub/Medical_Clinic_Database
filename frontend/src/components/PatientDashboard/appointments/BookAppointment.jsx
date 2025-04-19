@@ -10,9 +10,9 @@ const BookAppointment = ({ patientId }) => {
   const [selectedTime, setSelectedTime] = useState(null);
   
   return (
-    <div className="appointments-container">
+    <div className="form-card">
       <h2>Book an Appointment</h2>
-
+      
       <ClinicSelector onClinicSelect={(id) => {
         setSelectedClinic(id);
         setSelectedDoctor(null);
@@ -48,6 +48,7 @@ const BookAppointment = ({ patientId }) => {
       
       )}
     </div>
+   
   );
 };
 

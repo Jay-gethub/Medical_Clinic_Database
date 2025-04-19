@@ -262,7 +262,7 @@ const PatientRegister = () => {
             <label>Effective To</label>
             <input type="date" name="effective_to" value={form.effective_to} onChange={handleChange} />
           </div>
-          <button type="submit">Register</button>
+          <button type="submit" class="register-btn">Register</button>
         </form>
       </div>
     </div>

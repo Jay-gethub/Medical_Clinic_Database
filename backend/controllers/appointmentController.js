@@ -1065,3 +1065,31 @@ exports.getAppointmentByDoctor = (req, res) => {
     res.json(results);
   });
 };
+
+exports.getDoctorAppointments = (req, res) => {
+  const doctorId = req.params.doctorId;
+
+  const query = `
+    SELECT 
+      a.appointment_id,
+      a.start_time,
+      a.end_time,
+      a.appointment_status,
+      a.appointment_type,
+      p.patient_id,
+      p.first_name AS patient_first_name,
+      p.last_name AS patient_last_name
+    FROM APPOINTMENTS a
+    JOIN PATIENTS p ON a.patient_id = p.patient_id
+    WHERE a.doctor_id = ?
+    ORDER BY a.start_time ASC
+  `;
+
+  db.query(query, [doctorId], (error, results) => {
+    if (error) {
+      console.error("Error fetching doctor appointments:", error);
+      return res.status(500).json({ error: "Failed to retrieve appointments" });
+    }
+    res.json(results);
+  });
+};

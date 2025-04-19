@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../../../styles/Appointments.css'; 
 import axios from 'axios';
 
 const ReferralCheck = ({ patientId, doctorId, time, clinicId }) => {
@@ -121,9 +122,14 @@ const ReferralCheck = ({ patientId, doctorId, time, clinicId }) => {
           <p className="error-msg">❗You need a valid referral to book with this specialist.</p>
         )
       ) : (
-        <button onClick={handleConfirm} disabled={loading}>
-          {loading ? 'Booking...' : 'Confirm Appointment'}
-        </button>
+        <button 
+        className="confirm-appointment-btn" 
+        onClick={handleConfirm} 
+        disabled={loading}
+      >
+        {loading ? 'Booking...' : 'Confirm Appointment'}
+      </button>
+      
       )}
 
       {bookingMessage && <p className="booking-msg">{bookingMessage}</p>}

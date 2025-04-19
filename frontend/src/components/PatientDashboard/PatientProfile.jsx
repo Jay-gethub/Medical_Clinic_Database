@@ -50,6 +50,7 @@ const PatientProfile = ({ patientId }) => {
   return (
     <div className="profile-form">
       <h2>My Profile</h2>
+  
 
       {/* Basic Info */}
       <div className="form-group">

@@ -1,0 +1,433 @@
+/* DoctorAppointments.css */
+.doctor-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .header {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .welcome-text h2 {
+    margin: 0 0 5px 0;
+    color: #333;
+  }
+  
+  .welcome-text p {
+    margin: 0;
+    color: #666;
+  }
+  
+  .schedule-container {
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .schedule-section {
+    flex: 1;
+    border-right: 1px solid #eee;
+    padding: 20px;
+  }
+  
+  .appointments-section {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .appointments-section h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Improved Calendar Styles */
+  .calendar {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    padding: 16px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0 16px 0;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .calendar-navigation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .calendar-navigation span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  
+  .calendar-navigation button {
+    width: 32px;
+    height: 32px;
+    background-color: #f0f2f5;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #4a4a4a;
+    transition: all 0.2s ease;
+  }
+  
+  .calendar-navigation button:hover {
+    background-color: #e4e6e9;
+    color: #1a1a1a;
+  }
+  
+  .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 12px 0;
+  }
+  
+  .day-name {
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: #6e6e6e;
+    padding: 8px 0;
+    text-transform: uppercase;
+  }
+  
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 4px 0;
+  }
+  
+  .cell {
+    position: relative;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 2px;
+    border-radius: 50%;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+  
+  .cell:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .cell.disabled {
+    color: #c5c5c5;
+    pointer-events: none;
+  }
+  
+  .cell.selected {
+    background-color: #1976d2;
+    color: white;
+    font-weight: 600;
+  }
+  
+  .cell.today {
+    font-weight: 600;
+    color: #1976d2;
+  }
+  
+  .cell.today::after {
+    content: '';
+    position: absolute;
+    bottom: 7px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #1976d2;
+  }
+  
+  .cell.with-events::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #f44336;
+  }
+  
+  /* Appointment Styles */
+  .appointments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  .no-appointments {
+    text-align: center;
+    color: #999;
+    padding: 30px 0;
+    font-style: italic;
+  }
+  
+  .appointment-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #4fc3f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+  }
+  
+  .appointment-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .patient-initial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #bbdefb;
+    color: #1565c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 16px;
+  }
+  
+  .appointment-details {
+    flex: 1;
+  }
+  
+  .appointment-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .appointment-details p {
+    margin: 0;
+    color: #666;
+    font-size: 13px;
+  }
+  
+  .appointment-time {
+    font-weight: 600;
+    color: #455a64;
+    font-size: 14px;
+    background-color: #eceff1;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-right: 15px;
+  }
+  
+  .appointment-status {
+    margin-right: 15px;
+  }
+  
+  .start-btn, .end-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .start-btn {
+    background-color: #2196f3;
+    color: white;
+  }
+  
+  .start-btn:hover {
+    background-color: #1976d2;
+  }
+  
+  .end-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .end-btn:hover {
+    background-color: #388e3c;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  
+  .status-badge.scheduled {
+    background-color: #e3f2fd;
+    color: #0277bd;
+  }
+  
+  .status-badge.finished {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .status-badge.cancelled {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  .status-badge.rescheduled {
+    background-color: #fff8e1;
+    color: #f57f17;
+  }
+  appointments-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .options h2 {
+    color: #3949ab;
+    margin-bottom: 40px;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .large-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 550px;
+  }
+  
+  .large-button {
+    width: 100%;
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: none;
+    height: 90px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .large-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .button-content {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    height: 100%;
+    padding: 0 30px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+  }
+  
+  .book-button .button-content {
+    background-color: #e3f2fd;
+    border-color: #64b5f6;
+  }
+  
+  .book-button:hover .button-content {
+    background-color: #bbdefb;
+    border-color: #42a5f5;
+  }
+  
+  .view-button .button-content {
+    background-color: #e8f5e9;
+    border-color: #81c784;
+  }
+  
+  .view-button:hover .button-content {
+    background-color: #c8e6c9;
+    border-color: #66bb6a;
+  }
+  
+  .button-icon {
+    font-size: 30px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button-text {
+    font-size: 22px;
+    font-weight: 600;
+    color: #4a5568;
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  .back-button-container {
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    display: flex;
+    align-items: center;
+    background: #e8eaf6;
+    border: none;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #3949ab;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .back-button:hover {
+    background: #c5cae9;
+  }
+  

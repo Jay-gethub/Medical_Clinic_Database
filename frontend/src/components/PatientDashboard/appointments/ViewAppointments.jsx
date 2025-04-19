@@ -93,9 +93,9 @@ const ViewAppointments = ({ patientId }) => {
     <div className="view-appointments">
       <div className="appointments-header">
         <h2>Your Appointments</h2>
-        <button onClick={fetchAppointments} className="refresh-btn">
+        {/* <button onClick={fetchAppointments} className="refresh-btn">
           Refresh
-        </button>
+        </button> */}
       </div>
 
       {error && (
@@ -130,7 +130,7 @@ const ViewAppointments = ({ patientId }) => {
                   <button
                     onClick={() => handleCancel(appt.appointment_id)}
                     className="cancel-btn"
-                    disabled={loading}
+            
                   >
                     {loading ? 'Processing...' : 'Cancel Appointment'}
                   </button>
@@ -173,3 +173,4 @@ const ViewAppointments = ({ patientId }) => {
 };
 
 export default ViewAppointments;
+
