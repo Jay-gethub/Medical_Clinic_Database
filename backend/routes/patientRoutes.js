@@ -44,5 +44,25 @@ router.get("/medical-records/:id", patientController.getMedicalRecords);
 // Get referrals
 router.get("/referrals/:id", patientController.getReferrals);
 
+// --- Self-Reported Medications ---
+router.post('/self-medications', patientController.addSelfMedication);
+router.get('/self-medications/:id', patientController.getSelfMedications);
+router.put('/self-medications/:medication_id', patientController.updateSelfMedication);
+router.delete('/self-medications/:medicationId', patientController.deleteMedication);
+
+
+
+// --- Family History ---
+router.post('/family-history', patientController.addFamilyHistory);
+router.get('/family-history/:id', patientController.getFamilyHistory);
+router.put('/family-history/:fh_id', patientController.updateFamilyHistory);
+router.delete('/family-history/:fh_id', patientController.deleteFamilyHistory);
+// Allergy routes
+router.get('/allergies/names', patientController.getAllergyNames);
+router.get('/allergies/:id', patientController.getPatientAllergies);
+router.post('/allergies/:patient_id', patientController.createPatientAllergy);
+router.put('/allergies/:patient_id/:original_allergy_id', patientController.updatePatientAllergy);
+router.delete('/allergies/:patient_id/:allergy_id', patientController.deletePatientAllergy);
+
 
 module.exports = router;

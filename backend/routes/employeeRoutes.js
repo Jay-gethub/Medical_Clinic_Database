@@ -68,4 +68,9 @@ router.post('/mark-immunization-complete', employeeController.MarkImmunizationCo
 router.get('/:id', employeeController.getProfileById);
 
 
+//get patient history
+router.get('/patient-medical-history/:patientId', employeeController.getMedicalHistory);
+
+
+
 module.exports = router;

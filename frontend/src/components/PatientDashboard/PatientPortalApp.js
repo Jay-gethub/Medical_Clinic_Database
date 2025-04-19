@@ -6,7 +6,7 @@ import ReferralPage from '../PatientDashboard/Referrals/ReferralPage';
 import InsuranceDetails from '../PatientDashboard/InsuranceDetails';
 import Appointments from '../PatientDashboard/Appointments';
 import BillingPage from '../PatientDashboard/Billing/BillingPage';
-
+import HealthHistory from '../PatientDashboard/HealthHistory';
 
 import Immunizations from '../PatientDashboard/Immunizations';
 import MedicalRecords from '../PatientDashboard/MedicalRecords';
@@ -30,13 +30,16 @@ const PatientPortalApp = () => {
       case 'insurance':
         return <InsuranceDetails patientId={patientId} />;
       
-     
+      case 'health-history':
+        return <HealthHistory patientId={patientId} />;
+
       case 'medical-records':
         return <MedicalRecords patientId={patientId} />;
       default:
         return <h2>Welcome to your Patient Portal</h2>;
           case 'billing':
             return <BillingPage patientId={patientId} />;
+
           
     }
   };
@@ -59,6 +62,9 @@ const PatientPortalApp = () => {
           <li className={selectedTab === 'immunizations' ? 'active' : ''} onClick={() => setSelectedTab('immunizations')}>
             Immunizations
           </li>
+          <li className={selectedTab === 'health-history' ? 'active' : ''} onClick={() => setSelectedTab('health-history')}>
+  Health History
+</li>
           <li className={selectedTab === 'appointments' ? 'active' : ''} onClick={() => setSelectedTab('appointments')}>
             Appointments
           </li>

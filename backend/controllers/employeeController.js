@@ -672,3 +672,43 @@ exports.MarkImmunizationComplete = (req, res) => {
         
 };
 
+//medical history
+
+exports.getMedicalHistory = (req, res) => {
+  const patientId = parseInt(req.params.patientId); // Force it to be an integer
+
+  const medQuery = `
+    SELECT name, dosage 
+    FROM SELF_REPORTED_MEDICATIONS 
+    WHERE patient_id = ?
+  `;
+
+  const famQuery = `
+    SELECT condition_name, relationship, comments 
+    FROM FAMILY_HISTORY 
+    WHERE patient_id = ?
+  `;
+
+  db.query(medQuery, [patientId], (err, medResults) => {
+    if (err) {
+      console.error('Error fetching medications:', err);
+      return res.status(500).json({ error: 'Failed to fetch medications' });
+    }
+
+    db.query(famQuery, [patientId], (err2, famResults) => {
+      if (err2) {
+        console.error('Error fetching family history:', err2);
+        return res.status(500).json({ error: 'Failed to fetch family history' });
+      }
+
+      // ✅ Log for debugging
+      console.log('Medications:', medResults);
+      console.log('Family History:', famResults);
+
+      res.json({
+        self_medications: medResults,
+        family_history: famResults
+      });
+    });
+  });
+};

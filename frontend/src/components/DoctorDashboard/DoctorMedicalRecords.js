@@ -6,12 +6,15 @@ const MedicalRecords = () => {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState('');
   const [medicalRecords, setMedicalRecords] = useState(null);
+  const [medicalHistory, setMedicalHistory] = useState(null);
   const [collapsedSections, setCollapsedSections] = useState({
     patientInfo: false,
     allergies: false,
     immunizations: false,
     prescriptions: false,
     diagnostics: false,
+    selfMedications: false,
+  familyHistory: false
   });
 
   const doctorId = JSON.parse(localStorage.getItem('user'))?.employee_id;
@@ -29,9 +32,16 @@ const MedicalRecords = () => {
 
     if (!patientId) {
       setMedicalRecords(null);
+      setMedicalHistory(null);
       return;
     }
-
+    axios
+    .get(`http://localhost:5000/api/employee/patient-medical-history/${patientId}`)
+    .then((res) => setMedicalHistory(res.data))
+    .catch((err) => {
+      console.error('Error fetching medical history:', err);
+      setMedicalHistory(null);
+    });
     axios
       .get(`http://localhost:5000/api/employee/patient-medical-record/${patientId}`)
       .then((res) => setMedicalRecords(res.data))
@@ -104,7 +114,58 @@ const MedicalRecords = () => {
               ) : <p>No allergies recorded.</p>
             )}
           </div>
+          {/* Self-Reported Medications */}
+{medicalHistory && (
+  <div className="section">
+    <button onClick={() => toggleSection('selfMedications')}>
+      {collapsedSections.selfMedications ? '' : ''} Self-Reported Medications
+    </button>
+    {!collapsedSections.selfMedications && (
+      medicalHistory.self_medications.length ? (
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Dosage</th></tr>
+          </thead>
+          <tbody>
+            {medicalHistory.self_medications.map((m, i) => (
+              <tr key={i}>
+                <td>{m.name}</td>
+                <td>{m.dosage || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : <p>No self-reported medications.</p>
+    )}
+  </div>
+)}
 
+{/* Family History */}
+{medicalHistory && (
+  <div className="section">
+    <button onClick={() => toggleSection('familyHistory')}>
+      {collapsedSections.familyHistory ? '' : ''} Family History
+    </button>
+    {!collapsedSections.familyHistory && (
+      medicalHistory.family_history.length ? (
+        <table>
+          <thead>
+            <tr><th>Condition</th><th>Relationship</th><th>Comments</th></tr>
+          </thead>
+          <tbody>
+            {medicalHistory.family_history.map((fh, i) => (
+              <tr key={i}>
+                <td>{fh.condition_name}</td>
+                <td>{fh.relationship || '—'}</td>
+                <td>{fh.comments || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : <p>No family history reported.</p>
+    )}
+  </div>
+)}
           {/* Immunizations */}
           <div className="section">
             <button onClick={() => toggleSection('immunizations')}>
