@@ -284,10 +284,19 @@ exports.getSpecialists = (req, res) => {
 exports.getPendingReferrals = (req, res) => {
   const specialistId = req.params.id;
   const query = `
-    SELECT r.referral_id, r.referral_reason, r.referral_date, r.referral_notes, 
-           r.expiration_date, p.first_name, p.last_name
+    SELECT 
+      r.referral_id,
+      r.referral_reason,
+      r.referral_date,
+      r.referral_notes,
+      r.expiration_date,
+      p.first_name AS patient_first_name,
+      p.last_name AS patient_last_name,
+      e.first_name AS doctor_first_name,
+      e.last_name AS doctor_last_name
     FROM REFERRALS r
     JOIN PATIENTS p ON r.patient_id = p.patient_id
+    JOIN EMPLOYEES e ON r.referring_doctor_id = e.employee_id
     WHERE r.specialist_id = ? AND r.referral_status = 'Pending'
   `;
 
@@ -296,8 +305,6 @@ exports.getPendingReferrals = (req, res) => {
       console.error('Error fetching referrals:', err);
       return res.status(500).json({ error: 'Failed to fetch referrals.' });
     }
-    //console.log(specialistId);
-    //console.log(results);
 
     res.json(results);
   });
