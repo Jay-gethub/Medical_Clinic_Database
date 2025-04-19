@@ -17,4 +17,7 @@ router.post('/schedules', adminController.createSchedule);
 router.put('/schedules/:schedule_id', adminController.updateSchedule);
 //get schedules
 router.get('/schedules/:id', adminController.getSchedulesByEmployeeId);
+
+router.delete("/schedules/:schedule_id",  adminController.deleteSchedule);
+
 module.exports = router;

@@ -238,7 +238,7 @@ body, html {
 /* Edit Button */
 .schedule-table button {
   padding: 6px 12px;
-  background-color: #ffa000;
+  /* background-color: #ffa000; */
   color: white;
   border: none;
   border-radius: 6px;
@@ -248,9 +248,9 @@ body, html {
   transition: background-color 0.3s ease;
 }
 
-.schedule-table button:hover {
+/* .schedule-table button:hover {
   background-color: #ff8f00;
-}
+} */
 .dropdown-group {
   display: flex;
   flex-wrap: wrap;
@@ -365,4 +365,21 @@ body, html {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+.edit-button {
+  background-color: #007bff ;
+  color: white ;
+}
+
+.edit-button:hover {
+  background-color: #0056b3 ;
+}
+
+.delete-button {
+  background-color: #dc3545 ;
+  color: white ;
+}
+
+.delete-button:hover {
+  background-color: #a71d2a ;
 }
