@@ -29,13 +29,8 @@ const PatientPortalApp = () => {
         return <ReferralPage patientId={patientId} />;
       case 'insurance':
         return <InsuranceDetails patientId={patientId} />;
-      case 'billing':
-        return (
-          <div>
-            <h2>Billing</h2>
-            <p>Billing functionality is coming soon!</p>
-          </div>
-        );
+      
+     
       case 'medical-records':
         return <MedicalRecords patientId={patientId} />;
       default:

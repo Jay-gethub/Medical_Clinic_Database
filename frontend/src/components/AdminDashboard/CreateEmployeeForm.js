@@ -819,17 +819,7 @@ class CreateEmployeeForm extends React.Component {
             ))}
           </select>
         )}
-        {(employeeData.role === '1' || employeeData.role === '2') && (
-  <input
-    name="license_number"
-    value={employeeData.license_number || ''}
-    onChange={this.handleChange}
-    placeholder="License Number *"
-    className={errors.license_number ? 'input-error' : ''}
-  />
-)}
-{errors.license_number && <div className="error-message">{errors.license_number}</div>}
-)} */}
+      
 {(employeeData.role === '1' || employeeData.role === '2') && (
   <>
     <input
