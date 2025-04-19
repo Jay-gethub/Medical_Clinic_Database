@@ -376,9 +376,9 @@ const AssignedPatientsPage = () => {
                   )}
 
                   {pendingDiagnostics.length > 0 && (
-                    <div className="pending-diagnostics">
+                    <div className="pending-diagnostics-for-doctor-view">
                       <h4>Pending Diagnostic Tests</h4>
-                      <table className="diagnostic-table">
+                      <table className="diagnostic-table-for-doctor-view">
                         <thead>
                           <tr>
                             <th>Test Type</th>

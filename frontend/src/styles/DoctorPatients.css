@@ -364,24 +364,25 @@
   background-color: #f1f1f1;
 }
 
-.pending-diagnostics {
+.pending-diagnostics-for-doctor-view {
   margin-top: 20px;
 }
 
-.diagnostic-table {
+.diagnostic-table-for-doctor-view {
   width: 100%;
   border-collapse: collapse;
 }
 
-.diagnostic-table td {
+.diagnostic-table-for-doctor-view td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
   background-color: #dcdea6;
 }
 
-.diagnostic-table th {
+.diagnostic-table-for-doctor-view th {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
+  background-color: #000000;
 }

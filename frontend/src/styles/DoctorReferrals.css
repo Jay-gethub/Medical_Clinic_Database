@@ -1,17 +1,17 @@
 /* Wrap all styles under the doctor-referral-container */
-.doctor-referral-container {
+.doctor-referral-container-2 {
   padding: 2rem;
   /* Other global styling for the referral page */
 }
 
 /* Specialist View - Pending Referrals Table */
-.doctor-referral-container .specialist-view {
+.doctor-referral-container-2 .specialist-view {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.doctor-referral-container table {
+.doctor-referral-container-2 table {
   width: 90%;
   border-collapse: collapse;
   text-align: left;
@@ -19,26 +19,32 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.doctor-referral-container th,
-.doctor-referral-container td {
+.doctor-referral-container-2 th,
+.doctor-referral-container-2 td {
   padding: 1rem;
   border: 1px solid #ddd;
 }
 
-.doctor-referral-container thead {
+.doctor-referral-container-2 th {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  background-color: #000000;
+}
+
+.doctor-referral-container-2 thead {
   background-color: #dcdcdc;
 }
 
-.doctor-referral-container tbody tr {
+.doctor-referral-container-2 tbody tr {
   background-color: #f5f5f5;
 }
 
-.doctor-referral-container tbody tr:nth-child(even) {
+.doctor-referral-container-2 tbody tr:nth-child(even) {
   background-color: #eaeaea;
 }
 
-.doctor-referral-container .approve-btn {
-  background-color: #4CAF50;
+.doctor-referral-container-2 .approve-btn-for-specialist {
+  background-color: #7e7735;
   color: white;
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
@@ -47,8 +53,8 @@
   cursor: pointer;
 }
 
-.doctor-referral-container .decline-btn {
-  background-color: #f44336;
+.doctor-referral-container-2 .decline-btn-for-specialist {
+  background-color: #7e7735;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
@@ -56,13 +62,19 @@
   cursor: pointer;
 }
 
-.doctor-referral-container .approve-btn:hover,
-.doctor-referral-container .decline-btn:hover {
+.doctor-referral-container-2 .approve-btn-for-specialist:hover {
   opacity: 0.9;
+  background-color: #02c90c;
 }
 
+.doctor-referral-container-2 .decline-btn-for-specialist:hover {
+  opacity: 0.9;
+  background-color: #f44336;
+}
+
+
 /* Toast Styling (only affects within referral page) */
-.doctor-referral-container .toast {
+.doctor-referral-container-2 .toast {
   position: fixed;
   top: 1.5rem;
   right: 1.5rem;
@@ -74,15 +86,15 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.doctor-referral-container .toast.success {
+.doctor-referral-container-2 .toast.success {
   background-color: #4CAF50;
 }
 
-.doctor-referral-container .toast.error {
+.doctor-referral-container-2 .toast.error {
   background-color: #f44336;
 }
 
-.doctor-referral-container .toast button {
+.doctor-referral-container-2 .toast button {
   background: none;
   border: none;
   color: white;
@@ -92,20 +104,20 @@
 }
 
 /* Optional: Add more styling for your form fields, etc., under .doctor-referral-container */
-.doctor-referral-container .form-group {
+.doctor-referral-container-2 .form-group {
   margin-bottom: 1rem;
 }
 
-.doctor-referral-container .form-group input,
-.doctor-referral-container .form-group select,
-.doctor-referral-container .form-group textarea {
+.doctor-referral-container-2 .form-group input,
+.doctor-referral-container-2 .form-group select,
+.doctor-referral-container-2 .form-group textarea {
   width: 100%;
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
 
-.doctor-referral-container button.submit-btn {
+.doctor-referral-container-2 button.submit-btn {
   background-color: #4CAF50;
   color: white;
   padding: 1rem;
@@ -114,11 +126,11 @@
   cursor: pointer;
 }
 
-.doctor-referral-container button.submit-btn:hover {
+.doctor-referral-container-2 button.submit-btn:hover {
   opacity: 0.8;
 }
 /* Referral Form Enhancements */
-.doctor-referral-container form {
+.doctor-referral-container-2 form {
   max-width: 700px;
   margin: 2rem auto;
   padding: 2rem;
@@ -127,37 +139,37 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
-.doctor-referral-container h2 {
+.doctor-referral-container-2 h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #333;
 }
 
-.doctor-referral-container .form-group label {
+.doctor-referral-container-2 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: #333;
 }
 
-.doctor-referral-container .form-group input[type="date"],
-.doctor-referral-container .form-group select,
-.doctor-referral-container .form-group textarea {
+.doctor-referral-container-2 .form-group input[type="date"],
+.doctor-referral-container-2 .form-group select,
+.doctor-referral-container-2 .form-group textarea {
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   transition: border-color 0.3s ease;
 }
 
-.doctor-referral-container .form-group input:focus,
-.doctor-referral-container .form-group select:focus,
-.doctor-referral-container .form-group textarea:focus {
+.doctor-referral-container-2 .form-group input:focus,
+.doctor-referral-container-2 .form-group select:focus,
+.doctor-referral-container-2 .form-group textarea:focus {
   border-color: #4CAF50;
   outline: none;
 }
 
 /* Success/Error messages */
-.doctor-referral-container .success-message,
-.doctor-referral-container .error-message {
+.doctor-referral-container-2 .success-message,
+.doctor-referral-container-2 .error-message {
   text-align: center;
   margin-bottom: 1rem;
   padding: 0.75rem;
@@ -165,13 +177,13 @@
   font-weight: bold;
 }
 
-.doctor-referral-container .success-message {
+.doctor-referral-container-2 .success-message {
   color: #155724;
   background-color: #d4edda;
   border: 1px solid #c3e6cb;
 }
 
-.doctor-referral-container .error-message {
+.doctor-referral-container-2 .error-message {
   color: #721c24;
   background-color: #f8d7da;
   border: 1px solid #f5c6cb;

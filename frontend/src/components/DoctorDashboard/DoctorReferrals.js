@@ -144,7 +144,7 @@ const DoctorReferralForm = () => {
     };
 
     return (
-      <div className="doctor-referral-container">
+      <div className="doctor-referral-container-2">
         {/* Toast Notification */}
         <Toast message={toastMessage} type={toastType} onClose={() => setToastMessage('')} />
 
@@ -175,10 +175,10 @@ const DoctorReferralForm = () => {
                     <td>{new Date(ref.referral_date).toLocaleDateString()}</td>
                     <td>{ref.referral_notes}</td>
                     <td>
-                      <button className="approve-btn" onClick={() => handleDecision(ref.referral_id, 'Approved')}>
+                      <button className="approve-btn-for-specialist" onClick={() => handleDecision(ref.referral_id, 'Approved')}>
                         Approve
                       </button>
-                      <button className="decline-btn" onClick={() => handleDecision(ref.referral_id, 'Declined')}>
+                      <button className="decline-btn-for-specialist" onClick={() => handleDecision(ref.referral_id, 'Declined')}>
                         Decline
                       </button>
                     </td>
@@ -193,7 +193,7 @@ const DoctorReferralForm = () => {
   }
 
   return (
-    <div className="doctor-referral-container">
+    <div className="doctor-referral-container-2">
       <h2>Create a Referral</h2>
 
       {error && <p className="error-message">{error}</p>}
