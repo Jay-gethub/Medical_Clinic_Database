@@ -612,3 +612,56 @@ exports.getPendingDiagnostics = (req, res) => {
     res.json(results);
   });
 };
+
+//mark immunization complete
+exports.MarkImmunizationComplete = (req, res) => {
+  const { patient_id, immunization_name, immunization_date } = req.body;
+
+    if (!patient_id || !immunization_name || !immunization_date) {
+      return res.status(400).json({ message: 'Missing required fields.' });
+    }
+    
+    // Get the immunization_id from IMMUNIZATIONS table
+    const query = `
+    SELECT immunization_id 
+       FROM IMMUNIZATIONS 
+       WHERE immunization_name = ?
+  `;
+  //const final = [];
+  db.query(query, [immunization_name], (err, results) => {
+    if (err) {
+      console.error('Error fetching marking complete:', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+    // console.log(patient_id);
+    // console.log(results[0].immunization_id);
+    
+    const shot_id = results[0].immunization_id;
+    const trimmedDate = immunization_date.slice(0, 10);
+
+    //console.log(trimmedDate);
+    db.query(
+      `UPDATE Patient_Immunizations 
+       SET shot_status = 'Completed' 
+       WHERE patient_id = ? 
+         AND immunization_id = ? 
+         AND immunization_date = ?`,
+      [patient_id,shot_id, trimmedDate],
+      (err, updateResult) => {
+        // Handle any error that occurs during the update query
+        if (err) {
+          console.error('Error in update query:', err);
+          return res.status(500).json({ message: 'Error updating immunization status.' });
+        }
+        //console.log(updateResult);
+        // Check if the update was successful
+
+        return res.status(200).json({ message: 'Immunization marked as completed.' });
+      }
+    );
+    //const final= results;
+  });
+    ///pppppppppppppppppppppppp
+        
+};
+

@@ -58,8 +58,11 @@ router.get('/pending-immunizations/:id', employeeController.getPendingImmunizati
 //order diagnostic
 router.post('/order-diagnostic/:id', employeeController.OrderDiagnostic);
 
-//get patient's pending immunizations
+//get patient's pending diagnostics
 router.get('/pending-diagnostics/:id', employeeController.getPendingDiagnostics);
+
+//mark immunization complete
+router.post('/mark-immunization-complete', employeeController.MarkImmunizationComplete);
 
 //get employee by id
 router.get('/:id', employeeController.getProfileById);

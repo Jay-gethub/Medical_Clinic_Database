@@ -47,14 +47,10 @@ const DoctorDashboard = () => {
           <button onClick={() => setActiveTab('patients')} className={activeTab === 'patients' ? 'active' : ''}>View Patients</button>
           <button onClick={() => setActiveTab('referral')} className={activeTab === 'referral' ? 'active' : ''}>Referrals</button>
           <button onClick={() => setActiveTab('medical_records')} className={activeTab === 'medical_records' ? 'active' : ''}>Medical Records</button>
-          <button onClick={() => setActiveTab('')} className={activeTab === '' ? 'active' : ''}>Perscriptions</button>
-          <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
-          <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>View Schedules</button>
 
         </div>
 
         <div className="admin-tab-content">
-          {activeTab === 'schedules' && <ManageDocSchedules />}
           {activeTab === 'patients' && <DoctorPatients />}
           {activeTab === 'profile' && <DoctorProfile />}
           {activeTab === 'referral' && <DoctorReferralForm />}
