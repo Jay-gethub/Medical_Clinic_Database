@@ -29,7 +29,6 @@ exports.getDoctorsByClinic = (req, res) => {
   );
 };
 
-
 exports.getAllAppointments = (req, res) => {
   db.query("SELECT * FROM APPOINTMENTS", (error, appointments) => {
     if (error) {
@@ -38,8 +37,6 @@ exports.getAllAppointments = (req, res) => {
     res.json(appointments);
   });
 };
-
-
 
 exports.getAppointmentById = (req, res) => {
   db.query("SELECT * FROM APPOINTMENTS WHERE doctor_id = ?", [req.params.id], (error, appointment) => {
@@ -456,7 +453,6 @@ exports.getAppointmentsByPatient = (req, res) => {
   });
 };
 
-
 exports.cancelAppointment = (req, res) => {
   const { appointment_id } = req.params;
   const { patientId } = req.body;
@@ -506,7 +502,6 @@ exports.cancelAppointment = (req, res) => {
     );
   });
 };
-
 
 exports.deleteAppointment = (req, res) => {
   const { appointment_id } = req.params;
@@ -620,6 +615,7 @@ exports.getAppointmentsByStatus = (req, res) => {
     }
   );
 };
+
 exports.checkReferralValidity = (req, res) => {
   const { patientId, doctorId } = req.query;
 
@@ -691,6 +687,7 @@ exports.getDoctorAppointments = (req, res) => {
     res.json(results);
   });
 };
+
 exports.getBookedSlotsForDoctor = (req, res) => {
   const { doctorId, date } = req.params;
 
@@ -710,4 +707,9 @@ exports.getBookedSlotsForDoctor = (req, res) => {
 
     res.status(200).json(results);
   });
+};
+
+// Reports
+  // Get Immunization Report
+exports.getImmunizationReport = (res) => {
 };

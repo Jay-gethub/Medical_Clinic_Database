@@ -1,0 +1,64 @@
+.reports-container {
+    padding: 20px;
+    color: #333;
+  }
+  
+  .back-btn {
+    background-color: #0077cc;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .back-btn svg {
+    stroke: currentColor;
+    transition: color 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    background-color: #ffffff;
+    color: #0077cc;
+  }
+  
+  .report-boxes {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 40px;
+  }
+  
+  .report-box {
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    padding: 40px 20px;
+    width: 250px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .report-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .report-content {
+    /* Placeholder for report content */
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  

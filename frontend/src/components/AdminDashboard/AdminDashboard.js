@@ -7,6 +7,8 @@ import CreateEmployeeForm from './CreateEmployeeForm';
 import AdminProfile from './AdminProfile';
 import EmployeeTable from './EmployeeTable';
 import ManageSchedules from './ManageSchedules';
+import Reports from './Reports';
+
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
@@ -43,7 +45,7 @@ const AdminDashboard = () => {
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
           <button onClick={() => setActiveTab('create')} className={activeTab === 'create' ? 'active' : ''}>Create Employee</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
-          <button onClick={() => setActiveTab('')} className={activeTab === '' ? 'active' : ''}>Reports</button>
+          <button onClick={() => setActiveTab('reports')} className={activeTab === 'reports' ? 'active' : ''}>Reports</button>
           <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>
          
   Manage Schedules
@@ -56,6 +58,7 @@ const AdminDashboard = () => {
           {activeTab === 'create' && <CreateEmployeeForm />}
           {activeTab === 'view' && <EmployeeTable />}
           {activeTab === 'schedules' && <ManageSchedules />}
+          {activeTab === 'reports' && <Reports/>}
 
         </div>
       </div>
