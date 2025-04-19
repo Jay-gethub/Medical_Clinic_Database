@@ -64,5 +64,8 @@ router.post('/allergies/:patient_id', patientController.createPatientAllergy);
 router.put('/allergies/:patient_id/:original_allergy_id', patientController.updatePatientAllergy);
 router.delete('/allergies/:patient_id/:allergy_id', patientController.deletePatientAllergy);
 
+//notifications
+router.get('/:id/notifications', patientController.getNotifications);
+router.put('/notifications/mark-seen', patientController.markNotificationsAsSeen);
 
 module.exports = router;

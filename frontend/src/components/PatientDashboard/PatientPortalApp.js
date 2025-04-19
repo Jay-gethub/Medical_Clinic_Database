@@ -10,6 +10,8 @@ import HealthHistory from '../PatientDashboard/HealthHistory';
 
 import Immunizations from '../PatientDashboard/Immunizations';
 import MedicalRecords from '../PatientDashboard/MedicalRecords';
+import NotificationBanner from '../PatientDashboard/NotificationBanner';
+
 
 const PatientPortalApp = () => {
   const [selectedTab, setSelectedTab] = useState('home');
@@ -99,6 +101,7 @@ const PatientPortalApp = () => {
     </button>
   </div>
 </div>
+<NotificationBanner patientId={patientId} />
         <div className="content-area">{renderContent()}</div>
       </main>
     </div>

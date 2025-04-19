@@ -499,3 +499,35 @@ exports.deletePatientAllergy = (req, res) => {
     res.status(200).json({ message: 'Allergy deleted successfully' });
   });
 };
+//unseen notifications
+exports.getNotifications = (req, res) => {
+  const { id } = req.params; // patient_id
+  const sql = `
+    SELECT notification_id, message, created_at
+    FROM NOTIFICATIONS
+    WHERE patient_id = ? AND is_seen = 0
+    ORDER BY created_at DESC
+  `;
+  db.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};
+exports.markNotificationsAsSeen = (req, res) => {
+  const { notificationIds } = req.body; // array of notification IDs
+
+  if (!Array.isArray(notificationIds) || notificationIds.length === 0) {
+    return res.status(400).json({ error: "Invalid or empty notification ID list" });
+  }
+
+  const sql = `
+    UPDATE NOTIFICATIONS
+    SET is_seen = 1
+    WHERE notification_id IN (?)
+  `;
+
+  db.query(sql, [notificationIds], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ message: "Notifications marked as seen" });
+  });
+};
