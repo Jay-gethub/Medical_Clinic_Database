@@ -117,3 +117,62 @@
 .doctor-referral-container button.submit-btn:hover {
   opacity: 0.8;
 }
+/* Referral Form Enhancements */
+.doctor-referral-container form {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-referral-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.doctor-referral-container .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.doctor-referral-container .form-group input[type="date"],
+.doctor-referral-container .form-group select,
+.doctor-referral-container .form-group textarea {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.doctor-referral-container .form-group input:focus,
+.doctor-referral-container .form-group select:focus,
+.doctor-referral-container .form-group textarea:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Success/Error messages */
+.doctor-referral-container .success-message,
+.doctor-referral-container .error-message {
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.doctor-referral-container .success-message {
+  color: #155724;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.doctor-referral-container .error-message {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}

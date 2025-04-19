@@ -232,7 +232,7 @@ const DoctorReferralForm = () => {
             <option value="">-- Select a Doctor --</option>
             {availableDoctors.map((doc) => (
               <option key={doc.employee_id} value={doc.employee_id}>
-                Dr. {doc.first_name} {doc.last_name} (ID: {doc.employee_id})
+                Dr. {doc.first_name} {doc.last_name} || {doc.specialization}
               </option>
             ))}
           </select>
