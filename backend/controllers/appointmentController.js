@@ -109,7 +109,7 @@ if (req.body.timezoneOffset) {
         // Check for time conflict
         db.query(
           "SELECT * FROM APPOINTMENTS WHERE doctor_id = ? AND ((start_time BETWEEN ? AND ?) OR (end_time BETWEEN ? AND ?))",
-          [doctor_id, start_time, end_time, start_time, end_time],
+          [doctor_id, startTime, endTime, startTime, endTime],
           (error, existingAppointments) => {
             if (error) return res.status(500).json({ error: "Unable to check appointment conflicts." });
 
@@ -689,5 +689,25 @@ exports.getDoctorAppointments = (req, res) => {
       return res.status(500).json({ error: "Failed to retrieve appointments" });
     }
     res.json(results);
+  });
+};
+exports.getBookedSlotsForDoctor = (req, res) => {
+  const { doctorId, date } = req.params;
+
+  const query = `
+    SELECT start_time, end_time
+    FROM APPOINTMENTS
+    WHERE doctor_id = ?
+      AND DATE(start_time) = ?
+      AND appointment_status IN ('Scheduled', 'Confirmed')
+  `;
+
+  db.query(query, [doctorId, date], (err, results) => {
+    if (err) {
+      console.error("Error fetching booked slots:", err);
+      return res.status(500).json({ error: "Failed to fetch booked slots." });
+    }
+
+    res.status(200).json(results);
   });
 };

@@ -28,27 +28,25 @@ const TimeSlotSelector = ({ employeeId, onTimeSelect }) => {
     if (employeeId) fetchSchedule();
   }, [employeeId]);
 
-  const generateSlots = (date) => {
+ 
+  const generateSlots = async (date) => {
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const selectedDateObj = new Date(`${date}T00:00:00`);
     const selectedDayName = dayNames[selectedDateObj.getDay()];
-
+  
     const daySchedule = schedule.find(
       s => s.day_of_week.trim().toLowerCase() === selectedDayName.toLowerCase()
     );
-
-    console.log("Selected day:", selectedDayName);
-    console.log("Matching schedule:", daySchedule);
-
+  
     if (!daySchedule) {
       setAvailableSlots([]);
       return;
     }
-
+  
     const start = new Date(`${date}T${daySchedule.start_time}`);
     const end = new Date(`${date}T${daySchedule.end_time}`);
     const slots = [];
-
+  
     while (start < end) {
       const slotEnd = new Date(start.getTime() + 30 * 60000);
       if (slotEnd > end) break;
@@ -58,11 +56,30 @@ const TimeSlotSelector = ({ employeeId, onTimeSelect }) => {
       });
       start.setTime(slotEnd.getTime());
     }
-
-    setAvailableSlots(slots);
+  
+    // 🧠 Fetch booked slots
+    try {
+      const res = await axios.get(`http://localhost:5000/api/appointments/booked-slots/${employeeId}/${date}`);
+      const booked = res.data.map(b => ({
+        start: new Date(b.start_time),
+        end: new Date(b.end_time)
+      }));
+  
+      const isOverlapping = (slot, bookedSlot) =>
+        !(slot.end <= bookedSlot.start || slot.start >= bookedSlot.end);
+  
+      const filteredSlots = slots.filter(slot =>
+        !booked.some(bookedSlot => isOverlapping(slot, bookedSlot))
+      );
+  
+      setAvailableSlots(filteredSlots);
+    } catch (err) {
+      console.error("Error fetching booked slots:", err);
+      setAvailableSlots(slots); // fallback
+    }
+  
     setSelectedSlotIndex(null);
   };
-
   const handleDateChange = (e) => {
     const date = e.target.value;
     setSelectedDate(date);
