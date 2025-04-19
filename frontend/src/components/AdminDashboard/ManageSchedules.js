@@ -147,7 +147,7 @@ const ManageSchedules = () => {
         {/* Dropdown group */}
         <div className="dropdown-group">
           <div className="dropdown-field">
-            <label htmlFor="clinic-select">Clinic</label>
+            <label htmlFor="clinic-select"style={{ color: "#004080" }}>Clinic</label>
             <select
               id="clinic-select"
               value={selectedClinic}
@@ -162,7 +162,7 @@ const ManageSchedules = () => {
           </div>
   
           <div className="dropdown-field">
-            <label htmlFor="employee-select">Employee</label>
+            <label htmlFor="employee-select"style={{ color: "#004080" }}>Employee</label>
             <select
               id="employee-select"
               value={selectedEmployee}

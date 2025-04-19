@@ -1,0 +1,83 @@
+.immunization-view-page {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.search-section input {
+  padding: 8px;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.results-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.results-list li button {
+  margin: 5px 0;
+  padding: 6px 12px;
+  background-color: #000000;
+  border: none;
+  cursor: pointer;
+}
+
+.results-list li button:hover {
+  background-color: #dcdcdc;
+}
+
+.immunization-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.immunization-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  background-color: #dcdea6;
+}
+.immunization-table th, .immunization-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.back-btn {
+  margin-bottom: 1rem;
+  background-color: #000000;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.error-text {
+  color: red;
+  margin-top: 1rem;
+}
+
+.modal-overlay-for-shots {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content-for-shots {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+}
+
+.modal-actions-for-shots button {
+  margin: 0.5rem;
+  background-color: rgb(100, 100, 100);
+}

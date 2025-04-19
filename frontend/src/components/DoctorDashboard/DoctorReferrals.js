@@ -158,6 +158,7 @@ const DoctorReferralForm = () => {
                 <tr>
                   <th>Patient</th>
                   <th>Reason</th>
+                  <th>Referred By</th>
                   <th>Date</th>
                   <th>Notes</th>
                   <th>Actions</th>
@@ -166,8 +167,11 @@ const DoctorReferralForm = () => {
               <tbody>
                 {pendingReferrals.map((ref) => (
                   <tr key={ref.referral_id}>
-                    <td>{ref.first_name} {ref.last_name}</td>
+
+                    <td>{ref.patient_first_name} {ref.patient_last_name}</td>
+                    
                     <td>{ref.referral_reason}</td>
+                    <td>Dr. {ref.doctor_first_name} {ref.doctor_last_name}</td>
                     <td>{new Date(ref.referral_date).toLocaleDateString()}</td>
                     <td>{ref.referral_notes}</td>
                     <td>

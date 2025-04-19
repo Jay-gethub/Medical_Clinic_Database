@@ -6,7 +6,7 @@ import bgImage from '../../assets/Home.png';
 import NurseProfile from './NurseProfile';
 import DiagnosticView from './DiagnosticView';
 import NurseReferrals from './NurseReferrals';
-//import ImmunizationView from './ImmunizationView';
+import ImmunizationView from './ImmunizationView';
 //import AppointmentView from './AppointmentView';
 //import MedicalRecordsView from './MedicalRecordsView';
 
@@ -57,6 +57,7 @@ const NurseDashboard = () => {
     {activeTab === 'profile' && <NurseProfile />}
     {activeTab === 'diagnostics' && <DiagnosticView />}
     {activeTab === 'referrals' && <NurseReferrals />}
+    {activeTab === 'immunizations' && <ImmunizationView/>}
 
         </div>
       </div>

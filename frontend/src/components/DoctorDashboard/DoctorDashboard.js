@@ -58,7 +58,6 @@ const DoctorDashboard = () => {
         </div>
 
         <div className="admin-tab-content">
-          {activeTab === 'schedules' && <ManageDocSchedules />}
           {activeTab === 'patients' && <DoctorPatients />}
           {activeTab === 'profile' && <DoctorProfile />}
           {activeTab === 'referral' && <DoctorReferralForm />}
