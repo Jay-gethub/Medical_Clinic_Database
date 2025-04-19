@@ -110,8 +110,6 @@ exports.updateProfile = (req, res) => {
 };
 
 
-
-
 // 3. Get insurance
 exports.getInsurance = (req, res) => {
   const { id } = req.params;
@@ -185,7 +183,20 @@ exports.markBillPaid = (req, res) => {
 exports.getImmunizations = (req, res) => {
   const { id } = req.params;
   db.query(
-    `SELECT * FROM PATIENT_IMMUNIZATIONS JOIN IMMUNIZATIONS USING(immunization_id) WHERE patient_id = ?`,
+    `SELECT 
+    i.immunization_name,
+    pi.immunization_date,
+    pi.shot_status,
+    CONCAT(e.first_name, ' ', IFNULL(e.middle_name, ''), ' ', e.last_name) AS administered_by
+    FROM 
+        Patient_Immunizations pi
+    JOIN 
+        IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+    LEFT JOIN 
+        EMPLOYEES e ON pi.administered_by = e.employee_id
+    WHERE 
+        pi.patient_id = ?;
+`,
     [id],
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
