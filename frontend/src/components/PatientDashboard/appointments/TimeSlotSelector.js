@@ -88,7 +88,8 @@ const TimeSlotSelector = ({ employeeId, onTimeSelect }) => {
                 setSelectedSlotIndex(index);
                 onTimeSelect({
                   start: slot.start.toISOString(),
-                  end: slot.end.toISOString()
+                  end: slot.end.toISOString(),
+                  timezoneOffset: slot.start.getTimezoneOffset() // Minutes difference from UTC
                 });
               }}
               className={`slot-item ${selectedSlotIndex === index ? 'selected' : ''}`}
