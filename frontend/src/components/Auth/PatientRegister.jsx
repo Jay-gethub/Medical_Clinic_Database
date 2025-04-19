@@ -170,6 +170,19 @@ const PatientRegister = () => {
             </select>
             {errors.sex && <p className="error">{errors.sex}</p>}
           </div>
+          <div className="form-group">
+            <label>Race*</label>
+            <select name="race" value={form.race} onChange={handleChange}>
+              <option value="">-- Select --</option>
+              <option value="American Indian">American Indian</option>
+              <option value="Asian">Asian</option>
+              <option value="African American">African American</option>
+              <option value="Pacific Islander">Pacific Islander</option>
+              <option value="White">White</option>
+              <option value="Other">Other</option>
+            </select>
+            {errors.sex && <p className="error">{errors.sex}</p>}
+          </div>
           <h3>Address</h3>
           <div className="form-group">
             <label>Street Number*</label>
