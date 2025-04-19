@@ -194,13 +194,13 @@ const ImmunizationViewPage = () => {
 
           {/* Modal Confirmation */}
           {confirmModal.show && (
-            <div className="modal-overlay">
-              <div className="modal-content">
+            <div className="modal-overlay-for-shots">
+              <div className="modal-content-for-shots">
                 <p>
                   Are you sure you want to mark <strong>{confirmModal.immunization.immunization_name}</strong> on{' '}
                   <strong>{confirmModal.immunization.immunization_date?.slice(0, 10)}</strong> as completed?
                 </p>
-                <div className="modal-actions">
+                <div className="modal-actions-for-shots">
                   <button onClick={handleConfirm}>Yes, Confirm</button>
                   <button onClick={() => setConfirmModal({ show: false, immunization: null })}>Cancel</button>
                 </div>
