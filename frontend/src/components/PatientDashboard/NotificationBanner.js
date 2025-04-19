@@ -8,7 +8,7 @@ const NotificationBanner = ({ patientId }) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        // ✅ FIXED: Added await and assigned to res
+        // FIXED: Added await and assigned to res
         const res = await axios.get(`http://localhost:5000/api/patient/${patientId}/notifications`);
         setNotifications(res.data);
       } catch (err) {
