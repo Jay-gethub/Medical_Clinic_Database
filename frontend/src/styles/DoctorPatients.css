@@ -182,7 +182,7 @@
   font-size: 0.95rem;
   border: none;
   border-radius: 6px;
-  background-color: #000000;
+  background-color: #1779c0;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
@@ -323,7 +323,7 @@
 
 .prescription-table td {
   border: 1px solid #828282;
-  background-color: #dcdea6;
+  background-color: #d4d4d4;
   padding: 8px;
 }
 .prescription-table th {
@@ -332,7 +332,7 @@
 }
 
 .prescription-table th {
-  background-color: #000000;
+  background-color: #013075;
   font-weight: bold;
 }
 
@@ -348,12 +348,12 @@
 }
 
 .pending-immunizations .immunization-table th {
-  background-color: #000000;
+  background-color: #013075;
   font-weight: bold;
 }
 
 .pending-immunizations .immunization-table td {
-  background-color: #dcdea6;
+  background-color: #d0d0d0;
 }
 
 .pending-immunizations .immunization-table tr:nth-child(even) {
@@ -377,12 +377,12 @@
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
-  background-color: #dcdea6;
+  background-color: #d4d4d4;
 }
 
 .diagnostic-table-for-doctor-view th {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
-  background-color: #000000;
+  background-color: #013075;
 }

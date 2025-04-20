@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-//import './Immunizations.css'; // Make sure this CSS file exists
+
 
 const Immunizations = ({ patientId }) => {
   const [immunizations, setImmunizations] = useState([]);
