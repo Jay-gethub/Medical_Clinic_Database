@@ -1,0 +1,630 @@
+/* ReceptionistDashboard.css - Updated with scoping */
+
+/* Scoped variables within receptionist dashboard pages */
+.receptionist-dashboard-page {
+    --rec-primary-color: #0077cc;
+    --rec-primary-dark: #004080;
+    --rec-primary-light: #e6f3ff;
+    --rec-secondary-color: #0b4885;
+    --rec-success-color: #06901d;
+    --rec-danger-color: #dc3545;
+    --rec-warning-color: #ffa000;
+    --rec-white: #ffffff;
+    --rec-gray-100: #f9f9f9;
+    --rec-gray-200: #e0e0e0;
+    --rec-gray-300: #cccccc;
+    --rec-box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    --rec-border-radius: 10px;
+    --rec-transition: all 0.3s ease;
+  }
+  
+  /* Layout */
+  .receptionist-dashboard-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f8fa;
+  }
+  
+  .receptionist-container {
+    display: flex;
+    min-height: calc(100vh - 70px);
+  }
+  
+  /* Navbar */
+  .receptionist-dashboard-page .navbar {
+    background-color: var(--rec-primary-dark);
+    color: var(--rec-white);
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .receptionist-dashboard-page .logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .receptionist-dashboard-page .logo img {
+    height: 40px;
+    width: auto;
+  }
+  
+  .receptionist-dashboard-page .logo h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .receptionist-dashboard-page .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Sidebar */
+  .receptionist-dashboard-page .sidebar {
+    width: 250px;
+    background-color: var(--rec-white);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 0;
+    height: 100%;
+    position: sticky;
+    top: 70px;
+  }
+  
+  .receptionist-dashboard-page .nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .receptionist-dashboard-page .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  
+  .receptionist-dashboard-page .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: var(--rec-secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--rec-transition);
+    border-left: 4px solid transparent;
+    cursor: pointer;
+  }
+  
+  .receptionist-dashboard-page .nav-link:hover, 
+  .receptionist-dashboard-page .nav-link.active {
+    background-color: var(--rec-primary-light);
+    border-left-color: var(--rec-primary-color);
+    color: var(--rec-primary-color);
+  }
+  
+  .receptionist-dashboard-page .nav-link i {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+  }
+  
+  /* Main Content */
+  .receptionist-dashboard-page .main-content {
+    flex: 1;
+    padding: 1.5rem;
+    background-color: #f5f8fa;
+  }
+  
+  .receptionist-dashboard-page .content-card {
+    background-color: var(--rec-white);
+    border-radius: var(--rec-border-radius);
+    box-shadow: var(--rec-box-shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .receptionist-dashboard-page .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rec-gray-200);
+    padding-bottom: 0.75rem;
+  }
+  
+  .receptionist-dashboard-page .card-title {
+    font-size: 1.25rem;
+    color: var(--rec-secondary-color);
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  /* Buttons */
+  .receptionist-dashboard-page .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--rec-transition);
+    border: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .receptionist-dashboard-page .btn-primary {
+    background-color: var(--rec-primary-color);
+    color: var(--rec-white);
+  }
+  
+  .receptionist-dashboard-page .btn-primary:hover {
+    background-color: #005fa3;
+  }
+  
+  .receptionist-dashboard-page .btn-secondary {
+    background-color: var(--rec-white);
+    color: var(--rec-primary-color);
+    border: 1px solid var(--rec-primary-color);
+  }
+  
+  .receptionist-dashboard-page .btn-secondary:hover {
+    background-color: var(--rec-primary-light);
+  }
+  
+  .receptionist-dashboard-page .btn-danger {
+    background-color: var(--rec-danger-color);
+    color: var(--rec-white);
+  }
+  
+  .receptionist-dashboard-page .btn-danger:hover {
+    background-color: #bd2130;
+  }
+  
+  .receptionist-dashboard-page .logout-btn {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--rec-white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--rec-transition);
+  }
+  
+  .receptionist-dashboard-page .logout-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  /* Forms */
+  .receptionist-dashboard-page .form-group {
+    margin-bottom: 1.25rem;
+  }
+  
+  .receptionist-dashboard-page .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--rec-secondary-color);
+  }
+  
+  .receptionist-dashboard-page .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--rec-gray-300);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: var(--rec-transition);
+  }
+  
+  .receptionist-dashboard-page .form-control:focus {
+    outline: none;
+    border-color: var(--rec-primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.2);
+  }
+  
+  /* Tables */
+  .receptionist-dashboard-page .table-container {
+    overflow-x: auto;
+    border-radius: var(--rec-border-radius);
+    box-shadow: var(--rec-box-shadow);
+  }
+  
+  .receptionist-dashboard-page .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--rec-white);
+  }
+  
+  .receptionist-dashboard-page .data-table th,
+  .receptionist-dashboard-page .data-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--rec-gray-200);
+  }
+  
+  .receptionist-dashboard-page .data-table th {
+    background-color: var(--rec-primary-color);
+    color: var(--rec-white);
+    font-weight: 500;
+  }
+  
+  .receptionist-dashboard-page .data-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .receptionist-dashboard-page .data-table tr:nth-child(even) {
+    background-color: var(--rec-gray-100);
+  }
+  
+  .receptionist-dashboard-page .data-table tr:hover {
+    background-color: var(--rec-primary-light);
+  }
+  
+  /* Status Tags */
+  .receptionist-dashboard-page .status-tag {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .receptionist-dashboard-page .status-scheduled {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+  }
+  
+  .receptionist-dashboard-page .status-completed, 
+  .receptionist-dashboard-page .status-finished {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+  }
+  
+  .receptionist-dashboard-page .status-cancelled {
+    background-color: #ffebee;
+    color: #b71c1c;
+  }
+  
+  /* Dropdown */
+  .receptionist-dashboard-page .dropdown-field {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .receptionist-dashboard-page .dropdown-field select {
+    appearance: none;
+    width: 100%;
+    padding: 0.75rem;
+    padding-right: 2rem;
+    border: 1px solid var(--rec-gray-300);
+    border-radius: 6px;
+    background-color: var(--rec-white);
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .receptionist-dashboard-page .dropdown-field select:focus {
+    outline: none;
+    border-color: var(--rec-primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.2);
+  }
+  
+  .receptionist-dashboard-page .dropdown-field::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--rec-secondary-color);
+    pointer-events: none;
+  }
+  
+  /* Search Controls */
+  .receptionist-dashboard-page .search-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .receptionist-dashboard-page .search-control {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .receptionist-dashboard-page .receptionist-container {
+      flex-direction: column;
+    }
+    
+    .receptionist-dashboard-page .sidebar {
+      width: 100%;
+      position: static;
+    }
+    
+    .receptionist-dashboard-page .nav-link {
+      padding: 1rem 1.5rem;
+    }
+    
+    .receptionist-dashboard-page .main-content {
+      padding: 1rem;
+    }
+  }
+  
+  /* Utilities - renamed with rec- prefix */
+  .receptionist-dashboard-page .rec-d-flex {
+    display: flex;
+  }
+  
+  .receptionist-dashboard-page .rec-align-center {
+    align-items: center;
+  }
+  
+  .receptionist-dashboard-page .rec-justify-between {
+    justify-content: space-between;
+  }
+  
+  .receptionist-dashboard-page .rec-gap-2 {
+    gap: 0.5rem;
+  }
+  
+  .receptionist-dashboard-page .rec-gap-3 {
+    gap: 1rem;
+  }
+  
+  .receptionist-dashboard-page .rec-mb-3 {
+    margin-bottom: 1rem;
+  }
+  
+  .receptionist-dashboard-page .rec-mb-4 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .receptionist-dashboard-page .rec-text-center {
+    text-align: center;
+  }
+  
+  /* Profile Page Specific */
+  .receptionist-dashboard-page .profile-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .receptionist-dashboard-page .save-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--rec-primary-color);
+    color: var(--rec-white);
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--rec-transition);
+    margin-top: 1rem;
+  }
+  
+  .receptionist-dashboard-page .save-btn:hover {
+    background-color: #005fa3;
+  }
+  
+  /* Appointments View */
+  .receptionist-dashboard-page .appointment-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .receptionist-dashboard-page .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .receptionist-dashboard-page .filter-label {
+    font-weight: 500;
+    color: var(--rec-secondary-color);
+  }
+  
+  /* Modals & Popups */
+  .receptionist-dashboard-page .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .receptionist-dashboard-page .modal-content {
+    background-color: var(--rec-white);
+    border-radius: var(--rec-border-radius);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .receptionist-dashboard-page .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rec-gray-200);
+  }
+  
+  .receptionist-dashboard-page .modal-title {
+    font-size: 1.25rem;
+    color: var(--rec-secondary-color);
+    margin: 0;
+  }
+  
+  .receptionist-dashboard-page .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--rec-gray-300);
+    transition: var(--rec-transition);
+  }
+  
+  .receptionist-dashboard-page .modal-close:hover {
+    color: var(--rec-danger-color);
+  }
+  
+  .receptionist-dashboard-page .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--rec-gray-200);
+  }
+  
+  /* Section title styling */
+  .receptionist-dashboard-page .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0b4885;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  /* Schedule container */
+  .receptionist-dashboard-page .schedule-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  
+  /* Schedule info layout */
+  .receptionist-dashboard-page .schedule-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .receptionist-dashboard-page .schedule-sidebar {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .receptionist-dashboard-page .schedule-content {
+    flex: 2;
+    min-width: 400px;
+  }
+  
+  /* Employee information styling */
+  .receptionist-dashboard-page .employee-info {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .receptionist-dashboard-page .info-item {
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  
+  .receptionist-dashboard-page .info-label {
+    font-weight: 600;
+    color: #0b4885;
+    min-width: 120px;
+  }
+  
+  .receptionist-dashboard-page .info-value {
+    color: #333;
+  }
+  
+  /* Schedules table styling */
+  .receptionist-dashboard-page .schedules-table-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .receptionist-dashboard-page .schedules-table-title {
+    background-color: #f5f8fa;
+    padding: 15px;
+    font-size: 1.2rem;
+    color: #0b4885;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .receptionist-dashboard-page .schedules-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .receptionist-dashboard-page .schedules-table th {
+    background-color: #0077cc;
+    color: white;
+    font-weight: 500;
+    text-align: left;
+    padding: 12px 15px;
+  }
+  
+  .receptionist-dashboard-page .schedules-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .receptionist-dashboard-page .schedules-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .receptionist-dashboard-page .schedules-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* No data message */
+  .receptionist-dashboard-page .no-data-message {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-style: italic;
+  }
+  
+  /* Loading spinner */
+  .receptionist-dashboard-page .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #0077cc;
+  }
+  
+  /* Responsive layout */
+  @media (max-width: 768px) {
+    .receptionist-dashboard-page .schedule-layout {
+      flex-direction: column;
+    }
+  }

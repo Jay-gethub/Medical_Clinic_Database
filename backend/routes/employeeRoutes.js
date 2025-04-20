@@ -75,6 +75,6 @@ router.get('/:id', employeeController.getProfileById);
 //get patient history
 router.get('/patient-medical-history/:patientId', employeeController.getMedicalHistory);
 
-
-
+router.get('/receptionist/clinic/:userId', employeeController.getAssignedClinic);
+router.post("/create", employeeController.createAppointmentByReceptionist);
 module.exports = router;

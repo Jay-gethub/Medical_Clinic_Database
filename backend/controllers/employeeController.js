@@ -733,3 +733,116 @@ exports.MarkDiagnosticComplete = (req, res) => {
     res.json(results);
   });
 };
+// Create appointment on behalf of patient by receptionist
+exports.createAppointmentByReceptionist = (req, res) => {
+  console.log("📥 Received receptionist appointment request:", req.body);
+
+  const {
+    patient_id,
+    doctor_id,
+    clinic_id,
+    start_time,
+    end_time,
+    appointment_type,
+    appointment_status,
+    created_by,
+    timezoneOffset // from frontend in minutes
+  } = req.body;
+
+  // Convert string to Date objects
+  let startTime = new Date(start_time);
+  let endTime = new Date(end_time);
+
+  // // ✅ Adjust time to local by subtracting timezone offset
+  // if (timezoneOffset) {
+  //   startTime.setMinutes(startTime.getMinutes() - timezoneOffset);
+  //   endTime.setMinutes(endTime.getMinutes() - timezoneOffset);
+  // }
+
+  console.log("🕓 Final Start Time (local):", startTime.toLocaleString());
+  console.log("🕓 Final End Time (local):", endTime.toLocaleString());
+
+  if (!patient_id || !doctor_id || !clinic_id || !start_time || !end_time || !appointment_type) {
+    console.error("⚠️ Missing required fields.");
+    return res.status(400).json({ error: "Missing required fields." });
+  }
+
+  // Step 1: Check for time conflicts
+  const conflictQuery = `
+    SELECT * FROM APPOINTMENTS 
+    WHERE doctor_id = ? 
+      AND ((start_time BETWEEN ? AND ?) OR (end_time BETWEEN ? AND ?))
+  `;
+
+  db.query(
+    conflictQuery,
+    [doctor_id, startTime, endTime, startTime, endTime],
+    (err, existingAppointments) => {
+      if (err) {
+        console.error("❌ Error during conflict check:", err);
+        return res.status(500).json({ error: "Error during conflict check." });
+      }
+
+      if (existingAppointments.length > 0) {
+        console.warn("⛔ Conflict: Doctor is already booked.");
+        return res.status(400).json({ error: "Doctor already booked at this time." });
+      }
+
+      // Step 2: Insert appointment
+      const insertQuery = `
+        INSERT INTO APPOINTMENTS 
+        (patient_id, doctor_id, clinic_id, start_time, end_time, appointment_type, appointment_status, created_at, created_by)
+        VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+      `;
+
+      console.log("📝 Inserting appointment:", {
+        patient_id,
+        doctor_id,
+        clinic_id,
+        startTime,
+        endTime,
+        appointment_type,
+        appointment_status,
+        created_by
+      });
+
+      db.query(
+        insertQuery,
+        [patient_id, doctor_id, clinic_id, startTime, endTime, appointment_type, appointment_status, created_by],
+        (err, result) => {
+          if (err) {
+            console.error("❌ Insert Error:", err);
+            return res.status(500).json({ error: "Failed to create appointment." });
+          }
+
+          console.log("✅ Appointment created. ID:", result.insertId);
+          return res.status(201).json({
+            message: "Appointment created successfully.",
+            appointment_id: result.insertId
+          });
+        }
+      );
+    }
+  );
+};
+
+
+exports.getAssignedClinic = (req, res) => {
+  const userId = req.params.userId;
+
+  const query = `
+    SELECT clinic_id 
+    FROM EMPLOYEES 
+    WHERE employee_id = ? AND role = 'Receptionist'
+  `;
+
+  db.query(query, [userId], (err, result) => {
+    if (err || !result.length) {
+      console.error("Failed to get clinic_id:", err || "No match");
+      return res.status(404).json({ error: "Clinic not found for this receptionist." });
+    }
+
+    res.status(200).json(result[0]); // returns { clinic_id: ... }
+  });
+};
+
