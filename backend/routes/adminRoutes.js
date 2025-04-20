@@ -37,4 +37,6 @@ router.get('/demographic-report', adminController.getDemographicReport);
 
 router.get('/diagnostic-report', adminController.DiagnosticReport);
 
+router.get('/doctors', adminController.getDoctors);
+
 module.exports = router;

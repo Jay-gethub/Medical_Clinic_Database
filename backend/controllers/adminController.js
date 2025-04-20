@@ -539,11 +539,11 @@ exports.getImmunizationDetails = (req, res) => {
 };
 
 exports.getDbManagerProfile = (req, res) => {
-  const db = req.app.get("db");
   const { employee_id } = req.params;
 
   const query = `
-    SELECT e.first_name, e.last_name, e.email, dm.last_login
+    SELECT 
+      e.first_name, e.last_name, e.email, e.phone, dm.last_login
     FROM EMPLOYEES e
     JOIN DATABASE_MANAGER dm ON e.employee_id = dm.employee_id
     WHERE e.employee_id = ?
@@ -557,77 +557,75 @@ exports.getDbManagerProfile = (req, res) => {
     if (results.length === 0) {
       return res.status(404).json({ error: "Profile not found" });
     }
+
     res.status(200).json(results[0]);
   });
 };
+
+
     
 //diagnostic report
 // Full list of test types from the SET definition
 exports.DiagnosticReport = async (req, res) => {
-  const allTestTypes = ['Biopsy', 'CT_Scan', 'Colonoscopy', 'Eye Exam', 'X-Ray'];
-  const sql = `
+  const allTestTypes = ['Biopsy', 'CT_Scan', 'Colonoscopy', 'Eye Exam', 'X‑Ray'];
+  const { doctor_id } = req.query;
+
+  // Base SQL
+  let sql = `
     SELECT
       CONCAT(a.city, ', ', a.state) AS clinic_location,
       dt.test_type
     FROM DIAGNOSTIC_TESTS dt
     JOIN EMPLOYEES e ON dt.doctor_id = e.employee_id
-    JOIN CLINIC c ON e.clinic_id = c.clinic_id
-    JOIN ADDRESS a ON c.address_id = a.address_id
+    JOIN CLINIC c   ON e.clinic_id   = c.clinic_id
+    JOIN ADDRESS a  ON c.address_id  = a.address_id
   `;
 
+  const params = [];
+  if (doctor_id && doctor_id !== 'All') {
+    sql += ` WHERE dt.doctor_id = ?`;
+    params.push(doctor_id);
+  }
+
   try {
-    const [rows] = await db.promise().query(sql);
+    const [rows] = await db.promise().query(sql, params);
 
-    const result = [];
-
+    // explode test_type and count
+    const tally = {};
     rows.forEach(row => {
-      const testTypes = row.test_type.split(',');
-      testTypes.forEach(type => {
-        result.push({
+      row.test_type.split(',').forEach(type => {
+        const key = `${row.clinic_location}__${type.trim()}`;
+        tally[key] = tally[key] || {
           clinic_location: row.clinic_location,
-          test_type: type.trim(),
-          total_tests: 1
-        });
+          test_type:       type.trim(),
+          total_tests:     0
+        };
+        tally[key].total_tests++;
       });
     });
 
-    // Group and count by clinic_location + test_type
-    const grouped = {};
-    result.forEach(({ clinic_location, test_type }) => {
-      const key = `${clinic_location}__${test_type}`;
-      if (!grouped[key]) {
-        grouped[key] = {
-          clinic_location,
-          test_type,
-          total_tests: 0
-        };
-      }
-      grouped[key].total_tests += 1;
-    });
-
-    const allLocations = [...new Set(rows.map(r => r.clinic_location))];
-
-    // Ensure all test types appear per location
+    // ensure every clinic × test type appears
+    const clinics = [...new Set(rows.map(r => r.clinic_location))];
     const finalResult = [];
-    allLocations.forEach(location => {
-      allTestTypes.forEach(testType => {
-        const key = `${location}__${testType}`;
-        if (grouped[key]) {
-          finalResult.push(grouped[key]);
+    clinics.forEach(loc => {
+      allTestTypes.forEach(tt => {
+        const key = `${loc}__${tt}`;
+        if (tally[key]) {
+          finalResult.push(tally[key]);
         } else {
           finalResult.push({
-            clinic_location: location,
-            test_type: testType,
-            total_tests: 0
+            clinic_location: loc,
+            test_type:       tt,
+            total_tests:     0
           });
         }
       });
     });
 
-    res.status(200).json(finalResult);
+    return res.status(200).json(finalResult);
   } catch (err) {
     console.error('Error fetching diagnostic report:', err);
-    res.status(500).json({ error: 'Failed to retrieve diagnostic report' });
+    return res.status(500).json({ error: 'Failed to retrieve diagnostic report' });
   }
 };
 
@@ -660,5 +658,23 @@ exports.DiagnosticReport = async (req, res) => {
       }
   
       res.status(200).json(results);
+    });
+  };
+
+  // This function fetches all doctors from the EMPLOYEES table
+  exports.getDoctors = (req, res) => {
+    const sql = `
+      SELECT employee_id,
+             CONCAT(first_name, ' ', last_name) AS doctor_name
+        FROM EMPLOYEES
+       WHERE role = 'Doctor'
+    `;
+    db.query(sql, (err, rows) => {
+      if (err) {
+        console.error("Error fetching doctors:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+      // return list: [{ employee_id: 4, doctor_name: "John Doe" }, …]
+      res.json(rows);
     });
   };
