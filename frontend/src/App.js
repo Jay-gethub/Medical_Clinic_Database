@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Main/Home';
+import Services from './components/Main/Services';
+import About from './components/Main/About';
 import PatientLogin from './components/Auth/PatientLogin';
 import PatientRegister from './components/Auth/PatientRegister';
 import EmployeeLogin from './components/Auth/EmployeeLogin';
@@ -27,7 +29,9 @@ function App() {
           <Route path="/nurse/dashboard" element={<NurseDashboard />} />
           <Route path="/receptionist/dashboard" element={<ReceptionistDashboard />} />
           <Route path="/dbmanager/dashboard" element={<DbManagerDashboard />} />
-
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          {/* Add other routes as needed */}
         </Routes>
       </div>
     </Router>

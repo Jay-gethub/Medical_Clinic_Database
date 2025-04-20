@@ -19,12 +19,12 @@ const Home = () => {
 
       <nav className="navbar">
         <div className="logo">
-          <img src={logo} alt="MedBridge Clinic Logo" />
+          <img src={logo} alt="Care Connect Clinic Logo" />
           <h1>Care Connect Clinic</h1>
         </div>
         <ul className="nav-links">
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/services">Services</a></li>
           <li><a href="/login/employee">Employee Login</a></li>
         </ul>
       </nav>
