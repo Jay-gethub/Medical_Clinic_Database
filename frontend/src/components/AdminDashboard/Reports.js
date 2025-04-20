@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../styles/Reports.css';
 // import your graph components here
 // import ReportOne from './ReportOne';
-// import ReportTwo from './ReportTwo';
+import ReportTwo from './ReportTwo';
 // import ReportThree from './ReportThree';
 
 const Reports = () => {
@@ -13,7 +13,7 @@ const Reports = () => {
       case 'report1':
         return <div className="report-content"> {/* <ReportOne /> */} Report 1 with filters & table</div>;
       case 'report2':
-        return <div className="report-content"> {/* <ReportTwo /> */} Report 2 with filters & table</div>;
+        return <div className="report-content"> {<ReportTwo />} Report 2 with filters & table</div>;
       case 'report3':
         return <div className="report-content"> {/* <ReportThree /> */} Report 3 with filters & table</div>;
       default:

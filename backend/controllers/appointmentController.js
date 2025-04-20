@@ -709,7 +709,27 @@ exports.getBookedSlotsForDoctor = (req, res) => {
   });
 };
 
-// Reports
-  // Get Immunization Report
-exports.getImmunizationReport = (res) => {
+exports.getImmunizations = (req, res) => {
+  const { id } = req.params;
+  db.query(
+    `SELECT 
+    i.immunization_name,
+    pi.immunization_date,
+    pi.shot_status,
+    CONCAT(e.first_name, ' ', IFNULL(e.middle_name, ''), ' ', e.last_name) AS administered_by
+    FROM 
+        Patient_Immunizations pi
+    JOIN 
+        IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+    LEFT JOIN 
+        EMPLOYEES e ON pi.administered_by = e.employee_id
+    WHERE 
+        pi.patient_id = ?;
+`,
+    [id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json(result);
+    }
+  );
 };

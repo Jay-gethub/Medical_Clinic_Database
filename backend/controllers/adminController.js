@@ -404,3 +404,29 @@ exports.deleteSchedule = (req, res) => {
     res.status(200).json({ message: "Schedule deleted successfully!" });
   });
 };
+
+// Reports
+  // Get Immunization Report
+  exports.getImmunizationReport = (req, res) => {
+    const query = `
+      SELECT 
+        i.immunization_name, COUNT(DISTINCT pi.patient_id) AS patient_count
+      FROM 
+        Patient_Immunizations pi
+      JOIN 
+        IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+      GROUP BY 
+        i.immunization_name;
+    `;
+    
+    db.query(query, (err, result) => {
+      if (err) return res.status(500).json({ error: "Database error" });
+      if (result.length === 0) {
+        return res.status(404).json({ message: "No Immunizations found" });
+      }
+      res.status(200).json(result);
+    });
+  };
+  // Get Demographic Report
+
+  // Get someother Report
