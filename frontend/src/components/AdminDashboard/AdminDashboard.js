@@ -7,7 +7,6 @@ import CreateEmployeeForm from './CreateEmployeeForm';
 import AdminProfile from './AdminProfile';
 import EmployeeTable from './EmployeeTable';
 import ManageSchedules from './ManageSchedules';
-import Reports from './Reports';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
@@ -34,9 +33,9 @@ const AdminDashboard = () => {
           <h1>Care Connect Clinic</h1>
         </div>
         <ul className="nav-links">
-        
-        <li>
-  <button onClick={handleLogout} className="logout-btn">Logout</button> </li>
+          <li>
+            <button onClick={handleLogout} className="logout-btn">Logout</button>
+          </li>
         </ul>
       </nav>
 
@@ -45,12 +44,7 @@ const AdminDashboard = () => {
           <button onClick={() => setActiveTab('profile')} className={activeTab === 'profile' ? 'active' : ''}>My Profile</button>
           <button onClick={() => setActiveTab('create')} className={activeTab === 'create' ? 'active' : ''}>Create Employee</button>
           <button onClick={() => setActiveTab('view')} className={activeTab === 'view' ? 'active' : ''}>View Employees</button>
-          <button onClick={() => setActiveTab('reports')} className={activeTab === 'reports' ? 'active' : ''}>Reports</button>
-          <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>
-         
-  Manage Schedules
-</button>
-
+          <button onClick={() => setActiveTab('schedules')} className={activeTab === 'schedules' ? 'active' : ''}>Manage Schedules</button>
         </div>
 
         <div className="admin-tab-content">
@@ -58,8 +52,6 @@ const AdminDashboard = () => {
           {activeTab === 'create' && <CreateEmployeeForm />}
           {activeTab === 'view' && <EmployeeTable />}
           {activeTab === 'schedules' && <ManageSchedules />}
-          {activeTab === 'reports' && <Reports/>}
-
         </div>
       </div>
     </div>
