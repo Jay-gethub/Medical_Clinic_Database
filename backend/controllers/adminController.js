@@ -423,6 +423,31 @@ exports.deleteSchedule = (req, res) => {
       res.status(200).json(result);
     });
   };
+
+  exports.getDbManagerProfile = (req, res) => {
+    const db = req.app.get("db");
+    const { employee_id } = req.params;
+  
+    const query = `
+      SELECT e.first_name, e.last_name, e.email, dm.last_login
+      FROM EMPLOYEES e
+      JOIN DATABASE_MANAGER dm ON e.employee_id = dm.employee_id
+      WHERE e.employee_id = ?
+    `;
+  
+    db.query(query, [employee_id], (err, results) => {
+      if (err) {
+        console.error("DB Manager profile fetch error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: "Profile not found" });
+      }
+      res.status(200).json(results[0]);
+    });
+  };
+    
+
   // Get Demographic Report
 
   // Get someother Report
