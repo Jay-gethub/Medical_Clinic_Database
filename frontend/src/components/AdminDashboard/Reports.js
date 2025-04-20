@@ -3,6 +3,7 @@ import '../../styles/Reports.css';
 // import your graph components here
 // import ReportOne from './ReportOne';
 import ReportTwo from './ReportTwo';
+import DiagnosticReport from './DiagnosticsReport';
 // import ReportThree from './ReportThree';
 
 const Reports = () => {
@@ -15,13 +16,13 @@ const Reports = () => {
       case 'report2':
         return <div className="report-content"> {<ReportTwo />} Report 2 with filters & table</div>;
       case 'report3':
-        return <div className="report-content"> {/* <ReportThree /> */} Report 3 with filters & table</div>;
+        return <div className="report-content"> {<DiagnosticReport/>} Report 3 with filters & table</div>;
       default:
         return (
           <div className="report-boxes">
             <div className="report-box" onClick={() => setSelectedReport('report1')}>Demographic Report?</div>
             <div className="report-box" onClick={() => setSelectedReport('report2')}>Immuniziation Analysis</div>
-            <div className="report-box" onClick={() => setSelectedReport('report3')}>Employee Performance?</div>
+            <div className="report-box" onClick={() => setSelectedReport('report3')}>All Diagnostic Reports</div>
           </div>
         );
     }

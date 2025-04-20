@@ -30,5 +30,6 @@ router.get('/immunization-report', adminController.getImmunizationReport);
 
 router.get('/dbmanager/profile/:employee_id', adminController.getDbManagerProfile);
 
+router.get('/diagnostic-report', adminController.DiagnosticReport);
 
 module.exports = router;

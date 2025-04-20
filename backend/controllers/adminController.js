@@ -447,6 +447,79 @@ exports.deleteSchedule = (req, res) => {
     });
   };
     
+//diagnostic report
+// Full list of test types from the SET definition
+
+
+exports.DiagnosticReport = async (req, res) => {
+  const allTestTypes = ['Biopsy', 'CT_Scan', 'Colonoscopy', 'Eye Exam', 'X-Ray'];
+  const sql = `
+    SELECT
+      CONCAT(a.city, ', ', a.state) AS clinic_location,
+      dt.test_type
+    FROM DIAGNOSTIC_TESTS dt
+    JOIN EMPLOYEES e ON dt.doctor_id = e.employee_id
+    JOIN CLINIC c ON e.clinic_id = c.clinic_id
+    JOIN ADDRESS a ON c.address_id = a.address_id
+  `;
+
+  try {
+    const [rows] = await db.promise().query(sql);
+
+    const result = [];
+
+    rows.forEach(row => {
+      const testTypes = row.test_type.split(',');
+      testTypes.forEach(type => {
+        result.push({
+          clinic_location: row.clinic_location,
+          test_type: type.trim(),
+          total_tests: 1
+        });
+      });
+    });
+
+    // Group and count by clinic_location + test_type
+    const grouped = {};
+    result.forEach(({ clinic_location, test_type }) => {
+      const key = `${clinic_location}__${test_type}`;
+      if (!grouped[key]) {
+        grouped[key] = {
+          clinic_location,
+          test_type,
+          total_tests: 0
+        };
+      }
+      grouped[key].total_tests += 1;
+    });
+
+    const allLocations = [...new Set(rows.map(r => r.clinic_location))];
+
+    // Ensure all test types appear per location
+    const finalResult = [];
+    allLocations.forEach(location => {
+      allTestTypes.forEach(testType => {
+        const key = `${location}__${testType}`;
+        if (grouped[key]) {
+          finalResult.push(grouped[key]);
+        } else {
+          finalResult.push({
+            clinic_location: location,
+            test_type: testType,
+            total_tests: 0
+          });
+        }
+      });
+    });
+
+    res.status(200).json(finalResult);
+  } catch (err) {
+    console.error('Error fetching diagnostic report:', err);
+    res.status(500).json({ error: 'Failed to retrieve diagnostic report' });
+  }
+};
+
+
 
   // Get Demographic Report
 
