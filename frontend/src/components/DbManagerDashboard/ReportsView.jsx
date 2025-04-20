@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import '../../styles/Reports.css';
 import ReportTwo from './ReportTwo';
 import RevenueReport from './RevenueReport';
-import DemographicReport from './DemographicReport'; // ⬅️ Add this import
+import DemographicReport from './DemographicReport';
+import DiagnosticReport from './DiagnosticsReport';
 
 const Reports = () => {
   const [selectedReport, setSelectedReport] = useState(null);
@@ -10,29 +11,13 @@ const Reports = () => {
   const renderReport = () => {
     switch (selectedReport) {
       case 'report1':
-        return (
-          <div className="report-content">
-            <DemographicReport /> {/* ✅ This now shows the actual demographic report */}
-          </div>
-        );
+        return <div className="report-content"><DemographicReport /></div>;
       case 'report2':
-        return (
-          <div className="report-content">
-            <ReportTwo />
-          </div>
-        );
-      case 'report3':
-        return (
-          <div className="report-content">
-            Report 3 with filters & table
-          </div>
-        );
+        return <div className="report-content"><ReportTwo /></div>;
       case 'revenue':
-        return (
-          <div className="report-content">
-            <RevenueReport />
-          </div>
-        );
+        return <div className="report-content"><RevenueReport /></div>;
+      case 'diagnostic':
+        return <div className="report-content"><DiagnosticReport /></div>;
       default:
         return (
           <div className="report-boxes">
@@ -42,11 +27,11 @@ const Reports = () => {
             <div className="report-box" onClick={() => setSelectedReport('report2')}>
               Immunization Analysis
             </div>
-            <div className="report-box" onClick={() => setSelectedReport('report3')}>
-              Employee Performance?
-            </div>
             <div className="report-box" onClick={() => setSelectedReport('revenue')}>
               Revenue Report
+            </div>
+            <div className="report-box" onClick={() => setSelectedReport('diagnostic')}>
+              Diagnostic Report
             </div>
           </div>
         );
