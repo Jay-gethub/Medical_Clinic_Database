@@ -14,17 +14,33 @@ const DbManagerProfile = () => {
       return;
     }
 
+    // First: fetch basic employee data from EMPLOYEES table
     fetch(`http://localhost:5000/api/employee/${employeeId}`)
       .then((res) => res.json())
       .then((data) => {
-        setProfile({
+        const profileData = {
           first_name: data.first_name,
           last_name: data.last_name,
           email: data.email,
           phone: data.phone,
-          last_login: data.last_login || '',
-        });
-        setLoading(false);
+        };
+
+        // Second: fetch last_login from DATABASE_MANAGER table
+        fetch(`http://localhost:5000/api/admin/dbmanager/profile/${employeeId}`)
+          .then((res) => res.json())
+          .then((dbData) => {
+            setProfile({
+              ...profileData,
+              last_login: dbData.last_login || '',
+            });
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error('Failed to load last_login:', err);
+            // still render other data if last_login fails
+            setProfile({ ...profileData, last_login: '' });
+            setLoading(false);
+          });
       })
       .catch((err) => {
         console.error('Failed to load profile:', err);
@@ -70,7 +86,7 @@ const DbManagerProfile = () => {
       <input name="last_name" value={profile.last_name} onChange={handleChange} required />
       <input type="email" name="email" value={profile.email} onChange={handleChange} required />
       <input name="phone" value={profile.phone} onChange={handleChange} required />
-      <p><strong>Last Login:</strong> {new Date(profile.last_login).toLocaleString()}</p>
+      <p><strong>Last Login:</strong> {profile.last_login ? new Date(profile.last_login).toLocaleString() : 'N/A'}</p>
       <button type="submit">Save Changes</button>
     </form>
   );
