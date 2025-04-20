@@ -22,26 +22,32 @@ const EmployeeLogin = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/login', { username, password });
-
       const { token, user } = res.data;
 
-      //console.log("Login response:", res.data);
-
+      // Store token + user
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      // const employee_id = res.data.employee_id;
-      
-      //   // Store employee_id for later use
-      // localStorage.setItem('employeeId', employee_id);
 
-      //Redirect based on role
-      if (user.role === 'Admin') navigate('/admin/dashboard');
-      else if (user.role === 'Doctor') navigate('/doctor/dashboard');
-      else if (user.role === 'Nurse') navigate('/nurse/dashboard');
-      else if (user.role === 'Staff') navigate('/staff/dashboard');
-      else if (user.role === 'Receptionist') navigate('/receptionist/dashboard');
-      else navigate('/'); // fallback
-
+      // Redirect based on role
+      switch (user.role) {
+        case 'Admin':
+          navigate('/admin/dashboard');
+          break;
+        case 'Doctor':
+          navigate('/doctor/dashboard');
+          break;
+        case 'Nurse':
+          navigate('/nurse/dashboard');
+          break;
+        case 'Receptionist':
+          navigate('/receptionist/dashboard');
+          break;
+        case 'Database Administrator':
+          navigate('/dbmanager/dashboard');
+          break;
+        default:
+          navigate('/');
+      }
     } catch (err) {
       setErrorMsg(err.response?.data?.error || 'Login failed');
     }

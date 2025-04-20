@@ -173,11 +173,7 @@ exports.createEmployee = (req, res) => {
       department_id, hire_date, license_number 
     } = req.body;
 
-    const normalizedRole = role === "1" ? "Doctor"
-                        : role === "2" ? "Nurse"
-                        : role === "3" ? "Receptionist"
-                        : role === "4" ? "Database Admin"
-                        : role;
+    const normalizedRole = role;
 
     const insertAddressQuery = `
       INSERT INTO ADDRESS (street_num, street_name, postal_code, city, state)
@@ -231,7 +227,7 @@ exports.createEmployee = (req, res) => {
             const query = `INSERT INTO RECEPTIONIST (employee_id, clinic_id)
                            VALUES (?, ?)`;
             return db.query(query, [employeeId, clinic_id], roleCallback);
-          } else if (normalizedRole === "Database Admin") {
+          } else if (normalizedRole === "Database Administrator") {
             const query = `INSERT INTO DATABASE_MANAGER (employee_id, last_login)
                            VALUES (?, NOW())`;
             return db.query(query, [employeeId], roleCallback);

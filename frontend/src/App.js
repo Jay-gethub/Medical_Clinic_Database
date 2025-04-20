@@ -9,6 +9,7 @@ import PatientPortalApp from './components/PatientDashboard/PatientPortalApp';
 import DoctorDashboard from './components/DoctorDashboard/DoctorDashboard';
 import NurseDashboard from './components/NurseDashboard/NurseDashboard';
 import ReceptionistDashboard from './components/ReceptionistDashboard/ReceptionistDashboard';
+import DbManagerDashboard from './components/DbManagerDashboard/DbManagerDashboard';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/nurse/dashboard" element={<NurseDashboard />} />
           <Route path="/receptionist/dashboard" element={<ReceptionistDashboard />} />
+          <Route path="/dbmanager/dashboard" element={<DbManagerDashboard />} />
 
         </Routes>
       </div>
