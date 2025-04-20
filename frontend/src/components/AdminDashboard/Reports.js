@@ -14,9 +14,9 @@ const Reports = () => {
       case 'report1':
         return <div className="report-content"> {/* <ReportOne /> */} Report 1 with filters & table</div>;
       case 'report2':
-        return <div className="report-content"> {<ReportTwo />} Report 2 with filters & table</div>;
+        return <div className="report-content"> {<ReportTwo />}</div>;
       case 'report3':
-        return <div className="report-content"> {<DiagnosticReport/>} Report 3 with filters & table</div>;
+        return <div className="report-content"> {<DiagnosticReport/>}</div>;
       default:
         return (
           <div className="report-boxes">

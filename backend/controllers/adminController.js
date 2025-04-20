@@ -32,6 +32,7 @@ exports.getAllEmployees = (req, res) => {
     res.status(200).json(result);
   });
 };
+
 // get employee by clinic
 exports.getEmployeesByClinic = (req, res) => {
   const db = req.app.get("db");
@@ -49,6 +50,7 @@ exports.getEmployeesByClinic = (req, res) => {
     }
   );
 };
+
 // Add new employee
 // exports.createEmployee = (req, res) => {
 //   const db = req.app.get("db");
@@ -379,6 +381,7 @@ exports.updateSchedule = (req, res) => {
     res.status(200).json({ message: "Schedule updated successfully!" });
   });
 };
+
 // delete schedule
 exports.deleteSchedule = (req, res) => {
   const db = req.app.get("db");
@@ -401,56 +404,107 @@ exports.deleteSchedule = (req, res) => {
   });
 };
 
-// Reports
-  // Get Immunization Report
-  exports.getImmunizationReport = (req, res) => {
-    const query = `
-      SELECT 
-        i.immunization_name, COUNT(DISTINCT pi.patient_id) AS patient_count
-      FROM 
-        Patient_Immunizations pi
-      JOIN 
-        IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
-      GROUP BY 
-        i.immunization_name;
-    `;
-    
-    db.query(query, (err, result) => {
-      if (err) return res.status(500).json({ error: "Database error" });
-      if (result.length === 0) {
-        return res.status(404).json({ message: "No Immunizations found" });
-      }
-      res.status(200).json(result);
-    });
-  };
+// Get Immunization Report
+exports.getImmunizationReport = (req, res) => {
+  const { startDate, endDate } = req.query;
 
-  exports.getDbManagerProfile = (req, res) => {
-    const db = req.app.get("db");
-    const { employee_id } = req.params;
-  
-    const query = `
-      SELECT e.first_name, e.last_name, e.email, dm.last_login
-      FROM EMPLOYEES e
-      JOIN DATABASE_MANAGER dm ON e.employee_id = dm.employee_id
-      WHERE e.employee_id = ?
-    `;
-  
-    db.query(query, [employee_id], (err, results) => {
-      if (err) {
-        console.error("DB Manager profile fetch error:", err);
-        return res.status(500).json({ error: "Database error" });
-      }
-      if (results.length === 0) {
-        return res.status(404).json({ error: "Profile not found" });
-      }
-      res.status(200).json(results[0]);
-    });
-  };
+  let query = `
+    SELECT 
+      i.immunization_name, COUNT(DISTINCT pi.patient_id) AS patient_count
+    FROM 
+      Patient_Immunizations pi
+    JOIN 
+      IMMUNIZATIONS i ON pi.immunization_id = i.immunization_id
+  `;
+
+  const conditions = [];
+  const params = [];
+
+  if (startDate) {
+    conditions.push("pi.immunization_date >= ?");
+    params.push(startDate);
+  }
+
+  if (endDate) {
+    conditions.push("pi.immunization_date <= ?");
+    params.push(endDate);
+  }
+
+  if (conditions.length > 0) {
+    query += " WHERE " + conditions.join(" AND ");
+  }
+
+  query += " GROUP BY i.immunization_name";
+
+  db.query(query, params, (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No Immunizations found in the selected date range" });
+    }
+    res.status(200).json(result);
+  });
+};
+
+// Get Immunization Report 2 (detailed report)
+exports.getImmunizationDetails = (req, res) => {
+  const { immunization_id } = req.query;
+
+  if (!immunization_id) {
+    return res.status(400).json({ error: "Missing immunization_id" });
+  }
+
+  const query = `
+    SELECT 
+      pi.patient_id,
+      p.first_name AS patient_first_name,
+      p.last_name AS patient_last_name,
+      pi.immunization_date,
+      e.first_name AS doctor_first_name,
+      e.last_name AS doctor_last_name
+    FROM 
+      Patient_Immunizations pi
+    JOIN 
+      PATIENTS p ON pi.patient_id = p.patient_id
+    JOIN 
+      EMPLOYEES e ON pi.administered_by = e.employee_id
+    WHERE 
+      pi.immunization_id = ?
+  `;
+
+  db.query(query, [immunization_id], (err, result) => {
+    if (err) return res.status(500).json({ error: "Database error", details: err });
+    if (result.length === 0) {
+      return res.status(404).json({ message: "No records found for this immunization" });
+    }
+    res.status(200).json(result);
+  });
+};
+
+exports.getDbManagerProfile = (req, res) => {
+  const db = req.app.get("db");
+  const { employee_id } = req.params;
+
+  const query = `
+    SELECT e.first_name, e.last_name, e.email, dm.last_login
+    FROM EMPLOYEES e
+    JOIN DATABASE_MANAGER dm ON e.employee_id = dm.employee_id
+    WHERE e.employee_id = ?
+  `;
+
+  db.query(query, [employee_id], (err, results) => {
+    if (err) {
+      console.error("DB Manager profile fetch error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+    res.status(200).json(results[0]);
+  });
+};
     
 //diagnostic report
 // Full list of test types from the SET definition
-
-
 exports.DiagnosticReport = async (req, res) => {
   const allTestTypes = ['Biopsy', 'CT_Scan', 'Colonoscopy', 'Eye Exam', 'X-Ray'];
   const sql = `
@@ -518,9 +572,3 @@ exports.DiagnosticReport = async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve diagnostic report' });
   }
 };
-
-
-
-  // Get Demographic Report
-
-  // Get someother Report

@@ -27,6 +27,7 @@ router.delete("/schedules/:schedule_id",  adminController.deleteSchedule);
 
 //get immunization records report
 router.get('/immunization-report', adminController.getImmunizationReport);
+router.get('/immunization-report2/:immunization_id', adminController.getImmunizationDetails);
 
 router.get('/dbmanager/profile/:employee_id', adminController.getDbManagerProfile);
 
