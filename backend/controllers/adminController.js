@@ -410,7 +410,7 @@ exports.getImmunizationReport = (req, res) => {
 
   let query = `
     SELECT 
-      i.immunization_name, COUNT(DISTINCT pi.patient_id) AS patient_count
+      i.immunization_id, i.immunization_name, COUNT(DISTINCT pi.patient_id) AS patient_count
     FROM 
       Patient_Immunizations pi
     JOIN 
@@ -447,7 +447,7 @@ exports.getImmunizationReport = (req, res) => {
 
 // Get Immunization Report 2 (detailed report)
 exports.getImmunizationDetails = (req, res) => {
-  const { immunization_id } = req.query;
+  const { immunization_id } = req.params;
 
   if (!immunization_id) {
     return res.status(400).json({ error: "Missing immunization_id" });

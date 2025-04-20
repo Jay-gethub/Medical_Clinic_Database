@@ -13,6 +13,7 @@ const ReportTwo = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [selectedImmunizationId, setSelectedImmunizationId] = useState(null);
+  const [selectedImmunizationName, setSelectedImmunizationName] = useState('');
   const [modalData, setModalData] = useState([]);
 
   useEffect(() => {
@@ -47,11 +48,12 @@ const ReportTwo = () => {
   });
 
   // Modal logic (second layer report)
-  const handleRowClick = async (immunizationId) => {
+  const handleRowClick = async (immunizationId,immunizationName) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/admin/immunization-report2?immunization_id=${immunizationId}`);
+      const res = await axios.get(`http://localhost:5000/api/admin/immunization-report2/${immunizationId}`);
       setModalData(res.data);
       setSelectedImmunizationId(immunizationId);
+      setSelectedImmunizationName(immunizationName);
       setShowModal(true);
     } catch (err) {
       console.error('Error fetching detailed report:', err);
@@ -105,7 +107,7 @@ const ReportTwo = () => {
           </thead>
           <tbody>
             {filteredData.map((row, index) => (
-              <tr key={index} onClick={() => handleRowClick(row.immunization_id)} style={{ cursor: 'pointer' }}>
+              <tr key={index} onClick={() => handleRowClick(row.immunization_id, row.immunization_name)} style={{ cursor: 'pointer' }}>
                 <td>{row.immunization_name}</td>
                 <td>{row.patient_count}</td>
               </tr>
@@ -117,23 +119,21 @@ const ReportTwo = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>Immunization Details</h3>
+            <h3>Immunization Details - {selectedImmunizationName}</h3>
             <table className="report-table">
               <thead>
                 <tr>
                   <th>Patient ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Date</th>
-                  <th>Doctor</th>
+                  <th>Patient Name</th>
+                  <th>Date Administered</th>
+                  <th>Administered By</th>
                 </tr>
               </thead>
               <tbody>
                 {modalData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.patient_id}</td>
-                    <td>{item.patient_first_name}</td>
-                    <td>{item.patient_last_name}</td>
+                    <td>{item.patient_first_name}, {item.patient_last_name}</td>
                     <td>{new Date(item.immunization_date).toLocaleDateString()}</td>
                     <td>{item.doctor_first_name} {item.doctor_last_name}</td>
                   </tr>
