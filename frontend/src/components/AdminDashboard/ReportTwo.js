@@ -76,12 +76,6 @@ const ReportTwo = () => {
         <label>End Date:</label>
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
 
-        <label>Status:</label>
-        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-          <option value="all">All</option>
-          <option value="Complete">Complete</option>
-          <option value="Pending">Pending</option>
-        </select>
       </div>
 
       <div className="graph-section">
