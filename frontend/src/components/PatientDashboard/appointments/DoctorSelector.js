@@ -77,7 +77,7 @@ import axios from 'axios';
 const DoctorSelector = ({ clinicId, onDoctorSelect }) => {
   const [doctors, setDoctors] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const [selectedDoctorId, setSelectedDoctorId] = useState(null); // ✅ Track selected doctor
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null); 
   const [gender, setGender] = useState('');
   const [department, setDepartment] = useState('');
 
@@ -95,7 +95,7 @@ const DoctorSelector = ({ clinicId, onDoctorSelect }) => {
         console.log('Fetched doctors:', res.data);
         setDoctors(res.data);
         setFiltered(res.data);
-        setSelectedDoctorId(null); // ✅ Reset selected doctor on clinic change
+        setSelectedDoctorId(null); 
       } catch (err) {
         console.error('Failed to fetch doctors:', err);
       }

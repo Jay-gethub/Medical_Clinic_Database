@@ -13,6 +13,7 @@ const mysql = require("mysql2");
 const billingRoutes = require('./routes/billingRoutes');
 
 const paymentRoutes = require('./routes/paymentRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 dotenv.config();
 const app = express();
@@ -56,7 +57,7 @@ app.use("/api/appointments", appointmentRoutes);
 app.use('/api/billing', billingRoutes);   // api/billing/
 app.use('/api/payments', paymentRoutes);  // api/payments
 
-
+app.use('/api/reports', reportRoutes);
 
 
 // Start the server

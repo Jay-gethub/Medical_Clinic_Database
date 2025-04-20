@@ -65,9 +65,9 @@ exports.loginUser = (req, res) => {
 
       const user = rows[0];
       // If their enum‐role is Database Administrator, we'll give them a special tag
-      if (user.role === "Database Administrator") {
-        user.role = "DbManager";
-      }
+      // if (user.role === "Database Administrator") {
+      //   user.role = "DbManager";
+      // }
 
       const token = jwt.sign({
         user_id:    user.user_id,
