@@ -31,6 +31,9 @@ router.get('/immunization-report2/:immunization_id', adminController.getImmuniza
 
 router.get('/dbmanager/profile/:employee_id', adminController.getDbManagerProfile);
 
+//get demographic report
+router.get('/demographic-report', adminController.getDemographicReport);
+
 router.get('/diagnostic-report', adminController.DiagnosticReport);
 
 module.exports = router;
