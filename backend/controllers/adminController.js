@@ -572,3 +572,35 @@ exports.DiagnosticReport = async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve diagnostic report' });
   }
 };
+
+  // Get Demographic Report of New Patients
+  exports.getDemographicReport = (req, res) => {
+    const db = req.app.get("db");
+    const { startDate, endDate } = req.query;
+  
+    const query = `
+      SELECT 
+        p.patient_id,
+        p.first_name,
+        p.last_name,
+        p.dob,
+        p.sex,
+        p.race,
+        p.date_registered,
+        CASE WHEN i.insurance_id IS NOT NULL THEN 1 ELSE 0 END AS has_insurance
+      FROM PATIENTS p
+      JOIN APPOINTMENTS a ON p.patient_id = a.patient_id
+      LEFT JOIN INSURANCE_PLAN i ON p.patient_id = i.patient_id
+      WHERE DATE(p.date_registered) BETWEEN ? AND ?
+      GROUP BY p.patient_id
+    `;
+  
+    db.query(query, [startDate, endDate], (err, results) => {
+      if (err) {
+        console.error("Demographic report error:", err);
+        return res.status(500).json({ error: "Failed to fetch demographic report" });
+      }
+  
+      res.status(200).json(results);
+    });
+  };
