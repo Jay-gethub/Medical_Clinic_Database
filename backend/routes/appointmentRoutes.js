@@ -68,6 +68,8 @@ router.get('/booked-slots/:doctorId/:date', appointmentController.getBookedSlots
 //router.put("/complete/:appointment_id", authenticateUser, authorizeRole(["Doctor", "Receptionist"]), appointmentController.completeAppointment);
 router.put("/check-in/:appointment_id", authenticateUser, authorizeRole(["Receptionist"]), appointmentController.checkInPatient);
 router.put("/check-out/:appointment_id", authenticateUser, authorizeRole(["Receptionist"]), appointmentController.checkOutPatient);
+router.post('/appointments/by-receptionist', authenticateUser, appointmentController.createAppointmentByReceptionist);
+
 // Appointment history
 router.get("/my-appointments", appointmentController.getAppointmentsByPatient);
 
