@@ -42,7 +42,7 @@ const EmployeeLogin = () => {
         case 'Receptionist':
           navigate('/receptionist/dashboard');
           break;
-        case 'Database Administrator':
+        case 'DbManager':
           navigate('/dbmanager/dashboard');
           break;
         default:
