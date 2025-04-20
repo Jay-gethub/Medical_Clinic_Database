@@ -56,11 +56,23 @@ const DbManagerDashboard = () => {
 
         {/* CONTENT */}
         <div className="db-dashboard-content">
-          <h3 className="section-title">Database Manager Profile</h3>
-          <div className="db-info-box">
-            {activeTab === 'profile' && <DbManagerProfile />}
-            {activeTab === 'reports' && <ReportsView />}
-          </div>
+          {activeTab === 'profile' && (
+            <>
+              <h3 className="section-title">Database Manager Profile</h3>
+              <div className="db-info-box">
+                <DbManagerProfile />
+              </div>
+            </>
+          )}
+
+          {activeTab === 'reports' && (
+            <>
+              <h3 className="section-title">Reports</h3>
+              <div className="db-info-box">
+                <ReportsView />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

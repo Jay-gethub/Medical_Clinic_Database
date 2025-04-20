@@ -66,7 +66,6 @@ const DbManagerProfile = () => {
 
   return (
     <form onSubmit={handleSave} className="admin-box">
-      <h3>Database Manager Profile</h3>
       <input name="first_name" value={profile.first_name} onChange={handleChange} required />
       <input name="last_name" value={profile.last_name} onChange={handleChange} required />
       <input type="email" name="email" value={profile.email} onChange={handleChange} required />
