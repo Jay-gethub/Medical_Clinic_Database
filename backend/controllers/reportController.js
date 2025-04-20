@@ -1,6 +1,5 @@
 const db = require('../config/db');
-
-// Revenue Report
+// Revenue Report 
 exports.getRevenueReport = (req, res) => {
   const { startDate, endDate, clinic, department, doctor } = req.query;
 
@@ -9,8 +8,9 @@ exports.getRevenueReport = (req, res) => {
       cl.clinic_name,
       d.department_name,
       CONCAT(e.first_name, ' ', e.last_name) AS doctor_name,
-      SUM(b.total_amount) AS total_revenue
-    FROM BILLING b
+      SUM(p.amount_paid) AS total_revenue
+    FROM PAYMENTS p
+    JOIN BILLING b ON p.billing_id = b.billing_id
     JOIN APPOINTMENTS a ON b.appointment_id = a.appointment_id
     JOIN DOCTORS doc ON a.doctor_id = doc.employee_id
     JOIN EMPLOYEES e ON doc.employee_id = e.employee_id
@@ -22,12 +22,12 @@ exports.getRevenueReport = (req, res) => {
   const params = [];
 
   if (startDate) {
-    query += ' AND b.billing_date >= ?';
+    query += ' AND p.payment_date >= ?';
     params.push(startDate);
   }
 
   if (endDate) {
-    query += ' AND b.billing_date <= ?';
+    query += ' AND p.payment_date <= ?';
     params.push(endDate);
   }
 

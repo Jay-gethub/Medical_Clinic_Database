@@ -247,13 +247,15 @@ const RevenueReport = () => {
       <div className="report-meta">
   <h4>Tables and Attributes Used</h4>
 
-  <div className="meta-entry"><strong>BILLING:</strong> <code>total_amount</code>, <code>billing_date</code>, <code>appointment_id</code></div>
+  <div className="meta-entry"><strong>PAYMENTS:</strong> <code>amount_paid</code>, <code>payment_date</code>, <code>billing_id</code></div>
+  <div className="meta-entry"><strong>BILLING:</strong> <code>billing_id</code>, <code>appointment_id</code></div>
   <div className="meta-entry"><strong>APPOINTMENTS:</strong> <code>appointment_id</code>, <code>doctor_id</code>, <code>clinic_id</code></div>
   <div className="meta-entry"><strong>DOCTORS:</strong> <code>employee_id</code>, <code>department_id</code></div>
   <div className="meta-entry"><strong>EMPLOYEES:</strong> <code>first_name</code>, <code>last_name</code></div>
   <div className="meta-entry"><strong>DEPARTMENTS:</strong> <code>department_name</code></div>
   <div className="meta-entry"><strong>CLINIC:</strong> <code>clinic_name</code></div>
 </div>
+
  
 
     </div>

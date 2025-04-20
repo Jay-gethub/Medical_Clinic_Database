@@ -35,7 +35,7 @@ const Home = () => {
         <p>Connecting you to quality healthcare</p>
         <a href="/login" className="cta-button">Login to Your Portal</a>
         <p></p>
-        <p><a href="/login" className="cta-button">Pay Bill</a></p>
+        {/* <p><a href="/login" className="cta-button">Pay Bill</a></p> */}
       </div>
     </main>
       <footer className="footer">
