@@ -24,12 +24,70 @@ exports.getDepartments = (req, res) => {
 // Get all employees
 exports.getAllEmployees = (req, res) => {
   const db = req.app.get('db');
-  db.query('SELECT first_name, last_name, email, phone, role, clinic_id FROM EMPLOYEES', (err, result) => {
+  const query = `
+    SELECT 
+      e.employee_id,
+      e.first_name, 
+      e.last_name, 
+      e.email, 
+      e.phone, 
+      e.role, 
+      e.clinic_id,
+      c.clinic_name
+    FROM EMPLOYEES e
+    JOIN CLINIC c ON e.clinic_id = c.clinic_id
+  `;
+
+  db.query(query, (err, result) => {
     if (err) return res.status(500).json({ error: "Database error" });
     if (result.length === 0) {
       return res.status(404).json({ message: "No employees found" });
     }
     res.status(200).json(result);
+  });
+};
+
+//Get detailed employee by ID
+exports.getEmployeeDetails = (req, res) => {
+  const db = req.app.get('db');
+  const employeeId = req.params.id;
+
+  const query = `
+    SELECT 
+      E.employee_id,
+      E.first_name,
+      E.last_name,
+      E.email,
+      E.phone,
+      E.sex,
+      E.date_of_birth,
+      E.role,
+      E.specialization,
+      C.clinic_name,
+      D.department_name,
+      A.street_num,
+      A.street_name,
+      A.city,
+      A.state,
+      A.postal_code
+    FROM EMPLOYEES E
+    JOIN ADDRESS A ON E.address_id = A.address_id
+    LEFT JOIN CLINIC C ON E.clinic_id = C.clinic_id
+    LEFT JOIN DEPARTMENTS D ON E.department_id = D.department_id
+    WHERE E.employee_id = ?
+  `;
+
+  db.query(query, [employeeId], (err, results) => {
+    if (err) {
+      console.error("Error fetching employee details:", err);
+      return res.status(500).json({ error: "Failed to fetch employee details" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Employee not found" });
+    }
+
+    res.status(200).json(results[0]);
   });
 };
 

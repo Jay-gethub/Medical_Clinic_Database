@@ -4,6 +4,7 @@ const adminController = require('../controllers/adminController');
 
 // get all employees
 router.get('/employees', adminController.getAllEmployees);
+router.get('/employee/detailed/:id', adminController.getEmployeeDetails); //by id
 router.get('/employees/by-clinic', adminController.getEmployeesByClinic);//by clinic
 
 // add new employee
