@@ -52,32 +52,37 @@ exports.registerUser = [
 
 exports.loginUser = (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ error: "Missing credentials" });
+  if (!username || !password)
+    return res.status(400).json({ error: "Missing credentials" });
 
-  db.query("SELECT * FROM USER_CREDENTIALS WHERE username = ?", [username], (err, result) => {
-    if (err) return res.status(500).json({ error: "DB error" });
-    if (result.length === 0 || password !== result[0].password) {
-      return res.status(401).json({ error: "Invalid username or password" });
+  db.query(
+    "SELECT * FROM USER_CREDENTIALS WHERE username = ?",
+    [username],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: "DB error" });
+      if (!rows.length || rows[0].password !== password)
+        return res.status(401).json({ error: "Invalid username or password" });
+
+      const user = rows[0];
+      // If their enum‐role is Database Administrator, we'll give them a special tag
+      if (user.role === "Database Administrator") {
+        user.role = "DbManager";
+      }
+
+      const token = jwt.sign({
+        user_id:    user.user_id,
+        employee_id:user.employee_id,
+        username:   user.username,
+        role:       user.role
+      }, JWT_SECRET, { expiresIn: "8h" });
+
+      res.status(200).json({
+        message: "Login successful",
+        token,
+        user
+      });
     }
-    
-
-    const user = result[0];
-    const token = jwt.sign(
-      {
-        user_id: user.user_id,
-        employee_id: user.employee_id,
-        username: user.username,
-        role: user.role,
-      },
-      JWT_SECRET
-    );
-
-    res.status(200).json({
-      message: "Login successful",
-      token,
-      user,
-    });
-  });
+  );
 };
 
 exports.registerPatient = (req, res) => {
@@ -90,6 +95,7 @@ exports.registerPatient = (req, res) => {
     phone_num,
     email,
     sex,
+    race,
     street_num,
     street_name,
     postal_code,
@@ -135,10 +141,10 @@ exports.registerPatient = (req, res) => {
 
         // 3. Insert into PATIENTS 
         const patientQuery =
-          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+          "INSERT INTO PATIENTS (first_name, last_name, dob, address_id, phone_num, email, sex, race, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         db.query(
           patientQuery,
-          [first_name, last_name, dob, address_id, phone_num, email, sex, user_id],
+          [first_name, last_name, dob, address_id, phone_num, email, sex, race, user_id],
           (err, patientResult) => {
             if (err) {
               console.error("Patient insert failed:", err);

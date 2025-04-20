@@ -245,16 +245,16 @@ const RevenueReport = () => {
         </table>
       </div>
       <div className="report-meta">
-  <h4>📋 Tables and Attributes Used</h4>
-  <ul>
-    <li><strong>BILLING:</strong> <code>total_amount</code>, <code>billing_date</code>, <code>appointment_id</code></li>
-    <li><strong>APPOINTMENTS:</strong> <code>appointment_id</code>, <code>doctor_id</code>, <code>clinic_id</code></li>
-    <li><strong>DOCTORS:</strong> <code>employee_id</code>, <code>department_id</code></li>
-    <li><strong>EMPLOYEES:</strong> <code>first_name</code>, <code>last_name</code></li>
-    <li><strong>DEPARTMENTS:</strong> <code>department_name</code></li>
-    <li><strong>CLINIC:</strong> <code>clinic_name</code></li>
-  </ul>
+  <h4>Tables and Attributes Used</h4>
+
+  <div className="meta-entry"><strong>BILLING:</strong> <code>total_amount</code>, <code>billing_date</code>, <code>appointment_id</code></div>
+  <div className="meta-entry"><strong>APPOINTMENTS:</strong> <code>appointment_id</code>, <code>doctor_id</code>, <code>clinic_id</code></div>
+  <div className="meta-entry"><strong>DOCTORS:</strong> <code>employee_id</code>, <code>department_id</code></div>
+  <div className="meta-entry"><strong>EMPLOYEES:</strong> <code>first_name</code>, <code>last_name</code></div>
+  <div className="meta-entry"><strong>DEPARTMENTS:</strong> <code>department_name</code></div>
+  <div className="meta-entry"><strong>CLINIC:</strong> <code>clinic_name</code></div>
 </div>
+ 
 
     </div>
   );
