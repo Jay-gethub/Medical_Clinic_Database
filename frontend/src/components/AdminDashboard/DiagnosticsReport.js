@@ -72,19 +72,31 @@ const DiagnosticReport = () => {
       </div>
 
       {/* Recharts Bar Chart */}
-      <div className="mb-5">
-        <h5 className="mb-3">Test Type Distribution</h5>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={getChartData()} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="test_type" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="total_tests" fill="#4287f5" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      <div style={{ overflowX: 'auto' }}>
+  <div style={{ width: Math.max(getChartData().length * 100, 600), height: 300 }}>
+    <ResponsiveContainer width="100%" height="100%">
+    <BarChart
+  data={getChartData()}
+  margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+>
+  <CartesianGrid strokeDasharray="3 3" />
+  <XAxis 
+    dataKey="test_type" 
+    angle={-45} 
+    textAnchor="end" 
+    interval={0} 
+    height={80} 
+  />
+  <YAxis allowDecimals={false} />
+  <Tooltip />
+  <Legend />
+  <Bar dataKey="total_tests" fill="#4287f5" />
+</BarChart>
+
+    </ResponsiveContainer>
+  </div>
+</div>
+
 
       {/* Table */}
       <table className="table table-bordered table-striped">
