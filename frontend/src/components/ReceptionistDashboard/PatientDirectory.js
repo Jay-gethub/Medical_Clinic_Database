@@ -5,6 +5,10 @@ import '../../styles/ReceptionistDashboard.css';
 const PatientDirectory = () => {
     const [patients, setPatients] = useState([]);
     const [selectedPatient, setSelectedPatient] = useState(null);
+    const [nameFilter, setNameFilter] = useState('');
+    const [dobFilter, setDobFilter] = useState('');
+    const [phoneFilter, setPhoneFilter] = useState('');
+
   
     useEffect(() => {
       const fetchPatients = async () => {
@@ -32,10 +36,41 @@ const PatientDirectory = () => {
           day: 'numeric',
         });
     };
+
+    const filteredPatients = patients.filter(patient => {
+      const fullName = `${patient.first_name} ${patient.last_name}`.toLowerCase();
+      const matchesName = fullName.includes(nameFilter.toLowerCase());
+      const matchesDOB = !dobFilter || patient.dob === dobFilter;
+      const matchesPhone = patient.phone_num.includes(phoneFilter);
+    
+      return matchesName && matchesDOB && matchesPhone;
+    });
+    
   
     return (
       <div className="admin-box">
         <h3>Patient Directory</h3>
+        <div className="filters">
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={nameFilter}
+            onChange={(e) => setNameFilter(e.target.value)}
+          />
+          <input
+            type="date"
+            placeholder="Search by DOB"
+            value={dobFilter}
+            onChange={(e) => setDobFilter(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Search by phone"
+            value={phoneFilter}
+            onChange={(e) => setPhoneFilter(e.target.value)}
+          />
+        </div>
+
         <table className="employee-table">
           <thead>
             <tr>
@@ -47,7 +82,7 @@ const PatientDirectory = () => {
             </tr>
           </thead>
           <tbody>
-            {patients.map((p, idx) => (
+            {filteredPatients.map((p, idx) => (
               <tr key={idx} onClick={() => setSelectedPatient(p)} style={{ cursor: 'pointer' }}>
                 <td>{p.first_name} {p.last_name}</td>
                 <td>{formatDate(p.dob)}</td>
