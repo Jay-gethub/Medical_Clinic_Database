@@ -181,6 +181,64 @@ exports.getAllPatients = (req, res) => {
   );
 };
 
+// get detailed patient info by id
+exports.getPatientDetails = (req, res) => {
+  const db = req.app.get("db");
+  const { id } = req.params;
+
+  const query = `
+    SELECT 
+      P.patient_id, P.first_name, P.last_name, P.dob, P.sex, P.phone_num, P.email,
+      A.street_num, A.street_name, A.postal_code, A.city, A.state,
+      EC.contact_first_name, EC.contact_last_name, EC.relationship, EC.phone AS emergency_phone
+    FROM PATIENTS P
+    LEFT JOIN ADDRESS A ON P.address_id = A.address_id
+    LEFT JOIN EMERGENCY_CONTACT EC ON P.patient_id = EC.patient_id
+    WHERE P.patient_id = ?
+  `;
+
+  db.query(query, [id], (err, result) => {
+    if (err) {
+      console.error("Error fetching patient details:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    return res.status(200).json(result[0]);
+  });
+};
+
+// get all patients for receptionist
+exports.getAllPatientDetails = (req, res) => {
+  const db = req.app.get('db');
+
+  const query = `
+    SELECT 
+      p.patient_id, p.first_name, p.last_name, p.dob, p.phone_num, p.email, p.sex,
+      a.street_num, a.street_name, a.postal_code, a.city, a.state,
+      ec.contact_first_name, ec.contact_last_name, ec.relationship, ec.phone AS emergency_phone
+    FROM PATIENTS p
+    JOIN ADDRESS a ON p.address_id = a.address_id
+    LEFT JOIN EMERGENCY_CONTACT ec ON p.patient_id = ec.patient_id
+  `;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error fetching patient details:', err);
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+
+    if (!results.length) {
+      return res.status(404).json({ message: 'No patients found' });
+    }
+
+    res.status(200).json(results);
+  });
+};
+
 // 7. get appointment info for receptionist appoinment table
 exports.getPatientInfo = (req, res) => {
   const query = `

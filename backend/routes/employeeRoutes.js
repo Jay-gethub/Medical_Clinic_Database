@@ -16,6 +16,12 @@ router.get('/all-patients', employeeController.getAllPatients);
 //get appointment info for receptionist appointment table
 router.get('/appointment-table', employeeController.getPatientInfo);
 
+// get detailed patient info for receptionist
+router.get('/patient-details/:id', employeeController.getPatientDetails); //by id
+
+//get all patients for receptionist
+router.get('/patient-details', employeeController.getAllPatientDetails); //all patients
+
 //update appointment status
 router.put('/update-appointment', employeeController.updateAppointmentStatus);
 
@@ -77,4 +83,6 @@ router.get('/patient-medical-history/:patientId', employeeController.getMedicalH
 
 router.get('/receptionist/clinic/:userId', employeeController.getAssignedClinic);
 router.post("/create", employeeController.createAppointmentByReceptionist);
+
+
 module.exports = router;

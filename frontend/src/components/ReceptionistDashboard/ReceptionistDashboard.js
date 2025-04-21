@@ -69,6 +69,7 @@ import ManageRecSchedules from './ManageRecSchedules';
 import AppointmentTable from './AppointmentTable';
 import PatientReferralViewer from './ReceptionistReferrals';
 import BookAppointmentReceptionist from './BookReceptionistAppointment';
+import PatientDirectory from './PatientDirectory';
 
 // Icons for the sidebar
 const Icon = ({ name }) => {
@@ -146,7 +147,7 @@ const ReceptionistDashboard = () => {
                 onClick={() => setActiveTab('view')}
               >
                 <Icon name="staff" />
-                View Staff
+                View Patients
               </div>
             </li>
             <li className="nav-item">
@@ -219,9 +220,9 @@ const ReceptionistDashboard = () => {
           {activeTab === 'view' && (
             <div className="content-card">
               <div className="card-header">
-                <h2 className="card-title">Staff Directory</h2>
+                <h2 className="card-title">Patient Directory</h2>
               </div>
-              <p>Staff directory content will appear here.</p>
+              <PatientDirectory />
             </div>
           )}
         </div>
