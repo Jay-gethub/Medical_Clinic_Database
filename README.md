@@ -42,22 +42,12 @@ A comprehensive management system for medical clinic featuring role-based access
    cd Medical_Clinic_Database/backend
    ```
 
-2. Create a `.env` file with the following variables:
-   ```
-   PORT=5000
-   DB_HOST=localhost
-   DB_USER=your_mysql_user
-   DB_PASS=your_mysql_password
-   DB_NAME=your_database_name
-   JWT_SECRET=your_secret_key
-   ```
-
-3. Install dependencies:
+2. Install dependencies:
    ```
    npm install
    ```
 
-4. Start the server:
+3. Start the server:
    - For production:
      ```
      node server.js
